@@ -1,9 +1,11 @@
 package earth.board.controller;
 
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.TodayDTO;
 import earth.board.service.BoardServiceImpl;
 
 @Controller
@@ -21,17 +24,18 @@ public class BoardController {
 	// 자동주입
 	@Autowired
 	private BoardServiceImpl boardService = null;
-
+	
+	
 	// list page
 	@RequestMapping("list.do")	// list.do?pageNum=.......... pageNum 파라미터 넘기기
 	public String list(String pageNum, String sel, String search, Model model) throws SQLException{
 		// 해당 페이지에 맞게 화면에 보여줄 게시글 가져와서 view 에게 전달 (pageNum 에 맞는 게시글 목록 가져오기)
-		Map<String, Object> result = boardService.getArticleList(pageNum);
+		Map<String, Object> result = boardService.getArticleList(pageNum, 1);
 		// 전체 게시글 가져오기
 		if(sel == null || search == null) {
-			result = boardService.getArticleList(pageNum);
+			result = boardService.getArticleList(pageNum, 1);
 		}else { // 검색 게시글 가져오기
-			result = boardService.getArticleSearch(pageNum, sel, search); 
+			result = boardService.getArticleSearch(pageNum, sel, search, 1); 
 		}
 		
 		// view 에 전달할 데이터 보내기
@@ -119,7 +123,49 @@ public class BoardController {
 		model.addAttribute("result", result);
 		return "board/deletePro";
 	}
+	
+	
+	// 오늘의 실천(5) 요청 - 노현호
+	@RequestMapping("dailyChallenge.et")
+	public String dailyChallenge(String pageNum, Model model) throws SQLException{
+		System.out.println("오늘의 실천 요청");
+		
+		// today 테이블에서 전체 게시글 가져오기
+		int code = 5;
+		Map<String, Object> result = boardService.getArticleList(pageNum, code);
+		
+		// view 에 전달할 데이터 보내기
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("articleList", result.get("articleList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		
+		return "board/dailyChallenge";
+	}
+	
 
-
-
+	// 오늘의 실천 게시글 등록 - 노현호
+	@RequestMapping("uploadTodayChallenge.et")
+	public String uploadTodayChallenge(TodayDTO dto, HttpSession session) throws SQLException{
+		System.out.println("오늘의 실천 게시글 등록");
+		
+		// dto.setId((String)session.getAttribute("sid"));													// sid세션 개발 후 활성화 필요
+		dto.setId("javatest");																				// sid세션 개발 후 삭제 필요
+		dto.setCode(5);
+		
+		System.out.println(dto.getCtt());
+		System.out.println(dto.getCondition());
+		
+		int result = boardService.upload(dto);
+		if(result == 1) {
+			System.out.println("업로드 성공");
+		}else {
+			System.out.println("업로드 실패");
+		}
+		return "redirect:/board/dailyChallenge.et";
+	}
 }
