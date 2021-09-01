@@ -1,6 +1,7 @@
 package earth.board.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,62 +21,22 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int getArticleCount(int code) throws SQLException {
 		
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		board.add("Earth");
+		
 		int result = 0;
+		String select = "board.countAll";
+		select += board.get(code-1);
 		
-		// 공지사항(notice)
-		if(code == 1) {
-			result = sqlSession.selectOne("board.countAllNotice");
-			return result;
-		}
-		
-		// 자유게시판(free)
-		if(code == 2) {
-			result = sqlSession.selectOne("board.countAllFree");
-			return result;
-		}
-		
-		// 환경일기(diary)
-		if(code == 3) {
-			result = sqlSession.selectOne("board.countAllDiary");
-			return result;
-		}
-		
-		// 이달의 챌린지(challenge)
-		if(code == 4) {
-			result = sqlSession.selectOne("board.countAllChallenge");
-			return result;
-		}
-		
-		// 오늘의 실천(today)
-		if(code == 5) {
-			result = sqlSession.selectOne("board.countAllToday");
-			return result;
-		}
-		
-		// 상점소개(shop)
-		if(code == 6) {
-			result = sqlSession.selectOne("board.countAllShop");
-			return result;
-		}
-		
-		// 행사(event)
-		if(code == 7) {
-			result = sqlSession.selectOne("board.countAllEvent");
-			return result;
-		}
-		
-		// 꿀팁(tip)
-		if(code == 8) {
-			result = sqlSession.selectOne("board.countAllTip");
-			return result;
-		}
-		
-		// 어뜨(earth)
-		if(code == 9) {
-			result = sqlSession.selectOne("board.countAllEarth");
-			return result;
-		}
-		
+		result = sqlSession.selectOne(select);
 		return result;
 	}
 	
