@@ -47,61 +47,23 @@ public class BoardDAOImpl implements BoardDAO {
 		map.put("start", startRow);
 		map.put("end", endRow);
 		
-		// 공지사항(notice)
-		if(code == 1) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getNoticeArticles", map);
-			return boardList;
-		}
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		board.add("Earth");
 		
-		// 자유게시판(free)
-		if(code == 2) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getFreeArticles", map);
-			return boardList;
-		}
+		String select1 = "board.get";
+		String select2 = "Articles";
+		select1 += board.get(code-1);
+		select1 += select2;
 		
-		// 환경일기(diary)
-		if(code == 3) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getDiaryArticles", map);
-			return boardList;
-		}
-		
-		// 이달의 챌린지(challenge)
-		if(code == 4) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);
-			return boardList;
-		}
-		
-		// 오늘의 실천(today)
-		if(code == 5) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getTodayArticles", map);
-			return boardList;
-		}
-		
-		// 상점소개(shop)
-		if(code == 6) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getShopArticles", map);
-			return boardList;
-		}
-		
-		// 행사(event)
-		if(code == 7) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getEventArticles", map);
-			return boardList;
-		}
-		
-		// 꿀팁(tip)
-		if(code == 8) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getTipArticles", map);
-			return boardList;
-		}
-		
-		// 어뜨(earth)
-		if(code == 9) {
-			List<TodayDTO> boardList = sqlSession.selectList("board.getEarthArticles", map);
-			return boardList;
-		}
-		
-		List<TodayDTO> boardList = sqlSession.selectList("board.getArticles", map);
+		List<TodayDTO> boardList = sqlSession.selectList(select1, map);
 		return boardList;
 	}
 	
