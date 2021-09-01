@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
+<mapper namespace="board">
+
+	<select id="countAll" resultType="int">
+		select count(*) from board
+	</select>
+	
+	<select id="getArticles" parameterType="hashmap" resultType="boardDTO">		
+		<![CDATA[
+		select B.*, r from 
+			(select A.*, rownum r from 
+				(select * from board order by ref desc, re_step asc) A
+			order by ref desc, re_step asc) B
+		where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
+	<select id="countSearch" parameterType="hashmap" resultType="int">
+		select count(*) from board where ${sel} like '%'||#{search}||'%'
+	</select>
+	
+	<select id="getSearchArticles" parameterType="hashmap" resultType="boardDTO">
+		<![CDATA[ 
+		select B.*, r from 
+			(select A.*, rownum r from 
+				(select * from board where ${sel} like '%'||#{search}||'%' order by ref desc, re_step asc) A 
+				order by ref desc, re_step asc) B 
+			where r >= #{start} and r <= #{end} 
+		]]>
+	</select>
+	
+	<update id="updateRestep" parameterType="boardDTO">
+		<![CDATA[
+		update board set re_step=re_step+1 where ref=#{ref} and re_step > #{re_step}
+		]]>
+	</update>
+	
+	<insert id="insertArticle" parameterType="boardDTO" >
+		<selectKey keyProperty="num" order="BEFORE" resultType="int">
+			select board_seq.nextVal from dual
+		</selectKey>
+		insert into board(num, writer, subject, email, content, pw, reg, readcount, ref, re_step, re_level) 
+		values(#{num}, #{writer}, #{subject}, #{email}, #{content}, #{pw}, sysdate, 0, 
+		<if test="ref == 0">#{num},</if>
+		<if test="ref != 0">#{ref},</if>
+		#{re_step}, #{re_level})
+	</insert>
+	
+	<select id="getOneArticle" parameterType="int" resultType="boardDTO">
+		select * from board where num = #{value}
+	</select>
+	
+	<update id="readcountUp" parameterType="int">
+		update board set readcount=readcount+1 where num = #{value}
+	</update>
+	
+	<select id="pwCheck" parameterType="boardDTO" resultType="int">
+		select count(*) from board where num=#{num} and pw=#{pw}
+	</select>
+	
+	<update id="updateArticle" parameterType="boardDTO">
+		update board set subject=#{subject}, email=#{email}, content=#{content} where num=#{num}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="boardDTO">
+		delete from board where num=#{num}
+	</delete>
+	
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+	<!-- 한글 인코딩 처리(post방식) -->
+	<filter>
+		<filter-name>characterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>UTF-8</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>characterEncodingFilter</filter-name>
+		<url-pattern>/*</url-pattern><!-- 모든 페이지 전체에 대해 요청 -->
+	</filter-mapping>
+	
+	<!--  로그 설정 추가  -->
+	<!-- log4j 설정파일 위치 지정 -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<param-value>/WEB-INF/log/log4j.xml</param-value>
+	</context-param>
+	<!-- 위에 저장한 설정 파라미터를 기반으로 log4j 프레임워크를 초기화하는 클래스를 listener로 등록 -->
+	<listener>
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+	
+	<!-- 서블릿 매핑 : 스프링 MVC가 웹요청을 처리하려면 DispatcherServlet을 통하여 요청을 받아야 하며, 아래와 같이 작성한다 -->
+	<servlet>
+		<servlet-name>earth</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>
+				/WEB-INF/context/user-context.xml
+				/WEB-INF/context/spring-context.xml
+			</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>earth</servlet-name>
+		<url-pattern>*.et</url-pattern>
+	</servlet-mapping>
+</web-app>
