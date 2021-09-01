@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.TodayDTO;
 
 @Repository
 public class BoardDAOImpl implements BoardDAO {
@@ -17,24 +18,138 @@ public class BoardDAOImpl implements BoardDAO {
 	private SqlSessionTemplate sqlSession = null;
 	
 	@Override
-	public int getArticleCount() throws SQLException {
-		// 게시판 전체글 개수 가져오기 (test 용 : board table 활용)
-		int result = sqlSession.selectOne("board.countAll");
+	public int getArticleCount(int code) throws SQLException {
+		
+		int result = 0;
+		
+		// 공지사항(notice)
+		if(code == 1) {
+			result = sqlSession.selectOne("board.countAllNotice");
+			return result;
+		}
+		
+		// 자유게시판(free)
+		if(code == 2) {
+			result = sqlSession.selectOne("board.countAllFree");
+			return result;
+		}
+		
+		// 환경일기(diary)
+		if(code == 3) {
+			result = sqlSession.selectOne("board.countAllDiary");
+			return result;
+		}
+		
+		// 이달의 챌린지(challenge)
+		if(code == 4) {
+			result = sqlSession.selectOne("board.countAllChallenge");
+			return result;
+		}
+		
+		// 오늘의 실천(today)
+		if(code == 5) {
+			result = sqlSession.selectOne("board.countAllToday");
+			return result;
+		}
+		
+		// 상점소개(shop)
+		if(code == 6) {
+			result = sqlSession.selectOne("board.countAllShop");
+			return result;
+		}
+		
+		// 행사(event)
+		if(code == 7) {
+			result = sqlSession.selectOne("board.countAllEvent");
+			return result;
+		}
+		
+		// 꿀팁(tip)
+		if(code == 8) {
+			result = sqlSession.selectOne("board.countAllTip");
+			return result;
+		}
+		
+		// 어뜨(earth)
+		if(code == 9) {
+			result = sqlSession.selectOne("board.countAllEarth");
+			return result;
+		}
 		
 		return result;
 	}
-	// 한 페이지 게시글 목록 가져오기
+	
 	@Override
-	public List<BoardDTO> getArticles(int start, int end) throws SQLException {
+	public List<TodayDTO> getArticles(int startRow, int endRow, int code) throws SQLException {
 		
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("start", startRow);
+		map.put("end", endRow);
 		
-		List<BoardDTO> boardList = sqlSession.selectList("board.getArticles", map);
+		// 공지사항(notice)
+		if(code == 1) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getNoticeArticles", map);
+			return boardList;
+		}
 		
+		// 자유게시판(free)
+		if(code == 2) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getFreeArticles", map);
+			return boardList;
+		}
+		
+		// 환경일기(diary)
+		if(code == 3) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getDiaryArticles", map);
+			return boardList;
+		}
+		
+		// 이달의 챌린지(challenge)
+		if(code == 4) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);
+			return boardList;
+		}
+		
+		// 오늘의 실천(today)
+		if(code == 5) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getTodayArticles", map);
+			return boardList;
+		}
+		
+		// 상점소개(shop)
+		if(code == 6) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getShopArticles", map);
+			return boardList;
+		}
+		
+		// 행사(event)
+		if(code == 7) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getEventArticles", map);
+			return boardList;
+		}
+		
+		// 꿀팁(tip)
+		if(code == 8) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getTipArticles", map);
+			return boardList;
+		}
+		
+		// 어뜨(earth)
+		if(code == 9) {
+			List<TodayDTO> boardList = sqlSession.selectList("board.getEarthArticles", map);
+			return boardList;
+		}
+		
+		List<TodayDTO> boardList = sqlSession.selectList("board.getArticles", map);
 		return boardList;
 	}
+	
+	@Override
+	public int upload(TodayDTO dto) throws SQLException {
+		int result = sqlSession.insert("board.upload", dto);
+		return result;
+	}
+	
 	// 검색 게시글 수 가져오기
 	@Override
 	public int getSearchArticleCount(String sel, String search) throws SQLException {
