@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
 
 @Repository
@@ -40,29 +41,31 @@ public class BoardDAOImpl implements BoardDAO {
 	}
 	
 	@Override
-	public List<TodayDTO> getArticles(int startRow, int endRow, int code) throws SQLException {
+	public List<NoticeDTO> getNoticeArticles(int startRow, int endRow, int code) throws SQLException {
 		
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("start", startRow);
 		map.put("end", endRow);
 		
-		ArrayList<String> board = new ArrayList<String>();
-		board.add("Notice");
-		board.add("Free");
-		board.add("Diary");
-		board.add("Challenge");
-		board.add("Today");
-		board.add("Shop");
-		board.add("Event");
-		board.add("Tip");
-		
-		String select1 = "board.get";
-		String select2 = "Articles";
-		select1 += board.get(code-1);
-		select1 += select2;
-		
-		List<TodayDTO> boardList = sqlSession.selectList(select1, map);
+		List<NoticeDTO> boardList = sqlSession.selectList("board.getNoticeArticles", map);
 		return boardList;
+	}
+	
+	@Override
+	public List<TodayDTO> getTodayArticles(int startRow, int endRow, int code) throws SQLException {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("start", startRow);
+		map.put("end", endRow);
+		
+		List<TodayDTO> boardList = sqlSession.selectList("board.getTodayArticles", map);
+		return boardList;
+	}
+	
+	@Override
+	public int insertNotice(NoticeDTO dto) throws SQLException {
+		int result = sqlSession.insert("board.insertNotice", dto);
+		return result;
 	}
 	
 	@Override
@@ -71,6 +74,29 @@ public class BoardDAOImpl implements BoardDAO {
 		return result;
 	}
 	
+	@Override
+	public NoticeDTO getNoticeArticle(int boardnum) throws SQLException {
+		// 조회수 1 증가
+		sqlSession.update("board.addReadCountNotice", boardnum);
+		// 글 불러오기
+		NoticeDTO article = sqlSession.selectOne("board.getNoticeArticle", boardnum); 
+		return article;
+	}
+	
+	@Override
+	public int updateNoticeArticle(NoticeDTO dto) throws SQLException {
+		// 이미지 업로드 안했을때
+		int result = sqlSession.update("board.updateNoticeArticle", dto);
+		return result;
+	}
+	
+	@Override
+	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException {
+		// 이미지 업로드 했을때
+		int result = sqlSession.update("board.updateNoticeArticleImg", dto);
+		return result;
+	}
+
 	// 검색 게시글 수 가져오기
 	@Override
 	public int getSearchArticleCount(String sel, String search) throws SQLException {
@@ -125,12 +151,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return article;
 	}
-	// 조회수 1씩 증가시키기
-	@Override
-	public void readcountUp(int num) throws SQLException {
-		sqlSession.update("board.readcountUp", num);
-		
-	}
+
 	// 게시글 수정하기 위해서 pw 맞는지 체크하기
 	@Override
 	public int pwCheck(BoardDTO dto) throws SQLException {
