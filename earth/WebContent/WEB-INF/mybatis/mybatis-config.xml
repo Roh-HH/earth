@@ -12,6 +12,7 @@
 	<typeAliases>
 		<typeAlias alias="boardDTO" type="earth.board.dto.BoardDTO"/>
 		<typeAlias alias="todayDTO" type="earth.board.dto.TodayDTO"/>
+		<typeAlias alias="noticeDTO" type="earth.board.dto.NoticeDTO"/>
 		<typeAlias alias="monthDTO" type="earth.board.dto.MonthDTO"/>
 	</typeAliases>
 	
