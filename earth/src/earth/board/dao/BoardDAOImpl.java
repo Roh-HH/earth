@@ -168,5 +168,13 @@ public class BoardDAOImpl implements BoardDAO {
 	public void deleteArticle(BoardDTO dto) throws SQLException {
 		sqlSession.delete("board.deleteArticle", dto);
 	}
+    
+    
+    // 이달의 챌린지 게시글 저장 처리 - 이다희
+	@Override
+	public void insertChallenge(MonthDTO dto) throws SQLException {
+		sqlSession.insert("board.insertChallenge", dto);
+		
+	}
 
 }
