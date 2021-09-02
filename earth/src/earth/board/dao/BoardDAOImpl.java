@@ -170,11 +170,44 @@ public class BoardDAOImpl implements BoardDAO {
 	}
     
     
-    // 이달의 챌린지 게시글 저장 처리 - 이다희
+    // 이달의 챌린지 게시글 저장 처리- 이다희 
 	@Override
 	public void insertChallenge(MonthDTO dto) throws SQLException {
 		sqlSession.insert("board.insertChallenge", dto);
 		
+	}
+	// 이달의 챌린지 게시글 목록가져오기 -이다희 
+	@Override
+	public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException {
+		
+		
+		HashMap map = new HashMap();
+		map.put("start", startRow);
+		map.put("end", endRow);
+		
+		List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);
+		
+		return boardList;
+	}
+	// 이달의 챌린지 글 한개 가져오기 -이다희 
+	@Override
+	public MonthDTO getChallengeArticle(int num) throws SQLException {
+		MonthDTO article = sqlSession.selectOne("board.getChallengeArticle", num);
+		return article;	 
+	}
+	// 이달의 챌린지 글 수정 1 -이다희 
+	@Override
+	public int updateChallengeArticle(MonthDTO dto) throws SQLException {
+		// 이미지 업로드 안했을때
+		int result = sqlSession.update("board.updateChallengeArticle", dto);
+		return result;
+	}
+	// 이달의 챌린지 글 수정 2 -이다희 
+	@Override
+	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
+		// 이미지 업로드 했을때
+		int result = sqlSession.update("board.updateChallengeArticleImg", dto);
+		return result;
 	}
 
 }

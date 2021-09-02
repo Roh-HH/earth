@@ -12,6 +12,7 @@
 	<typeAliases>
 		<typeAlias alias="boardDTO" type="earth.board.dto.BoardDTO"/>
 		<typeAlias alias="todayDTO" type="earth.board.dto.TodayDTO"/>
+		<typeAlias alias="monthDTO" type="earth.board.dto.MonthDTO"/>
 	</typeAliases>
 	
  	<!-- mapper의 위치 설정 -->

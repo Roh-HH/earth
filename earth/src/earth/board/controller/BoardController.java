@@ -303,5 +303,166 @@ public class BoardController {
 		}
 	}
 	
+    // 이달의 챌린지 code:4 시작 
+    // 이달의 챌린지 글쓰기 폼 - 이다희 
+	@RequestMapping("challengeWriteForm.et")
+	public String writeFormCh(HttpServletRequest request, Model model, HttpSession session) {
+		
+		//String id = (String)session.getAttribute("sid");
+		//String id = "admin";
+		//model.addAttribute("sid", id); // 테스트용 id 보내주기 (추후, session으로 처리하면되니 삭제하기) 
+		
+		return "board/challengeWriteForm";
+	}
+	// 이달의 챌린지 글쓰기 프로  - 이다희 
+	@RequestMapping("challengeWritePro.et")
+	public String writeProCh (MonthDTO dto, HttpSession session, MultipartHttpServletRequest request) throws SQLException, IOException {
+		MultipartFile mf =request.getFile("uploadFile");
+		if(mf.isEmpty()) {
+			String img = null;
+			dto.setImg(img);
+		}else {
+			//서버에 이미지 파일 저장 ( webContent > save 폴더 생성 ) save.img,css,js 는 WEN-INF 에 넣지 말것 !
+			//파일 정보 꺼내기 	
+			String path = request.getRealPath("save");
+			System.out.println("path : " + path);
+			//---------------- 방법 1 
+			//UUID
+			UUID uuid = UUID.randomUUID();
+			//string 에있는 문자열 기능  - 을 "" 로 바꾸기  
+			System.out.println("uuid : " + uuid.toString().replace("-",""));
+			
+			String orgName = mf.getOriginalFilename();
+			System.out.println("orgName : " + orgName); //space.jpeg
+			// 확장자를 뺀 파일이름 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			System.out.println("imgName :" + imgName);
+			//확장자 가져오기
+			String ext = orgName.substring(orgName.lastIndexOf('.')); //lastIndexof 뒤에서부터 찾
+			System.out.println("ext : " +  ext);
+			
+			String newName = uuid.toString().replace("-", "") + ext;
+			String imgPath = path + "/" + newName;
+			System.out.println("imgPath==>> " + imgPath);
+			
+			// 파일 객체 생성 
+			File f = new File(imgPath); 
+			// 이미지 서버에 저장 ! 
+			mf.transferTo(f);
+			//디티오에 유유아이디로 저장된 뉴이름 저장 
+			dto.setImg(newName);
+		}
+  
+		//String id = (String)session.getAttribute("sid");
+		//dto.setId("admin");
+		
+		boardService.insertChallenge(dto);
+		 
+		return "redirect:/board/challengeList.et"; 
+	}
+	
+	//지난 챌린지 리스트 가져오기 - 이다희 
+	@RequestMapping("challengeList.et") 
+	public String listCh(String pageNum, Model model, HttpSession session) throws SQLException {
+		// 해당 페이지에 맞는 화면에 뿌려줄 게시글 가져와서 view 전달 
+		Map<String, Object> result = null;
+		int code = 4;
+		result = boardService.getArticleList(pageNum, code);
+		 
+		
+		// view에 전달할 데이터 보내기 
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("articleList", result.get("articleList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		
+		return "board/challengeList";
+	}
+	
+	// 이달의 챌린지 게시글 가져오기   - 이다희 
+	@RequestMapping("challengeContent.et")
+	public String monthlyChallenge(int num, String pageNum, Model model) throws SQLException {
+		System.out.println("이달의 챌린지 요청");
+		
+		MonthDTO article = boardService.getChallengeArticle(num); 
+		
+		model.addAttribute("article", article);	
+		model.addAttribute("pageNum", pageNum);
+		
+		return "board/challengeContent"; 
+	}
+	// 이달의 챌린지 게시글 수정 폼   - 이다희 
+	@RequestMapping("challengeModifyForm.et")
+	public String challengeModifyForm(int challengenum, String pageNum, Model model) throws SQLException {
+		
+		MonthDTO article = boardService.getChallengeArticle(challengenum);
+		
+		model.addAttribute("article", article);
+		model.addAttribute("pageNum", pageNum);
+		
+		System.out.println("modiform pageNum : " + pageNum);
+		System.out.println("modiform challegenum: " + challengenum);
+		
+		return "board/challengeModifyForm";
+	}
+
+	// 이달의 챌린지 게시글 수정 프로   - 이다희 
+	@RequestMapping("challengeModifyPro.et")
+	public String noticeModifyPro(MonthDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
+		System.out.println("챌린지 게시글 수정 처리 요청");
+		System.out.println(dto.getChallengenum());
+		
+		MultipartFile mf =request.getFile("uploadFile");
+		
+		if(mf.isEmpty()) {
+			String img = null;
+			dto.setImg(img);
+		}else {
+			//서버에 이미지 파일 저장 ( webContent > save 폴더 생성 ) save.img,css,js 는 WEN-INF 에 넣지 말것 !
+			//파일 정보 꺼내기 	
+			String path = request.getRealPath("save");
+			System.out.println("path : " + path);
+			//---------------- 방법 1 
+			//UUID
+			UUID uuid = UUID.randomUUID();
+			//string 에있는 문자열 기능  - 을 "" 로 바꾸기  
+			System.out.println("uuid : " + uuid.toString().replace("-",""));
+			
+			String orgName = mf.getOriginalFilename();
+			System.out.println("orgName : " + orgName); //space.jpeg
+			// 확장자를 뺀 파일이름 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			System.out.println("imgName :" + imgName);
+			//확장자 가져오기
+			String ext = orgName.substring(orgName.lastIndexOf('.')); //lastIndexof 뒤에서부터 찾
+			System.out.println("ext : " +  ext);
+			
+			String newName = uuid.toString().replace("-", "") + ext;
+			String imgPath = path + "/" + newName;
+			System.out.println("imgPath==>> " + imgPath);
+			
+			// 파일 객체 생성 
+			File f = new File(imgPath); 
+			// 이미지 서버에 저장 ! 
+			mf.transferTo(f);
+			//디티오에 유유아이디로 저장된 뉴이름 저장 
+			dto.setImg(newName);
+		}
+		if(dto.getImg()==null) {
+			// 이미지를 새로 올리지 않은 경우
+			int result = boardService.updateChallengeArticle(dto);
+			model.addAttribute("result", result);
+			return "board/challengeModifyPro";
+		}else {
+			// 이미지를 새로 올린 경우
+			int result = boardService.updateChallengeArticleImg(dto);
+			model.addAttribute("result", result);
+			return "board/challengeModifyPro";
+		}
+	}
 	
 }
