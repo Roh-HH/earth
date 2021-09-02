@@ -34,6 +34,9 @@
 			select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
 		]]>
 	</select>
+	<select id="getNoticeArticle" parameterType="int" resultType="noticeDTO">
+			select * from notice where boardnum = #{value}
+	</select>
 	
 	<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
 		<![CDATA[
@@ -41,8 +44,23 @@
 		]]>
 	</select>
 
+	<insert id="insertNotice" parameterType="noticeDTO">
+		insert into notice values(notice_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+	</insert>
 	<insert id="upload" parameterType="todayDTO">
 		insert into today values(today_seq.nextval, #{id}, #{ctt}, sysdate, #{code}, #{condition}) 
 	</insert>
+	
+	<update id="addReadCountNotice" parameterType="int">
+		<![CDATA[
+			update notice set readcount=readcount+1 where boardnum = #{value}
+		]]>
+	</update>
+	<update id="updateNoticeArticle" parameterType="noticeDTO">
+		update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} and pw = #{pw}
+	</update>
+	<update id="updateNoticeArticleImg" parameterType="noticeDTO">
+		update notice set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} and pw = #{pw}
+	</update>
 	
 </mapper>
