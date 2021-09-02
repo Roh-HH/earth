@@ -65,7 +65,7 @@ public class BoardServiceImpl implements BoardService {
 				List<MonthDTO> articleList = boardDAO.getChallengeArticles(startRow, endRow, code); 
 				result.put("articleList", articleList);
 			}
-            break;
+			break;
 		case 5:
 			if(count > 0){
 				List<TodayDTO> articleList = boardDAO.getTodayArticles(startRow, endRow, code); 
