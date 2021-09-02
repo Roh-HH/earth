@@ -1,6 +1,7 @@
 package earth.board.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,90 +24,59 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public Map<String, Object> getArticleList(String pageNum, int code) throws SQLException {
 		
-		Map<String, Object> result = null;
-		
-		if(code == 1) {
-			/*
-			// ** 게시글 페이지 관련 정보 세팅 ** 
-			// 한페이지에 보여줄 게시글의 수 
-			int pageSize = 10; 
-			// 현재 페이지 번호  
-			if(pageNum == null){ // list.jsp 라고만 요청했을때, 즉 pageNum 파라미터 안넘어왔을때.
-				pageNum = "1";
-			}
-			
-			// 현재 페이지에 보여줄 게시글 시작과 끝 등등 정보 세팅 
-			int currentPage = Integer.parseInt(pageNum); // 계산을 위해 현재페이지 숫자로 변환하여 저장 
-			int startRow = (currentPage - 1) * pageSize + 1; // 페이지 시작글 번호 
-			int endRow = currentPage * pageSize; // 페이지 마지막 글번호
-	
-			// 밖에서 사용가능하게 if문 시작 전에 미리 선언
-			List<BoardDTO> articleList = null;  	// 전체(검색된) 게시글들 담아줄 변수
-			int count = 0; 				// 전체(검색된) 글의 개수 
-			int number = 0; 			// 브라우저 화면에 뿌려줄 가상 글 번호  
-			
-			count = boardDAO.getArticleCount();   // DB에 저장되어있는 전체 글의 개수를 가져와 담기
-			System.out.println("count : " + count);
-			// 글이 하나라도 있으면 글들을 다시 가져오기 
-			if(count > 0){
-				articleList = boardDAO.getArticles(startRow, endRow); 
-			}	
-			number = count - (currentPage-1) * pageSize; 	// 게시판 목록에 뿌려줄 가상의 글 번호 
-			
-			// Controller 에게 전달해야 되는 데이터가 많으니, HashMap에 넘겨 줄 데이터를 저장한 후 한번에 전달하기
-			result = new HashMap<String, Object>();
-			result.put("pageSize", pageSize);
-			result.put("pageNum", pageNum);
-			result.put("currentPage", currentPage);
-			result.put("startRow", startRow);
-			result.put("endRow", endRow);
-			result.put("articleList", articleList);
-			result.put("count", count);
-			result.put("number", number);
-			*/
+		// 한페이지에 보여줄 게시글의 수 
+		int pageSize = 10; 
+		// 현재 페이지 번호  
+		if(pageNum == null){ // pageNum 파라미터 안넘어왔을때.
+			pageNum = "1";
 		}
 		
-		// 오늘의 실천 게시판 게시글 목록 가져오기 - 노현호
-		if(code == 5) {
-			// ** 게시글 페이지 관련 정보 세팅 ** 
-			// 한페이지에 보여줄 게시글의 수 
-			int pageSize = 10; 
-			// 현재 페이지 번호  
-			if(pageNum == null){ // list.jsp 라고만 요청했을때, 즉 pageNum 파라미터 안넘어왔을때.
-				pageNum = "1";
-			}
+		// 현재 페이지에 보여줄 게시글 시작과 끝 등등 정보 세팅 
+		int currentPage = Integer.parseInt(pageNum); 
+		int startRow = (currentPage - 1) * pageSize + 1; 		// 페이지 시작글 번호 
+		int endRow = currentPage * pageSize; 					// 페이지 마지막 글번호
+		int count = 0; 											// 전체(검색된) 글의 개수 
+		int number = 0; 										// 브라우저 화면에 뿌려줄 가상 글 번호
+		
+		// DB에 저장되어있는 전체 글의 개수를 가져와 담기
+		count = boardDAO.getArticleCount(code);					
+		number = count - (currentPage-1) * pageSize; 			// 게시판 목록에 뿌려줄 가상의 글 번호 
+		System.out.println("전체 게시글 수 : " + count);
+		
+		Map<String, Object> result = new HashMap<String, Object>();
+		
+		// 글이 하나라도 있으면 글들을 다시 가져오기 
+		switch(code) {
+		case 1:
 			
-			// 현재 페이지에 보여줄 게시글 시작과 끝 등등 정보 세팅 
-			int currentPage = Integer.parseInt(pageNum); 
-			int startRow = (currentPage - 1) * pageSize + 1; 		// 페이지 시작글 번호 
-			int endRow = currentPage * pageSize; 					// 페이지 마지막 글번호
-
-			// 밖에서 사용가능하게 if문 시작 전에 미리 선언
-			List<TodayDTO> articleList = null;  					// 전체(검색된) 게시글들 담아줄 변수
-			int count = 0; 											// 전체(검색된) 글의 개수 
-			int number = 0; 										// 브라우저 화면에 뿌려줄 가상 글 번호  
+		case 2:
 			
-			// DB에 저장되어있는 전체 글의 개수를 가져와 담기
-			count = boardDAO.getArticleCount(code);					
-			System.out.println("전체 게시글 수 : " + count);
+		case 3:
 			
-			// 글이 하나라도 있으면 글들을 다시 가져오기 
+		case 4:
+			
+		case 5:
 			if(count > 0){
-				articleList = boardDAO.getArticles(startRow, endRow, code); 
-			}	
-			number = count - (currentPage-1) * pageSize; 	// 게시판 목록에 뿌려줄 가상의 글 번호 
+				List<TodayDTO> articleList = boardDAO.getArticles(startRow, endRow, code); 
+				result.put("articleList", articleList);
+			}
+		case 6:
 			
-			// Controller 에게 전달해야 되는 데이터가 많으니, HashMap에 넘겨 줄 데이터를 저장한 후 한번에 전달하기
-			result = new HashMap<String, Object>();
-			result.put("pageSize", pageSize);
-			result.put("pageNum", pageNum);
-			result.put("currentPage", currentPage);
-			result.put("startRow", startRow);
-			result.put("endRow", endRow);
-			result.put("articleList", articleList);
-			result.put("count", count);
-			result.put("number", number);
+		case 7:
+			
+		case 8:
+			
 		}
+			
+		// Controller 에게 전달
+		result.put("pageSize", pageSize);
+		result.put("pageNum", pageNum);
+		result.put("currentPage", currentPage);
+		result.put("startRow", startRow);
+		result.put("endRow", endRow);
+		result.put("count", count);
+		result.put("number", number);
+		
 		return result;
 	}
 
