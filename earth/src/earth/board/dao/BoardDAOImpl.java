@@ -30,7 +30,6 @@ public class BoardDAOImpl implements BoardDAO {
 		board.add("Shop");
 		board.add("Event");
 		board.add("Tip");
-		board.add("Earth");
 		
 		int result = 0;
 		String select = "board.countAll";
@@ -56,7 +55,6 @@ public class BoardDAOImpl implements BoardDAO {
 		board.add("Shop");
 		board.add("Event");
 		board.add("Tip");
-		board.add("Earth");
 		
 		String select1 = "board.get";
 		String select2 = "Articles";
