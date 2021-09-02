@@ -61,8 +61,11 @@ public class BoardServiceImpl implements BoardService {
 			
 			break;
 		case 4:
-			
-			break;
+			if(count > 0){
+				List<MonthDTO> articleList = boardDAO.getChallengeArticles(startRow, endRow, code); 
+				result.put("articleList", articleList);
+			}
+            break;
 		case 5:
 			if(count > 0){
 				List<TodayDTO> articleList = boardDAO.getTodayArticles(startRow, endRow, code); 
@@ -207,4 +210,27 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 
+    // 이달의 챌린지 글 등록 - 이다희 
+	@Override
+	public void insertChallenge(MonthDTO dto) throws SQLException {
+		boardDAO.insertChallenge(dto);
+	}
+	// 이달의 챌린지 글 가져오기 - 이다희 
+	@Override
+	public MonthDTO getChallengeArticle(int num) throws SQLException {
+		MonthDTO article = boardDAO.getChallengeArticle(num);
+		return article;
+	}
+	// 이달의 챌린지 수정 1 - 이다희 
+	@Override
+	public int updateChallengeArticle(MonthDTO dto) throws SQLException {
+		int result = boardDAO.updateChallengeArticle(dto);
+		return result;
+	}
+	// 이달의 챌린지 수정 2 - 이다희 
+	@Override
+	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
+		int result = boardDAO.updateChallengeArticleImg(dto);
+		return result;
+	}
 }

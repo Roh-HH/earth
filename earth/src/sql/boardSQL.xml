@@ -63,4 +63,26 @@
 		update notice set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} and pw = #{pw}
 	</update>
 	
+    <!-- 이달의 챌린지게시글 sql  -->
+	<insert id="insertChallenge" parameterType="monthDTO">
+	 	insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}) 
+	</insert>
+	
+	<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	 <select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
+	 	select * from challenge where challengenum=${value}
+	 </select>
+	 
+	<update id="updateChallengeArticle" parameterType="monthDTO">
+		update challenge set subject = #{subject}, ctt = #{ctt} where challengenum = #{challengenum} and pw = #{pw}
+	</update>
+	<update id="updateChallengeArticleImg" parameterType="monthDTO">
+		update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount} where challengenum = #{challengenum} and pw = #{pw}
+	</update>
+	 <!-- 끝  -->
+	
 </mapper>

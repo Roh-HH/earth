@@ -41,4 +41,13 @@ public interface BoardService {
 	public int updateArticle(BoardDTO dto) throws SQLException;
 	// 게시글 삭제 처리 (deletePro)
 	public int deleteArticle(BoardDTO dto) throws SQLException;
+    
+    // 이달의 실천 게시글 등록 - 이다희 
+	public void insertChallenge(MonthDTO dto) throws SQLException;
+	// 이달의 실천 게시글 1개 가져오기 - 이다희 
+	public MonthDTO getChallengeArticle(int num) throws SQLException;
+	// 이달의 실천 글 수정 처리(이미지 수정X) - 이다희 
+	public int updateChallengeArticle(MonthDTO dto) throws SQLException;
+	// 이달의 실천글 수정 처리(이미지 수정O) - 이다희 
+	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException;
 }

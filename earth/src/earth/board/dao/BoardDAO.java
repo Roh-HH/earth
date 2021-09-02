@@ -48,5 +48,16 @@ public interface BoardDAO {
 	public void updateArticle(BoardDTO dto) throws SQLException;
 	// 게시글 삭제하기 (deletePro)
 	public void deleteArticle(BoardDTO dto) throws SQLException;
+    
+    // 이달의챌린지 게시글 저장 - 이다희 
+	public void insertChallenge(MonthDTO dto) throws SQLException;
+	// 이달의 챌린지 게시글목록 가져오기 - 이다희 
+	public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException;
+	// 이달의 챌린지 게시글 하나 가져오기 - 이다희 
+	public MonthDTO getChallengeArticle(int num) throws SQLException;
+	// 공지사항 글 수정 처리
+	public int updateChallengeArticle(MonthDTO dto) throws SQLException;
+	// 공지사항 글 수정 처리(이미지 수정O)
+	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException;
 	
 }
