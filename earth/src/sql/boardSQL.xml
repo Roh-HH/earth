@@ -28,9 +28,6 @@
 	<select id="countAllTip" resultType="int">
 		select count(*) from tip
 	</select>
-	<select id="countAllEarth" resultType="int">
-		select count(*) from earth
-	</select>
 	
 	<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
 		<![CDATA[
