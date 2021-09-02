@@ -29,9 +29,15 @@
 		select count(*) from tip
 	</select>
 	
+	<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
 	<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
 		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end}
+			select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
 		]]>
 	</select>
 
