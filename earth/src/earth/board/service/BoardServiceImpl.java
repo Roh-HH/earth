@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import earth.board.dao.BoardDAOImpl;
 import earth.board.dto.BoardDTO;
+import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
 
 // 구현
@@ -45,27 +46,38 @@ public class BoardServiceImpl implements BoardService {
 		
 		Map<String, Object> result = new HashMap<String, Object>();
 		
-		// 글이 하나라도 있으면 글들을 다시 가져오기 
+		// 글이 하나라도 있으면 글들을 다시 가져오기
 		switch(code) {
 		case 1:
-			
-		case 2:
-			
-		case 3:
-			
-		case 4:
-			
-		case 5:
 			if(count > 0){
-				List<TodayDTO> articleList = boardDAO.getArticles(startRow, endRow, code); 
+				List<NoticeDTO> articleList = boardDAO.getNoticeArticles(startRow, endRow, code); 
 				result.put("articleList", articleList);
 			}
+			break;
+		case 2:
+			
+			break;
+		case 3:
+			
+			break;
+		case 4:
+			
+			break;
+		case 5:
+			if(count > 0){
+				List<TodayDTO> articleList = boardDAO.getTodayArticles(startRow, endRow, code); 
+				result.put("articleList", articleList);
+			}
+			break;
 		case 6:
 			
+			break;
 		case 7:
 			
+			break;
 		case 8:
 			
+			break;
 		}
 			
 		// Controller 에게 전달
@@ -81,8 +93,33 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	public int insertNotice(NoticeDTO dto) throws SQLException {
+		int result = boardDAO.insertNotice(dto);
+		return result;
+	}
+	
+	@Override
 	public int upload(TodayDTO dto) throws SQLException {
 		int result = boardDAO.upload(dto);
+		return result;
+	}
+	
+	@Override
+	public NoticeDTO getNoticeArticle(int boardnum) throws SQLException {
+		// 조회수 1 증가시기키 및 해당 글 정보 가져오기
+		NoticeDTO article = boardDAO.getNoticeArticle(boardnum);
+		return article;
+	}
+	
+	@Override
+	public int updateNoticeArticle(NoticeDTO dto) throws SQLException {
+		int result = boardDAO.updateNoticeArticle(dto);
+		return result;
+	}
+	
+	@Override
+	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException {
+		int result = boardDAO.updateNoticeArticleImg(dto);
 		return result;
 	}
 	
@@ -140,11 +177,8 @@ public class BoardServiceImpl implements BoardService {
 	// 글 1개 정보 가져오기
 	@Override
 	public BoardDTO getArticle(int num) throws SQLException {
-		// 해당 글 조회수 처리
-		boardDAO.readcountUp(num);
 		// 해당 글 정보 가져오기
 		BoardDTO article = boardDAO.getArticle(num);
-		
 		return article;
 	}
 	// modifyForm - 글 1개 전체 정보 가져오기
