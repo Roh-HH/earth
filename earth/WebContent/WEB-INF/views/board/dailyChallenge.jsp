@@ -9,16 +9,34 @@
 	<title>오늘의 실천</title>
 	<link href="/earth/resources/css/style.css" rel="stylesheet" type="text/css">
 </head>
+<script type="text/javascript">
+	<%-- 유효성검사 --%>
+	function sendIt(){
+		if (f.ctt.value == "" && f.condition.value == "") {
+            alert("내용과 실천사항을 입력하지 않았습니다.")
+            f.ctt.focus();
+            return false;
+        }
+		
+		if (f.ctt.value == "") {
+            alert("내용을 입력하지 않았습니다.")
+            f.ctt.focus();
+            return false;
+        }
+		
+		if (f.condition.value == "") {
+            alert("실천사항을 체크하지 않았습니다.")
+            return false;
+        }
+	}
+</script>
 <body>
 	<h1 align="center"> 오늘의 실천 </h1>
 	
 	<c:if test="${count == 0}">
 		<table>
 			<tr>
-				<td align="center">아직 오늘의 게시글이 없습니다.</td>
-			</tr>
-			<tr>
-				<td><button onclick="window.location='/spring/board/writeForm.do'"> 글쓰기 </button></td>
+				<td align="center">아직 오늘의 실천 게시글이 없습니다.</td>
 			</tr>
 		</table>
 	</c:if>
@@ -64,9 +82,16 @@
 					</td>
 					
 					<td>
-						<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/>
-						<br/>
-						<button>신고</button>
+						<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>						
+						<button onclick="">신고</button>
+						<%-- 접속 아이디(${sessionScope.sid})가 어드민인 경우 삭제버튼 표시(${article.boardnum} 파라미터로 보내기) --%>
+						<c:if test="${sessionScope.sid == 'admin'}">
+							<button onclick="">삭제</button>
+						</c:if>
+						<%-- 접속 아이디(${sessionScope.sid})와 게시글 작성자(${article.id})가 일치하는  경우 삭제버튼 표시(${article.boardnum} 파라미터로 보내기) --%>
+						<c:if test="${sessionScope.sid == article.id}">
+							<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=5&uri=/earth/board/dailyChallenge.et&pageNum=${pageNum}'">삭제</button>
+						</c:if>
 					</td>
 				</tr>
 			</c:forEach>
@@ -136,7 +161,7 @@
 	
 	
 	<div>
-		<form action="/earth/board/uploadTodayChallenge.et" method="post">
+		<form name="f" action="/earth/board/uploadTodayChallenge.et" method="post" onsubmit="return sendIt();">
 			<table>
 				<tr align="left">
 					<td>
