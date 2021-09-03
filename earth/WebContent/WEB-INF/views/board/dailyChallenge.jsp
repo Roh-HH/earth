@@ -13,21 +13,21 @@
 	<%-- 유효성검사 --%>
 	function sendIt(){
 		if (f.ctt.value == "" && f.condition.value == "") {
-            alert("내용과 실천사항을 입력하지 않았습니다.")
-            f.ctt.focus();
-            return false;
-        }
+			alert("내용과 실천사항을 입력하지 않았습니다.")
+			f.ctt.focus();
+			return false;
+		}
 		
 		if (f.ctt.value == "") {
-            alert("내용을 입력하지 않았습니다.")
-            f.ctt.focus();
-            return false;
-        }
+			alert("내용을 입력하지 않았습니다.")
+			f.ctt.focus();
+			return false;
+		}
 		
 		if (f.condition.value == "") {
-            alert("실천사항을 체크하지 않았습니다.")
-            return false;
-        }
+			alert("실천사항을 체크하지 않았습니다.")
+			return false;
+		}
 	}
 </script>
 <body>
