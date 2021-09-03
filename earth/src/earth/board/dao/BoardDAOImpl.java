@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.MonthDTO;
 import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
 
@@ -19,6 +20,7 @@ public class BoardDAOImpl implements BoardDAO {
 	@Autowired
 	private SqlSessionTemplate sqlSession = null;
 	
+	// 전체 게시글 글 개수 가져오기(모든 테이블 사용 가능) - 노현호
 	@Override
 	public int getArticleCount(int code) throws SQLException {
 		
@@ -40,6 +42,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return result;
 	}
 	
+	// 공지사항 게시글 목록 가져오기 - 노현호
 	@Override
 	public List<NoticeDTO> getNoticeArticles(int startRow, int endRow, int code) throws SQLException {
 		
@@ -51,9 +54,10 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	
+	// 오늘의실천 게시글 목록 가져오기 - 노현호
 	@Override
 	public List<TodayDTO> getTodayArticles(int startRow, int endRow, int code) throws SQLException {
-		
+
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("start", startRow);
 		map.put("end", endRow);
@@ -62,18 +66,21 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	
+	// 공지사항 게시글 업로드 - 노현호
 	@Override
 	public int insertNotice(NoticeDTO dto) throws SQLException {
 		int result = sqlSession.insert("board.insertNotice", dto);
 		return result;
 	}
 	
+	// 오늘의 실천 업로드 - 노현호
 	@Override
 	public int upload(TodayDTO dto) throws SQLException {
 		int result = sqlSession.insert("board.upload", dto);
 		return result;
 	}
 	
+	// 공지사항 게시글 조회 - 노현호
 	@Override
 	public NoticeDTO getNoticeArticle(int boardnum) throws SQLException {
 		// 조회수 1 증가
@@ -83,6 +90,7 @@ public class BoardDAOImpl implements BoardDAO {
 		return article;
 	}
 	
+	// 공지사항 글 수정 처리 - 노현호
 	@Override
 	public int updateNoticeArticle(NoticeDTO dto) throws SQLException {
 		// 이미지 업로드 안했을때
@@ -90,14 +98,104 @@ public class BoardDAOImpl implements BoardDAO {
 		return result;
 	}
 	
+	// 공지사항 글 수정 처리(이미지 수정O) - 노현호
 	@Override
 	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException {
 		// 이미지 업로드 했을때
 		int result = sqlSession.update("board.updateNoticeArticleImg", dto);
 		return result;
 	}
-
-	// 검색 게시글 수 가져오기
+	
+	 // 이달의 챌린지 게시글 저장 처리 - 이다희 
+	@Override
+	public void insertChallenge(MonthDTO dto) throws SQLException {
+		sqlSession.insert("board.insertChallenge", dto);
+	}
+	
+	// 이달의 챌린지 게시글 목록가져오기 - 이다희 
+	@Override
+	public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException {
+		
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		map.put("start", startRow);
+		map.put("end", endRow);
+		
+		List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);
+		
+		return boardList;
+	}
+	
+	// 이달의 챌린지 글 한개 가져오기 - 이다희 
+	@Override
+	public MonthDTO getChallengeArticle(int num) throws SQLException {
+		MonthDTO article = sqlSession.selectOne("board.getChallengeArticle", num);
+		return article;	 
+	}
+	
+	// 이달의 챌린지 글 수정 1 - 이다희 
+	@Override
+	public int updateChallengeArticle(MonthDTO dto) throws SQLException {
+		// 이미지 업로드 안했을때
+		int result = sqlSession.update("board.updateChallengeArticle", dto);
+		return result;
+	}
+	
+	// 이달의 챌린지 글 수정 2 - 이다희 
+	@Override
+	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
+		// 이미지 업로드 했을때
+		int result = sqlSession.update("board.updateChallengeArticleImg", dto);
+		return result;
+	}
+	
+	// 비밀번호 일치여부 확인(게시글 삭제용) - 노현호
+	@Override
+	public int pwCheck(int boardnum, int code, String pw) throws SQLException {
+		
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("boardnum", boardnum);
+		map.put("pw", pw);
+		
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		
+		String select = "board.pwCheck";
+		select += board.get(code-1);
+		
+		int pwCheck = sqlSession.selectOne(select, map);
+		return pwCheck;
+	}
+	
+	// 게시글 삭제 처리 (게시판 통합) - 노현호
+	@Override
+	public int deleteArticle(int boardnum, int code) throws SQLException {
+		
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		
+		String delete = "board.deleteArticle";
+		delete += board.get(code-1);
+		
+		int result = sqlSession.delete(delete, boardnum);
+		return result;
+	}
+	
+	
+	// 검색 게시글 수 가져오기 -- 삭제 예정(노현호)
 	@Override
 	public int getSearchArticleCount(String sel, String search) throws SQLException {
 		
@@ -109,7 +207,7 @@ public class BoardDAOImpl implements BoardDAO {
 		
 		return result;
 	}
-	// 검색 된 게시글 목록 가져오기
+	// 검색 된 게시글 목록 가져오기 -- 삭제 예정(노현호)
 	@Override
 	public List<BoardDTO> getSearchArticles(int start, int end, String sel, String search) throws SQLException {
 		
@@ -124,90 +222,6 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	
-	// 게시글 저장 처리
-	@Override
-	public void insertArticle(BoardDTO dto) throws SQLException {
-		// 새글, 답글 구분해서 처리 (DTO에서 필요한 Data 꺼내기 - 꼭 안꺼내도 처리 됨)
-		int num = dto.getNum();				// 글번호 (새글 0, 댓글 1이상=원본글의 고유번호) 
-		//int ref = dto.getRef();			// 글 그룹		0
-		int re_step = dto.getRe_step();		// 정렬 순서	0
-		int re_level = dto.getRe_level(); 	// 답글 레벨	0
-		
-		// 답글 : 같은 그룹상 먼저 작성 된 답글들의 re_step을 1씩 더해서 저장해주고 --> 글 등록
-		if(num != 0) {	// 답글 일 때
-		sqlSession.update("board.updateRestep", dto);
-		dto.setRe_step(re_step + 1);
-		dto.setRe_level(re_level + 1);
-		}
-		
-		// 새글/답글 저장 시키기
-		sqlSession.insert("board.insertArticle", dto);
-
-	}
-	// 게시글 1개 가져오기
-	@Override
-	public BoardDTO getArticle(int num) throws SQLException {
-		BoardDTO article = sqlSession.selectOne("board.getOneArticle", num);
-		
-		return article;
-	}
-
-	// 게시글 수정하기 위해서 pw 맞는지 체크하기
-	@Override
-	public int pwCheck(BoardDTO dto) throws SQLException {
-		return sqlSession.selectOne("board.pwCheck", dto);
-	}
-	// 게시글 수정하기
-	@Override
-	public void updateArticle(BoardDTO dto) throws SQLException {
-		sqlSession.update("board.updateArticle", dto);
-
-	}
-	// 게시글 삭제하기
-	@Override
-	public void deleteArticle(BoardDTO dto) throws SQLException {
-		sqlSession.delete("board.deleteArticle", dto);
-	}
-    
-    
-    // 이달의 챌린지 게시글 저장 처리- 이다희 
-	@Override
-	public void insertChallenge(MonthDTO dto) throws SQLException {
-		sqlSession.insert("board.insertChallenge", dto);
-		
-	}
-	// 이달의 챌린지 게시글 목록가져오기 -이다희 
-	@Override
-	public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException {
-		
-		
-		HashMap map = new HashMap();
-		map.put("start", startRow);
-		map.put("end", endRow);
-		
-		List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);
-		
-		return boardList;
-	}
-	// 이달의 챌린지 글 한개 가져오기 -이다희 
-	@Override
-	public MonthDTO getChallengeArticle(int num) throws SQLException {
-		MonthDTO article = sqlSession.selectOne("board.getChallengeArticle", num);
-		return article;	 
-	}
-	// 이달의 챌린지 글 수정 1 -이다희 
-	@Override
-	public int updateChallengeArticle(MonthDTO dto) throws SQLException {
-		// 이미지 업로드 안했을때
-		int result = sqlSession.update("board.updateChallengeArticle", dto);
-		return result;
-	}
-	// 이달의 챌린지 글 수정 2 -이다희 
-	@Override
-	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
-		// 이미지 업로드 했을때
-		int result = sqlSession.update("board.updateChallengeArticleImg", dto);
-		return result;
-	}
+	
 
 }
