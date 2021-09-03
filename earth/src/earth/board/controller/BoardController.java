@@ -32,64 +32,13 @@ public class BoardController {
 	@Autowired
 	private BoardServiceImpl boardService = null;
 
-	// 글 작성 writeForm page
-	@RequestMapping("writeForm.do")
-	public String writeForm(HttpServletRequest request, Model model) {
-		//
-		int num = 0, ref = 0, re_step = 0, re_level = 0;
-		if(request.getParameter("num") != null) {
-			num = Integer.parseInt(request.getParameter("num"));
-			ref = Integer.parseInt(request.getParameter("ref"));
-			re_step = Integer.parseInt(request.getParameter("re_step"));
-			re_level = Integer.parseInt(request.getParameter("re_level"));
-		}
-		
-		model.addAttribute("num", num);
-		model.addAttribute("ref", ref);
-		model.addAttribute("re_step", re_step);
-		model.addAttribute("re_level", re_level);
-		model.addAttribute("id", "java");	// test용 id. 나중에 session id 받으므로 그때 지우기
-
-		return "board/writeForm";
-	}
-	
-	// 글 수정 폼 modifyForm page
-	@RequestMapping("modifyForm.do")
-	public String modifyForm(@ModelAttribute("pageNum") String pageNum, int num, Model model) throws SQLException {	
-		// 글 고유번호 num을 넘겨주면서 해당 글 전체 정보 불러오기
-		BoardDTO article = boardService.getUpdateArticle(num);		
-		model.addAttribute("article", article);
-		
-		return "board/modifyForm";
-	}
-	// 글 수정 처리 modifyPro page
-	@RequestMapping("modifyPro.do")
-	public String modifyPro(@ModelAttribute("pageNum") String pageNum, BoardDTO dto, Model model) throws SQLException{
-		int result = boardService.updateArticle(dto);
-		model.addAttribute("result", result);
-		
-		return "board/modifyPro";
-	}
-	// 글 삭제 폼 deleteForm
-	@RequestMapping("deleteForm.do")
-	public String deleteForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("num") String num) {
-		return "board/deleteForm";
-	}
-	// 글 삭제 처리 deletePro
-	@RequestMapping("deletePro.do")
-	public String deletePro(@ModelAttribute("pageNum") String pageNum, BoardDTO dto, Model model) throws SQLException {
-		int result = boardService.deleteArticle(dto);
-		model.addAttribute("result", result);
-		return "board/deletePro";
-	}
-	
 	// 게시글 목록 조회
 	// 공지사항(1) 목록 요청 - 노현호
 	@RequestMapping("noticeList.et")
 	public String notice(String pageNum, Model model, HttpSession session) throws SQLException{
 		System.out.println("공지사항 목록 요청");
 		
-		// today 테이블에서 전체 게시글 가져오기
+		// notice 테이블에서 전체 게시글 가져오기
 		int code = 1;
 		Map<String, Object> result = boardService.getArticleList(pageNum, code);
 		
@@ -124,6 +73,10 @@ public class BoardController {
 		model.addAttribute("articleList", result.get("articleList"));
 		model.addAttribute("count", result.get("count"));
 		model.addAttribute("number", result.get("number"));
+		
+		// 로그인 연결 후 수정해야되는 부분
+		String id = "javatest";
+		session.setAttribute("sid", id);
 		
 		return "board/dailyChallenge";
 	}
@@ -255,14 +208,13 @@ public class BoardController {
 		}
 		*/
 		
-		
 		NoticeDTO article = boardService.getNoticeArticle(boardnum);
 		System.out.println(article.getBoardnum());
 		model.addAttribute("article", article);
 		return "board/noticeModifyForm";
 	}
 	
-	// 공지사항 게시글 수정 처리(비밀번호 체크) - 노현호
+	// 공지사항 게시글 수정 처리(비밀번호 체크 기능 포함) - 노현호
 	@RequestMapping("noticeModifyPro.et")
 	public String noticeModifyPro(NoticeDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
 		System.out.println("공지사항 게시글 수정 처리 요청");
@@ -463,6 +415,58 @@ public class BoardController {
 			model.addAttribute("result", result);
 			return "board/challengeModifyPro";
 		}
+	}
+	
+	
+	// 게시글 삭제 팝업 요청 - 노현호
+	@RequestMapping("popupForm.et")
+	public String popupForm(@ModelAttribute("boardnum") int boardnum, @ModelAttribute("code") int code, @ModelAttribute("uri") String uri, @ModelAttribute("pageNum") String pageNum, Model model) throws SQLException {
+		// jsp페이지의 삭제 버튼으로부터 삭제에 필요한 boardnum과 code정보, 그리고 삭제 후 복귀에 필요한 uri 세가지를 파라미터로 받아와 popupForm에 그대로 전달합니다.
+		
+		model.addAttribute("boardnum", boardnum);
+		model.addAttribute("code", code);
+		model.addAttribute("uri", uri);
+		model.addAttribute("pageNum", pageNum);
+		
+		return "/board/popupForm";
+	}	
+	
+	// 게시글 삭제(게시판 무관) 처리 - 노현호
+	@RequestMapping("delete.et")
+	public String delete(@ModelAttribute("boardnum") int boardnum, @ModelAttribute("code") int code, @ModelAttribute("uri") String uri, @ModelAttribute("pageNum") String pageNum, Model model, String pw, HttpSession session) throws SQLException {
+		// 해당 메서드는 code번호와 일치하는 게시판을 찾아 해당 게시판의 boardnum의 값과 일치하는 데이터를 삭제합니다.
+		// 넘어오는 uri의 형태는 다음 예시와 같습니다. uri=/earth/board/dailyChallenge.et
+		// 삭제 처리가 끝나면 delete.jsp 페이지에서 해당 uri를 요청하여 페이지를 호출합니다.
+		
+		if(pageNum == null){
+			pageNum = "1";
+		}
+		uri += "?pageNum=" + pageNum;
+		model.addAttribute("uri", uri);
+
+		// 현재 창이 팝업이 아니거나 접속자가 관리자인 경우(비밀번호 없이 삭제되는 경우)
+		if(session.getAttribute("sid").equals("admin") || code == 5) {			
+			int result = boardService.deleteArticle(boardnum, code);
+			model.addAttribute("result", result);
+			model.addAttribute("pop", 0);
+			
+			return "board/delete";
+		}else {
+			model.addAttribute("pop", 1);
+		}
+		
+		// 비밀번호 일치여부 확인
+		int pwCheck = boardService.pwCheck(boardnum, code, pw);
+		if(pwCheck == 1) {
+			// 비밀번호 일치
+			int result = boardService.deleteArticle(boardnum, code);
+			model.addAttribute("result", result);
+		}else {
+			// 비밀번호 불일치
+			model.addAttribute("result", -1);
+		}
+		
+		return "board/delete";
 	}
 	
 }

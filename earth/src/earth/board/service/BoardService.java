@@ -4,10 +4,10 @@ import java.sql.SQLException;
 import java.util.Map;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.MonthDTO;
 import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
 
-// 선언
 public interface BoardService {
 	
 	// CRUD (Create, Read, Update, Delete)
@@ -22,9 +22,6 @@ public interface BoardService {
 	// 오늘의 실천 업로드 - 노현호
 	public int upload(TodayDTO dto) throws SQLException;
 	
-	// 게시판 글 1개 가져오기 (조회) - 노현호
-	public BoardDTO getArticle(int num) throws SQLException;
-	
 	// 공지사항 글 1개 가져오기 (조회) - 노현호
 	public NoticeDTO getNoticeArticle(int boardnum)	throws SQLException;
 	// 공지사항 글 수정 처리(이미지 수정X)
@@ -32,17 +29,8 @@ public interface BoardService {
 	// 공지사항 글 수정 처리(이미지 수정O)
 	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException;
 	
-	// 게시글 등록 처리 (writePro)
-	public void insertArticle(BoardDTO dto) throws SQLException;
-	
-	// 게시글 수정폼 처리 (modifyForm)
-	public BoardDTO getUpdateArticle(int num) throws SQLException;
-	// 게시글 수정프로 (modifyPro)
-	public int updateArticle(BoardDTO dto) throws SQLException;
-	// 게시글 삭제 처리 (deletePro)
-	public int deleteArticle(BoardDTO dto) throws SQLException;
-    
-    // 이달의 실천 게시글 등록 - 이다희 
+
+	// 이달의 실천 게시글 등록 - 이다희 
 	public void insertChallenge(MonthDTO dto) throws SQLException;
 	// 이달의 실천 게시글 1개 가져오기 - 이다희 
 	public MonthDTO getChallengeArticle(int num) throws SQLException;
@@ -50,4 +38,11 @@ public interface BoardService {
 	public int updateChallengeArticle(MonthDTO dto) throws SQLException;
 	// 이달의 실천글 수정 처리(이미지 수정O) - 이다희 
 	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException;
+
+	
+	
+	// 비밀번호 일치여부 확인(게시글 삭제용) - 노현호
+	public int pwCheck(int boardnum, int code, String pw) throws SQLException;
+	// 게시글 삭제 처리 (게시판 통합) - 노현호
+	public int deleteArticle(int boardnum, int code) throws SQLException;
 }

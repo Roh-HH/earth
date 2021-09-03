@@ -24,6 +24,9 @@
 	<select id="countAllNotice" resultType="int">
 		select count(*) from notice
 	</select>
+	<select id="pwCheckNotice" parameterType="hashmap" resultType="int">
+		select count(*) from notice where boardnum = #{boardnum} and pw = #{pw}
+	</select>
 	<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
 		<![CDATA[
 			select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
@@ -36,13 +39,22 @@
 	<select id="countAllFree" resultType="int">
 		select count(*) from free
 	</select>
+	<select id="pwCheckFree" parameterType="hashmap" resultType="int">
+		select count(*) from free where boardnum = #{boardnum} and pw = #{pw}
+	</select>
 	
 	<select id="countAllDiary" resultType="int">
 		select count(*) from diary
 	</select>
+	<select id="pwCheckDiary" parameterType="hashmap" resultType="int">
+		select count(*) from diary where boardnum = #{boardnum} and pw = #{pw}
+	</select>
 	
 	<select id="countAllChallenge" resultType="int">
 		select count(*) from challenge
+	</select>
+	<select id="pwCheckChallenge" parameterType="hashmap" resultType="int">
+		select count(*) from Challenge where boardnum = #{boardnum} and pw = #{pw}
 	</select>
 	<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">
 		<![CDATA[
@@ -50,7 +62,7 @@
 		]]>
 	</select>
 	<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
-		select * from challenge where challengenum=${value}
+		select * from challenge where boardnum=${value}
 	</select>
 	
 	<select id="countAllToday" resultType="int">
@@ -65,13 +77,22 @@
 	<select id="countAllShop" resultType="int">
 		select count(*) from shop
 	</select>
+	<select id="pwCheckShop" parameterType="hashmap" resultType="int">
+		select count(*) from shop where boardnum = #{boardnum} and pw = #{pw}
+	</select>
 	
 	<select id="countAllEvent" resultType="int">
 		select count(*) from event
 	</select>
+	<select id="pwCheckEvent" parameterType="hashmap" resultType="int">
+		select count(*) from event where boardnum = #{boardnum} and pw = #{pw}
+	</select>
 	
 	<select id="countAllTip" resultType="int">
 		select count(*) from tip
+	</select>
+	<select id="pwCheckTip" parameterType="hashmap" resultType="int">
+		select count(*) from Tip where boardnum = #{boardnum} and pw = #{pw}
 	</select>
 	
 	
