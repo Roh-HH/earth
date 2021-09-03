@@ -14,8 +14,7 @@ import earth.board.dto.BoardDTO;
 import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
 
-// 구현
-@Service		// component-scan 이용해 자동으로 빈으로 등록시킬 것임 (객체생성)
+@Service
 public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
@@ -126,7 +125,7 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 	}
 	
-	// 검색 한 글 목록 가져오기 (list 검색)
+	// 검색 한 글 목록 가져오기 (list 검색) -- 추후 삭제예정(노현호)
 	@Override
 	public Map<String, Object> getArticleSearch(String pageNum, String sel, String search, int code) throws SQLException {
 		// ** 게시글 페이지 관련 정보 세팅 ** 
@@ -172,45 +171,7 @@ public class BoardServiceImpl implements BoardService {
 		return result;
 		}
 
-	// 글 저장하기
-	@Override
-	public void insertArticle(BoardDTO dto) throws SQLException {		
-		boardDAO.insertArticle(dto);
-	}
-	// 글 1개 정보 가져오기
-	@Override
-	public BoardDTO getArticle(int num) throws SQLException {
-		// 해당 글 정보 가져오기
-		BoardDTO article = boardDAO.getArticle(num);
-		return article;
-	}
-	// modifyForm - 글 1개 전체 정보 가져오기
-	@Override
-	public BoardDTO getUpdateArticle(int num) throws SQLException {
-		// 수정처리위해 해당 글 전체 정보 불러오기
-		return boardDAO.getArticle(num);
-	}
-	// modifyPro - 게시글 수정처리
-	@Override
-	public int updateArticle(BoardDTO dto) throws SQLException {
-		int result = boardDAO.pwCheck(dto);
-		// 게시글 수정 처리하기
-		if(result == 1) {
-			boardDAO.updateArticle(dto);
-		}
-		return result;
-	}
-	// deleteForm/pro - 게시글 삭제처리
-	@Override
-	public int deleteArticle(BoardDTO dto) throws SQLException {
-		int result = boardDAO.pwCheck(dto);
-		if(result == 1) {
-			boardDAO.deleteArticle(dto);
-		}
-		return result;
-	}
-
-    // 이달의 챌린지 글 등록 - 이다희 
+	// 이달의 챌린지 글 등록 - 이다희 
 	@Override
 	public void insertChallenge(MonthDTO dto) throws SQLException {
 		boardDAO.insertChallenge(dto);
@@ -231,6 +192,18 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
 		int result = boardDAO.updateChallengeArticleImg(dto);
+		return result;
+	}
+	
+	@Override
+	public int pwCheck(int boardnum, int code, String pw) throws SQLException {
+		int pwCheck = boardDAO.pwCheck(boardnum, code, pw);
+		return pwCheck;
+	}
+
+	@Override
+	public int deleteArticle(int boardnum, int code) throws SQLException {
+		int result = boardDAO.deleteArticle(boardnum, code);
 		return result;
 	}
 }
