@@ -10,7 +10,13 @@
 	<link href="/earth/resources/css/style.css" rel="stylesheet" type="text/css">
 </head>
 <c:set var="path" value="${pageContext.request.contextPath}" scope="application" />
-
+<script>
+	function popupOpen(){
+		var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=1&uri=/earth/board/noticeList.et&pageNum=${pageNum}";
+		var popOption = "width=370, height=360, resizable=no, scrollbars=no, status=no;";
+		window.open(popUrl,"",popOption);
+	}
+</script>
 <body>
 	<h1 align="center"> 공지사항 </h1>
 	
@@ -38,7 +44,10 @@
 		<tr>
 			<td colspan="4" align="right"> 
 				<button onclick="window.location='/earth/board/noticeModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'">수 정</button>
-				<button onclick="window.location='/earth/board/deleteForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'">삭 제</button>
+				<%-- 
+				<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=1&uri=/earth/board/noticeList.et&pageNum=${pageNum}'">삭제</button>
+				 --%>
+				<button onclick="popupOpen()">삭제</button>
 				<button onclick="window.location='/earth/board/noticeList.et?pageNum=${pageNum}'">목록으로</button>
 			</td>
 		</tr>
