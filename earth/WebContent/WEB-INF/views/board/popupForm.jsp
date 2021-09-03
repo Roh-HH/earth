@@ -11,10 +11,10 @@
 	<%-- 유효성검사 --%>
 	function sendIt(){
 		if (f.pw.value == "") {
-            alert("비밀번호를 입력하지 않았습니다.")
-            f.pw.focus();
-            return false;
-        }
+			alert("비밀번호를 입력하지 않았습니다.")
+			f.pw.focus();
+			return false;
+		}
 	}
 </script>
 <body>
