@@ -1,88 +1,324 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
-<mapper namespace="board">
+package earth.board.controller;
 
-	<select id="countAllNotice" resultType="int">
-		select count(*) from notice
-	</select>
-	<select id="countAllFree" resultType="int">
-		select count(*) from free
-	</select>
-	<select id="countAllDiary" resultType="int">
-		select count(*) from diary
-	</select>
-	<select id="countAllChallenge" resultType="int">
-		select count(*) from challenge
-	</select>
-	<select id="countAllToday" resultType="int">
-		select count(*) from today
-	</select>
-	<select id="countAllShop" resultType="int">
-		select count(*) from shop
-	</select>
-	<select id="countAllEvent" resultType="int">
-		select count(*) from event
-	</select>
-	<select id="countAllTip" resultType="int">
-		select count(*) from tip
-	</select>
-	
-	<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>
-	<select id="getNoticeArticle" parameterType="int" resultType="noticeDTO">
-			select * from notice where boardnum = #{value}
-	</select>
-	
-	<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
-		]]>
-	</select>
+import java.io.File;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Map;
+import java.util.UUID;
 
-	<insert id="insertNotice" parameterType="noticeDTO">
-		insert into notice values(notice_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
-	</insert>
-	<insert id="upload" parameterType="todayDTO">
-		insert into today values(today_seq.nextval, #{id}, #{ctt}, sysdate, #{code}, #{condition}) 
-	</insert>
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import earth.board.dto.BoardDTO;
+import earth.board.dto.NoticeDTO;
+import earth.board.dto.TodayDTO;
+import earth.board.service.BoardServiceImpl;
+
+@Controller
+@RequestMapping("/board/*")
+public class BoardController {
+
+	// 자동주입
+	@Autowired
+	private BoardServiceImpl boardService = null;
+
+	// 글 작성 writeForm page
+	@RequestMapping("writeForm.do")
+	public String writeForm(HttpServletRequest request, Model model) {
+		//
+		int num = 0, ref = 0, re_step = 0, re_level = 0;
+		if(request.getParameter("num") != null) {
+			num = Integer.parseInt(request.getParameter("num"));
+			ref = Integer.parseInt(request.getParameter("ref"));
+			re_step = Integer.parseInt(request.getParameter("re_step"));
+			re_level = Integer.parseInt(request.getParameter("re_level"));
+		}
+		
+		model.addAttribute("num", num);
+		model.addAttribute("ref", ref);
+		model.addAttribute("re_step", re_step);
+		model.addAttribute("re_level", re_level);
+		model.addAttribute("id", "java");	// test용 id. 나중에 session id 받으므로 그때 지우기
+
+		return "board/writeForm";
+	}
 	
-	<update id="addReadCountNotice" parameterType="int">
-		<![CDATA[
-			update notice set readcount=readcount+1 where boardnum = #{value}
-		]]>
-	</update>
-	<update id="updateNoticeArticle" parameterType="noticeDTO">
-		update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} and pw = #{pw}
-	</update>
-	<update id="updateNoticeArticleImg" parameterType="noticeDTO">
-		update notice set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} and pw = #{pw}
-	</update>
+	// 글 수정 폼 modifyForm page
+	@RequestMapping("modifyForm.do")
+	public String modifyForm(@ModelAttribute("pageNum") String pageNum, int num, Model model) throws SQLException {	
+		// 글 고유번호 num을 넘겨주면서 해당 글 전체 정보 불러오기
+		BoardDTO article = boardService.getUpdateArticle(num);		
+		model.addAttribute("article", article);
+		
+		return "board/modifyForm";
+	}
+	// 글 수정 처리 modifyPro page
+	@RequestMapping("modifyPro.do")
+	public String modifyPro(@ModelAttribute("pageNum") String pageNum, BoardDTO dto, Model model) throws SQLException{
+		int result = boardService.updateArticle(dto);
+		model.addAttribute("result", result);
+		
+		return "board/modifyPro";
+	}
 	
-    <!-- 이달의 챌린지게시글 sql  -->
-	<insert id="insertChallenge" parameterType="monthDTO">
-	 	insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}) 
-	</insert>
+	// 게시글 목록 조회
+	// 공지사항(1) 목록 요청 - 노현호
+	@RequestMapping("noticeList.et")
+	public String notice(String pageNum, Model model, HttpSession session) throws SQLException{
+		System.out.println("공지사항 목록 요청");
+		
+		// today 테이블에서 전체 게시글 가져오기
+		int code = 1;
+		Map<String, Object> result = boardService.getArticleList(pageNum, code);
+		
+		// view 에 전달할 데이터 보내기
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("articleList", result.get("articleList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		
+		return "board/noticeList";
+	}
 	
-	<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>
-	 <select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
-	 	select * from challenge where challengenum=${value}
-	 </select>
-	 
-	<update id="updateChallengeArticle" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt} where challengenum = #{challengenum} and pw = #{pw}
-	</update>
-	<update id="updateChallengeArticleImg" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount} where challengenum = #{challengenum} and pw = #{pw}
-	</update>
-	 <!-- 끝  -->
+	// 오늘의 실천(5) 요청 - 노현호
+	@RequestMapping("dailyChallenge.et")
+	public String dailyChallenge(String pageNum, Model model, HttpSession session) throws SQLException{
+		System.out.println("오늘의 실천 요청");
+		
+		// today 테이블에서 전체 게시글 가져오기
+		int code = 5;
+		Map<String, Object> result = boardService.getArticleList(pageNum, code);
+		
+		// view 에 전달할 데이터 보내기
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("articleList", result.get("articleList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		
+		// 로그인 연결 후 변경해야되는 부분
+		String id = "javatest";
+		session.setAttribute("sid", id);
+		
+		return "board/dailyChallenge";
+	}
 	
-</mapper>
+	// 게시글 등록
+	// 공지사항 게시글 등록 페이지 - 노현호
+	@RequestMapping("noticeWriteForm.et")
+	public String noticeWriteForm(HttpServletRequest request, Model model, HttpSession session) throws SQLException{
+		System.out.println("공지사항 게시글 등록 페이지 요청");
+		
+		/*
+ 		//admin이 아니면 접근 불가능하게 해야되어요(추후 활성화 필요)
+		
+		if(!session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+			return "main/main.et";
+		}
+		*/
+		
+		// model.addAttribute("id", session.getAttribute("sid"));										// sid세션 개발 후 활성화 필요
+		model.addAttribute("id", "admin");
+		return "board/noticeWriteForm";
+	}
+	
+	// 공지사항 게시글 등록 처리 - 노현호
+	@RequestMapping("noticeWritePro.et")
+	public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
+		System.out.println("공지사항 게시글 등록 처리 요청");
+		
+		// dto.setId((String)session.getAttribute("sid"));												// sid세션 개발 후 활성화 필요
+		dto.setId("admin");																				// sid세션 개발 후 삭제 필요
+		dto.setCode(1);
+		dto.setReadcount(0);
+		
+		System.out.println("업로드파일 항목 : "+ dto.getUploadFile());
+		MultipartFile mf = request.getFile("uploadFile");
+		 	
+		String path = request.getRealPath("save");
+		System.out.println("path : " + path);
+
+		UUID uuid = UUID.randomUUID();  
+		System.out.println("uuid : " + uuid.toString().replace("-",""));
+		
+		String orgName = mf.getOriginalFilename();
+		if(!orgName.equals("")) {
+			System.out.println("orgName : " + orgName);
+			
+			// 확장자를 뺀 파일이름 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			System.out.println("imgName :" + imgName);
+			
+			// 확장자(.jpeg)
+			String ext = orgName.substring(orgName.lastIndexOf('.'));
+			System.out.println("ext : " +  ext);
+			
+			// 새 이름 지정
+			String newName = uuid.toString().replace("-", "") + ext;
+			String imgPath = path + "\\" + newName;
+			System.out.println("imgPath ==>> " + imgPath);
+			
+			// 파일 객체 생성 및 저장
+			File f = new File(imgPath); 
+			mf.transferTo(f);
+			
+			// NoticeDTO에 저장
+			dto.setImg(newName);
+		}
+		
+		System.out.println("저장된 이미지파일 : "+ dto.getImg());
+		
+		int result = boardService.insertNotice(dto);
+		if(result == 1) {
+			System.out.println("업로드 성공");
+		}else {
+			System.out.println("업로드 실패");
+		}
+		model.addAttribute("result", result);
+		return "board/noticeWritePro";
+	}
+	
+	// 오늘의 실천 게시글 등록+처리 - 노현호
+	@RequestMapping("uploadTodayChallenge.et")
+	public String uploadTodayChallenge(TodayDTO dto) throws SQLException{
+		System.out.println("오늘의 실천 게시글 등록 요청");
+		
+		// 비로그인상태일 시 처리 필요함
+		// dto.setId((String)session.getAttribute("sid"));													// sid세션 개발 후 활성화 필요
+		dto.setId("javatest");																				// sid세션 개발 후 삭제 필요
+		dto.setCode(5);
+		
+		// jsp 페이지에 ctt가 null일 경우 처리하는 스크립트 function 필요
+		
+		int result = boardService.upload(dto);
+		if(result == 1) {
+			System.out.println("업로드 성공");
+		}else {
+			System.out.println("업로드 실패");
+		}
+		return "redirect:/board/dailyChallenge.et";
+	}
+	
+	// 게시글 내용 조회
+	// 공지사항 게시글 조회 - 노현호
+	@RequestMapping("noticeContent.et")
+	public String noticeContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model, HttpServletRequest request) throws SQLException {
+		System.out.println("공지사항 게시글 조회");
+		
+		// 글 고유번호(boardnum)를 가지고 게시글 하나의 정보 불러오기 + 조회수 1 올리기
+		NoticeDTO article = boardService.getNoticeArticle(boardnum);
+		model.addAttribute("article", article);
+		
+		String path = request.getRealPath("save");
+		path += "\\" + article.getImg();
+		System.out.println(path);
+		model.addAttribute("path", path);
+		return "board/noticeContent";
+	}
+	
+	// 게시글 내용 수정
+	// 공지사항 게시글 수정 - 노현호
+	@RequestMapping("noticeModifyForm.et")
+	public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model) throws SQLException {
+		System.out.println("공지사항 게시글 수정 요청");
+		
+		/*
+ 		//admin이 아니면 접근 불가능하게 해야되어요(추후 활성화 필요)
+		
+		if(!session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 공지사항 수정에 접근함");
+			return "main/main.et";
+		}
+		*/
+		
+		
+		NoticeDTO article = boardService.getNoticeArticle(boardnum);
+		System.out.println(article.getBoardnum());
+		model.addAttribute("article", article);
+		return "board/noticeModifyForm";
+	}
+	
+	// 공지사항 게시글 수정 처리(비밀번호 체크) - 노현호
+	@RequestMapping("noticeModifyPro.et")
+	public String noticeModifyPro(NoticeDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
+		System.out.println("공지사항 게시글 수정 처리 요청");
+		System.out.println(dto.getBoardnum());
+		
+		MultipartFile mf = request.getFile("uploadFile");
+		String path = request.getRealPath("save");
+		UUID uuid = UUID.randomUUID();  
+		String orgName = mf.getOriginalFilename();
+		if(!orgName.equals("")) {
+			// 확장자를 뺀 파일이름 
+			String imgName = orgName.substring(0, orgName.lastIndexOf('.'));
+			
+			// 확장자(.jpeg)
+			String ext = orgName.substring(orgName.lastIndexOf('.'));
+			
+			// 새 이름 지정
+			String newName = uuid.toString().replace("-", "") + ext;
+			String imgPath = path + "\\" + newName;
+			
+			// 파일 객체 생성 및 저장
+			File f = new File(imgPath); 
+			mf.transferTo(f);
+			
+			// NoticeDTO에 저장
+			dto.setImg(newName);
+		}
+		if(dto.getImg()==null) {
+			// 이미지를 새로 올리지 않은 경우
+			int result = boardService.updateNoticeArticle(dto);
+			model.addAttribute("result", result);
+			return "board/noticeModifyPro";
+		}else {
+			// 이미지를 새로 올린 경우
+			int result = boardService.updateNoticeArticleImg(dto);
+			model.addAttribute("result", result);
+			return "board/noticeModifyPro";
+		}
+	}
+	
+	// 게시글 삭제(게시판 무관) - 노현호
+	@RequestMapping("delete.et")
+	public String delete(@ModelAttribute("boardnum") int boardnum, @ModelAttribute("code") int code, @ModelAttribute("uri") String uri, @ModelAttribute("pageNum") String pageNum, Model model) throws SQLException {
+		// jsp페이지의 삭제 버튼에 삭제에 필요한 boardnum과 code정보와 삭제 후 복귀에 필요한 uri 세가지를 파라미터로 넘겨줍니다.
+		// 해당 메서드는 code번호와 일치하는 게시판을 찾아 해당 게시판의 boardnum의 값과 일치하는 데이터를 삭제합니다.
+		// 비밀번호 일치여부 확인은 jsp페이지에서 function 유효성검사 / 팝업페이지 등을 사용해서 해야 하며 해당메서드는 삭제만을 수행합니다.
+		// uri의 형태는 다음 예시와 같습니다. uri=/earth/board/dailyChallenge.et
+		// 삭제 처리가 끝나면 delete.jsp 페이지에서 해당 uri를 요청하여 페이지를 호출합니다.
+		// 버튼태그 예시 (비밀번호 체크 없이 바로 삭제하는 경우)
+		// <button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=1&uri=/earth/board/noticeList.et&pageNum=${pageNum}'">삭제</button>
+		
+		if(pageNum == null){
+			pageNum = "1";
+		}
+		uri += "?pageNum=" + pageNum;
+		
+		int result = boardService.deleteArticle(boardnum, code);
+		model.addAttribute("uri", uri);
+		model.addAttribute("result", result);
+		
+		return "board/delete";
+	}
+
+	
+}
