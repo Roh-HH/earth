@@ -11,6 +11,7 @@ public class TodayDTO {
 	private Timestamp reg;
 	private Integer code;
 	private Integer condition;
+	
 	public Integer getBoardnum() {
 		return boardnum;
 	}
