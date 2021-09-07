@@ -1,9 +1,12 @@
 package earth.board.service;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
-import earth.board.dto.BoardDTO;
+import earth.board.dto.BracketsDTO;
+import earth.board.dto.FreeCommentDTO;
+import earth.board.dto.FreeDTO;
 import earth.board.dto.MonthDTO;
 import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
@@ -12,23 +15,37 @@ public interface BoardService {
 	
 	// CRUD (Create, Read, Update, Delete)
 	
-	// 게시판 list 페이지 목록 가져오기 (list) - 노현호
+	// 게시판의 게시글 목록 가져오기 (list) - 노현호
 	public Map<String, Object> getArticleList(String pageNum, int code) throws SQLException;
-	// 게시판 검색한 list 페이지 목록 가져오기 (list 검색) - 노현호
-	public Map<String, Object> getArticleSearch(String pageNum, String sel, String search, int code) throws SQLException;
+
 	
 	// 공지사항 게시글 업로드 - 노현호
 	public int insertNotice(NoticeDTO dto) throws SQLException;
+	// 자유게시판 게시글 업로드 - 노현호
+	public int insertFree(FreeDTO dto) throws SQLException;
+	// 자유게시판 댓글 업로드 - 노현호
+	public int uploadFreeComment(FreeCommentDTO dto) throws SQLException;
 	// 오늘의 실천 업로드 - 노현호
 	public int upload(TodayDTO dto) throws SQLException;
 	
-	// 공지사항 글 1개 가져오기 (조회) - 노현호
+	// 공지사항 글 1개 가져오기(조회) - 노현호
 	public NoticeDTO getNoticeArticle(int boardnum)	throws SQLException;
+	// 자유게시판 글 1개 가져오기(조회) - 노현호
+	public FreeDTO getFreeArticle(int boardnum) throws SQLException;
+	// 자유게시판 글 1개의 댓글 가져오기(조회) - 노현호
+	public List<FreeCommentDTO> getFreeComment(int boardnum) throws SQLException;
+	// 자유게시판 글 1개의 댓글 ref 가져오기(조회) - 노현호
+	public String getRef(int boardnum, int code) throws SQLException;
+	
 	// 공지사항 글 수정 처리(이미지 수정X)
 	public int updateNoticeArticle(NoticeDTO dto) throws SQLException;
 	// 공지사항 글 수정 처리(이미지 수정O)
 	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException;
+	// 자유게시판 글 수정처리
+	public int updateFreeArticle(FreeDTO dto) throws SQLException;
 	
+	// brackets categList 불러오기(자유게시판 말머리) - 노현호
+	public List<BracketsDTO> getBrackets() throws SQLException;
 
 	// 이달의 실천 게시글 등록 - 이다희 
 	public void insertChallenge(MonthDTO dto) throws SQLException;
@@ -40,9 +57,12 @@ public interface BoardService {
 	public int updateChallengeArticleImg(MonthDTO dto) throws SQLException;
 
 	
-	
-	// 비밀번호 일치여부 확인(게시글 삭제용) - 노현호
-	public int pwCheck(int boardnum, int code, String pw) throws SQLException;
+	// 비밀번호 일치여부 확인(암호화) - 노현호
+	public String getPw(int boardnum, int code) throws SQLException;
+	// 이미지 삭제를 위한 ctt 가져오기 - 노현호
+	public String getCtt(int boardnum, int code) throws SQLException;
+	// 이미지 삭제를 위한 img 가져오기 - 노현호
+	// 미완
 	// 게시글 삭제 처리 (게시판 통합) - 노현호
 	public int deleteArticle(int boardnum, int code) throws SQLException;
 }
