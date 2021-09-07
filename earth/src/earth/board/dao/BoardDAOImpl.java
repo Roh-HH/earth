@@ -10,6 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.board.dto.BoardDTO;
+import earth.board.dto.BracketsDTO;
+import earth.board.dto.FreeCommentDTO;
+import earth.board.dto.FreeDTO;
 import earth.board.dto.MonthDTO;
 import earth.board.dto.NoticeDTO;
 import earth.board.dto.TodayDTO;
@@ -54,6 +57,38 @@ public class BoardDAOImpl implements BoardDAO {
 		return boardList;
 	}
 	
+	// 자유게시판 게시글 목록 가져오기 - 노현호
+	@Override
+	public List<FreeDTO> getFreeArticles(int startRow, int endRow, int code) throws SQLException {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("start", startRow);
+		map.put("end", endRow);
+		
+		List<FreeDTO> boardList = sqlSession.selectList("board.getFreeArticles", map);
+		List<String> categList = sqlSession.selectList("board.getBrackets");
+
+		HashMap<Integer, String> categMap = new HashMap<Integer, String>();
+		int key = 1;
+		for(String categ : categList) {
+			categMap.put(key, categ);
+			key++;
+		}
+		
+		for(int i = 0; i < boardList.size(); i++) {
+			boardList.get(i).setCategStr(categMap.get(boardList.get(i).getCateg()));
+		}
+		
+		for(int i = 0; i < boardList.size(); i++) {
+			String refCount = sqlSession.selectOne("board.getRefCountFree", boardList.get(i).getBoardnum());
+			if(refCount == null) {
+				refCount = "0";
+			}
+			boardList.get(i).setRefCount(Integer.parseInt(refCount));
+		}
+		
+		return boardList;
+	}
+	
 	// 오늘의실천 게시글 목록 가져오기 - 노현호
 	@Override
 	public List<TodayDTO> getTodayArticles(int startRow, int endRow, int code) throws SQLException {
@@ -70,6 +105,29 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int insertNotice(NoticeDTO dto) throws SQLException {
 		int result = sqlSession.insert("board.insertNotice", dto);
+		return result;
+	}
+	
+	// 글머리 가져오기(자유게시판용) - 노현호
+	@Override
+	public List<BracketsDTO> getBrackets() throws SQLException {
+		List<BracketsDTO> Brackets = sqlSession.selectList("board.getBracketsDTO");
+		return Brackets;
+	}
+	
+	// 자유게시판 게시글 업로드 - 노현호
+	@Override
+	public int insertFree(FreeDTO dto) throws SQLException {
+		int result = sqlSession.insert("board.insertFree", dto);
+		return result;
+	}
+	
+	// 자유게시판 댓글 업로드 - 노현호
+	@Override
+	public int uploadFreeComment(FreeCommentDTO dto) throws SQLException {
+		// 조회수 1 감소
+		sqlSession.update("board.subReadCountFree", dto.getFreenum());
+		int result = sqlSession.insert("board.uploadFreeComment", dto);
 		return result;
 	}
 	
@@ -103,6 +161,52 @@ public class BoardDAOImpl implements BoardDAO {
 	public int updateNoticeArticleImg(NoticeDTO dto) throws SQLException {
 		// 이미지 업로드 했을때
 		int result = sqlSession.update("board.updateNoticeArticleImg", dto);
+		return result;
+	}
+	
+	// 자유게시판 게시글 조회 - 노현호
+	@Override
+	public FreeDTO getFreeArticle(int boardnum) throws SQLException {
+		// 조회수 1 증가
+		sqlSession.update("board.addReadCountFree", boardnum);
+		// 글 불러오기
+		FreeDTO article = sqlSession.selectOne("board.getFreeArticle", boardnum); 
+		return article;
+	}
+	
+	// 자유게시판 댓글 조회 - 노현호
+	@Override
+	public List<FreeCommentDTO> getFreeComment(int boardnum) throws SQLException {
+		List<FreeCommentDTO> comment = sqlSession.selectList("board.getFreeComment", boardnum);
+		return comment;
+	}
+	
+	// 자유게시판 댓글 ref 가져오기(조회) - 노현호
+	@Override
+	public String getRef(int boardnum, int code) throws SQLException {
+		
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		
+		String select = "board.getRef";
+		select += board.get(code-1);
+		
+		String ref = sqlSession.selectOne(select, boardnum);
+		if(ref == null)
+			ref = "0";
+		return ref;
+	}
+	
+	@Override
+	public int updateFreeArticle(FreeDTO dto) throws SQLException {
+		int result = sqlSession.update("board.updateFreeArticle", dto);
 		return result;
 	}
 	
@@ -148,13 +252,9 @@ public class BoardDAOImpl implements BoardDAO {
 		return result;
 	}
 	
-	// 비밀번호 일치여부 확인(게시글 삭제용) - 노현호
+	// 비밀번호 일치여부 확인(암호화) - 노현호
 	@Override
-	public int pwCheck(int boardnum, int code, String pw) throws SQLException {
-		
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("boardnum", boardnum);
-		map.put("pw", pw);
+	public String getPw(int boardnum, int code) throws SQLException {
 		
 		ArrayList<String> board = new ArrayList<String>();
 		board.add("Notice");
@@ -166,13 +266,34 @@ public class BoardDAOImpl implements BoardDAO {
 		board.add("Event");
 		board.add("Tip");
 		
-		String select = "board.pwCheck";
+		String select = "board.getPw";
 		select += board.get(code-1);
 		
-		int pwCheck = sqlSession.selectOne(select, map);
-		return pwCheck;
+		String hashedPassword = sqlSession.selectOne(select, boardnum);
+		return hashedPassword;
 	}
 	
+	@Override
+	public String getCtt(int boardnum, int code) throws SQLException {
+		
+		ArrayList<String> board = new ArrayList<String>();
+		board.add("Notice");
+		board.add("Free");
+		board.add("Diary");
+		board.add("Challenge");
+		board.add("Today");
+		board.add("Shop");
+		board.add("Event");
+		board.add("Tip");
+		board.add("FreeComment");
+		
+		String select = "board.getCtt";
+		select += board.get(code-1);
+		
+		String ctt = sqlSession.selectOne(select, boardnum);
+		return ctt;
+	}
+		
 	// 게시글 삭제 처리 (게시판 통합) - 노현호
 	@Override
 	public int deleteArticle(int boardnum, int code) throws SQLException {
@@ -186,6 +307,7 @@ public class BoardDAOImpl implements BoardDAO {
 		board.add("Shop");
 		board.add("Event");
 		board.add("Tip");
+		board.add("FreeComment");
 		
 		String delete = "board.deleteArticle";
 		delete += board.get(code-1);
@@ -193,35 +315,5 @@ public class BoardDAOImpl implements BoardDAO {
 		int result = sqlSession.delete(delete, boardnum);
 		return result;
 	}
-	
-	
-	// 검색 게시글 수 가져오기 -- 삭제 예정(노현호)
-	@Override
-	public int getSearchArticleCount(String sel, String search) throws SQLException {
-		
-		HashMap map = new HashMap();
-		map.put("sel", sel);
-		map.put("search", search);
-		
-		int result = sqlSession.selectOne("board.countSearch", map);
-		
-		return result;
-	}
-	// 검색 된 게시글 목록 가져오기 -- 삭제 예정(노현호)
-	@Override
-	public List<BoardDTO> getSearchArticles(int start, int end, String sel, String search) throws SQLException {
-		
-		HashMap map = new HashMap();
-		map.put("start", start);
-		map.put("end", end);
-		map.put("sel", sel);
-		map.put("search", search);
-		
-		List<BoardDTO> boardList = sqlSession.selectList("board.getSearchArticles", map);
-		
-		return boardList;
-	}
-	
-	
 
 }
