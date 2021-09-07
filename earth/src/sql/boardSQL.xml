@@ -11,6 +11,13 @@
 		insert into notice values(notice_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
 	</insert>
 	
+	<insert id="insertFree" parameterType="freeDTO">
+		insert into free values(free_seq.nextval, #{subject}, #{categ}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+	</insert>
+	<insert id="uploadFreeComment" parameterType="freecommentDTO">
+		insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt})
+	</insert>
+	
 	<insert id="insertChallenge" parameterType="monthDTO">
 		insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable})
 	</insert>
@@ -24,8 +31,8 @@
 	<select id="countAllNotice" resultType="int">
 		select count(*) from notice
 	</select>
-	<select id="pwCheckNotice" parameterType="hashmap" resultType="int">
-		select count(*) from notice where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwNotice" resultType="string">
+		select pw from notice where boardnum = #{value}
 	</select>
 	<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
 		<![CDATA[
@@ -39,22 +46,45 @@
 	<select id="countAllFree" resultType="int">
 		select count(*) from free
 	</select>
-	<select id="pwCheckFree" parameterType="hashmap" resultType="int">
-		select count(*) from free where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwFree" resultType="string">
+		select pw from free where boardnum = #{value}
+	</select>
+	<select id="getFreeArticles" parameterType="hashmap" resultType="freeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from free order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getFreeArticle" parameterType="int" resultType="freeDTO">
+			select * from free where boardnum = #{value}
+	</select>
+	<select id="getBrackets" resultType="string">
+		select name from brackets
+	</select>
+	<select id="getBracketsDTO" resultType="bracketsDTO">
+		select * from brackets
+	</select>
+	<select id="getFreeComment" parameterType="int" resultType="freecommentDTO">
+			select * from freecomment where freenum = #{value} order by ref
+	</select>
+	<select id="getRefFree" parameterType="int" resultType="string">
+			select max(ref) from freecomment where freenum = #{value}
+	</select>
+	<select id="getRefCountFree" parameterType="int" resultType="string">
+			select count(ref) from freecomment where freenum = #{value}
 	</select>
 	
 	<select id="countAllDiary" resultType="int">
 		select count(*) from diary
 	</select>
-	<select id="pwCheckDiary" parameterType="hashmap" resultType="int">
-		select count(*) from diary where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwDiary" resultType="string">
+		select pw from diary where boardnum = #{value}
 	</select>
 	
 	<select id="countAllChallenge" resultType="int">
 		select count(*) from challenge
 	</select>
-	<select id="pwCheckChallenge" parameterType="hashmap" resultType="int">
-		select count(*) from Challenge where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwChallenge" resultType="string">
+		select pw from challenge where boardnum = #{value}
 	</select>
 	<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">
 		<![CDATA[
@@ -77,22 +107,27 @@
 	<select id="countAllShop" resultType="int">
 		select count(*) from shop
 	</select>
-	<select id="pwCheckShop" parameterType="hashmap" resultType="int">
-		select count(*) from shop where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwShop" resultType="string">
+		select pw from shop where boardnum = #{value}
 	</select>
 	
 	<select id="countAllEvent" resultType="int">
 		select count(*) from event
 	</select>
-	<select id="pwCheckEvent" parameterType="hashmap" resultType="int">
-		select count(*) from event where boardnum = #{boardnum} and pw = #{pw}
+	<select id="getPwEvent" resultType="string">
+		select pw from event where boardnum = #{value}
 	</select>
 	
 	<select id="countAllTip" resultType="int">
 		select count(*) from tip
 	</select>
-	<select id="pwCheckTip" parameterType="hashmap" resultType="int">
-		select count(*) from Tip where boardnum = #{boardnum} and pw = #{pw}
+	
+	<select id="getPwTip" resultType="string">
+		select pw from tip where boardnum = #{value}
+	</select>
+	
+	<select id="getCttNotice" resultType="string">
+		select ctt from notice where boardnum = #{value}
 	</select>
 	
 	
@@ -102,20 +137,34 @@
 			update notice set readcount=readcount+1 where boardnum = #{value}
 		]]>
 	</update>
+	<update id="addReadCountFree" parameterType="int">
+		<![CDATA[
+			update free set readcount=readcount+1 where boardnum = #{value}
+		]]>
+	</update>
+	<update id="subReadCountFree" parameterType="int">
+		<![CDATA[
+			update free set readcount=readcount-1 where boardnum = #{value}
+		]]>
+	</update>
 	
 	<update id="updateNoticeArticle" parameterType="noticeDTO">
-		update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} and pw = #{pw}
+		update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}
 	</update>
 	<update id="updateNoticeArticleImg" parameterType="noticeDTO">
-		update notice set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} and pw = #{pw}
+		update notice set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+	</update>
+	
+	<update id="updateFreeArticle" parameterType="freeDTO">
+		update free set subject = #{subject}, ctt = #{ctt}, categ = #{categ} where boardnum = #{boardnum}
 	</update>
 	
 	<update id="updateChallengeArticle" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt} where challengenum = #{challengenum} and pw = #{pw}
+		update challenge set subject = #{subject}, ctt = #{ctt} where challengenum = #{challengenum}
 	</update>
 	
 	<update id="updateChallengeArticleImg" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount} where challengenum = #{challengenum} and pw = #{pw}
+		update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount} where challengenum = #{challengenum}
 	</update>
 	
 	
@@ -152,5 +201,8 @@
 		delete from tip where boardnum = #{value}
 	</delete>
 	
+	<delete id="deleteArticleFreeComment" parameterType="int">
+		delete from freecomment where commentnum = #{value}
+	</delete>
 	
 </mapper>
