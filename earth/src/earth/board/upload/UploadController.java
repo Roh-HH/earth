@@ -54,6 +54,7 @@ public class UploadController {
 						printWriter = resp.getWriter();
 						resp.setContentType("text/html");
 						String fileUrl = req.getContextPath() + "/img/" + fileName;
+						System.out.println("업로드된 파일명 : " + fileName);
 						
 						json.addProperty("uploaded", 1);
 						json.addProperty("fileName", fileName);
@@ -67,7 +68,7 @@ public class UploadController {
 					}
 				}
 			}
-		}	
+		}
 		return null;
 	}
 }
