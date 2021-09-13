@@ -16,16 +16,21 @@
 			<insert id="insertFree" parameterType="freeDTO">
 				insert into free values(free_seq.nextval, #{subject}, #{categ}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
 			</insert>
-			<insert id="uploadFreeComment" parameterType="freecommentDTO">
-				insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt})
-			</insert>
 			
 		<!-- 환경일기 -->
-		
+			<insert id="insertDiary" parameterType="diaryDTO">
+				insert into diary values(diary_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, 3, 0)
+			</insert>
+			<insert id="likeup" parameterType="hashmap">
+			 	insert into diary_recommend values(#{boardnum}, #{recid})
+			</insert>
 		
 		<!-- 이달의 챌린지 -->
 			<insert id="insertChallenge" parameterType="monthDTO">
-				insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable})
+			 	insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}, #{enddate}) 
+			</insert>
+			<insert id="insertChJoin" parameterType="hashmap">
+			 	insert into challenge_join values(#{boardnum}, #{id})
 			</insert>
 		
 		<!-- 오늘의 실천 -->
@@ -49,12 +54,19 @@
 			</insert>
 		
 		<!-- 자유게시판 댓글 -->
-		
+			<insert id="uploadFreeComment" parameterType="freecommentDTO">
+				insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt})
+			</insert>
 		
 		<!-- 환경일기 댓글 -->
-		
+			<insert id="insertDiaryReply" parameterType="hashmap">
+			 	insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt})
+			</insert>
 		
 		<!-- 이달의 챌린지 댓글 -->
+			<insert id="insertChReply" parameterType="hashmap">
+			 	insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt})
+			</insert>
 		
 	
 	<!-- Read(select) -->
@@ -115,6 +127,34 @@
 			<select id="getImgDiary" resultType="string">
 				select img from diary where boardnum = #{value}
 			</select>
+			<select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">
+					select * from diary where boardnum = #{value}
+			</select>
+			<select id="countDiarySearch" parameterType="hashmap" resultType="int">
+				select count(*) from diary where ${sel} like '%'||#{search}||'%' 
+			</select>
+		
+			<select id="getSearchDiaryArticles" parameterType="hashmap" resultType="diaryDTO">	
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diary where ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="recidCheck" parameterType="hashmap" resultType="int">
+				select count(*) from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+			</select>
+			<select id="getDiaryReplyListCount" parameterType="int" resultType="int">
+				select count(*) from diarycomment where boardnum = #{value}
+			</select>
+			<select id="getDiaryReplyList" parameterType="hashmap" resultType="diaryDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				]]>
+			</select>
 		
 		<!-- 이달의 챌린지 -->
 			<select id="countAllChallenge" resultType="int">
@@ -123,13 +163,31 @@
 			<select id="getPwChallenge" resultType="string">
 				select pw from challenge where boardnum = #{value}
 			</select>
-			<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">
+			<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
 				<![CDATA[
-					select B.* from (select A.*, rownum r from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
+					select B.*, case when b.enddate > to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
+					DECODE(B.joincount, B.maxcount, 1, 0) ck from (select A.*, rownum r 
+					from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
 				]]>
 			</select>
 			<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
-				select * from challenge where boardnum=${value}
+			 	<![CDATA[
+			 		select A.*, case when A.enddate > to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck from (select * from challenge)A where boardnum=${value}
+				]]>
+			</select>
+			<select id="getChReplyListCount" parameterType="int" resultType="int">
+				select count(*) from challengecomment where boardnum = #{value}
+			</select>
+			<select id="getChReplyList" parameterType="hashmap" resultType="monthDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				]]>
+			</select>
+			<select id="idCheck" parameterType="hashmap" resultType="int">
+				select count(*) from challenge_join where boardnum = #{boardnum} and id=#{id}
+			</select>
+			<select id="dateCheck" parameterType="int" resultType="int">
+				select count(*) from challenge where enddate > to_char(sysdate, 'YYYY/MM/DD') and boardnum = #{value}
 			</select>
 		
 		<!-- 오늘의 실천 -->
@@ -287,16 +345,39 @@
 			</update>
 
 		<!-- 환경일기 -->
-		
+			<update id="addReadCountDairy" parameterType="int">
+				<![CDATA[
+					update diary set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateDiaryArticle" parameterType="diaryDTO" >
+				update diary set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}  
+			</update>
+			<update id="updateDiaryArticleImg" parameterType="diaryDTO" >
+				update diary set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} 
+			</update>
+			<update id="likeadd" parameterType="int">
+		  		update diary set recommend = recommend+1 where boardnum = #{value}
+		  	</update>
+		  	<update id="likedown" parameterType="int">
+		  		update diary set recommend = recommend-1 where boardnum = #{value}
+		  	</update>
+		  	<update id="minusReadCountDairy" parameterType="int">
+				<![CDATA[
+					update diary set readcount=readcount-2 where boardnum = #{value}
+				]]>
+			</update>
 		
 		<!-- 이달의 챌린지 -->
 			<update id="updateChallengeArticle" parameterType="monthDTO">
-				update challenge set subject = #{subject}, ctt = #{ctt} where challengenum = #{challengenum}
+				update challenge set subject = #{subject}, ctt = #{ctt}, maxcount = #{maxcount}, enddate = #{enddate} where boardnum = #{boardnum}
 			</update>
-			
 			<update id="updateChallengeArticleImg" parameterType="monthDTO">
-				update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount} where challengenum = #{challengenum}
+				update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount},  enddate = #{enddate} where boardnum = #{boardnum}
 			</update>
+			<update id="joinCountUp" parameterType="int">
+		  		update challenge set joincount = joincount+1 where boardnum = #{value}
+		  	</update>
 		
 		<!-- 오늘의 실천 -->
 		
@@ -349,6 +430,9 @@
 			<delete id="deleteArticleDiary" parameterType="int">
 				delete from diary where boardnum = #{value}
 			</delete>
+			<delete id="likeCancel" parameterType="hashmap">
+				delete from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+			</delete>
 		
 		<!-- 이달의 챌린지 -->
 			<delete id="deleteArticleChallenge" parameterType="int">
@@ -384,10 +468,16 @@
 			<delete id="deleteArticleDiaryComment" parameterType="int">
 				delete from diarycomment where commentnum = #{value}
 			</delete>
+			<delete id="replydeletediary" parameterType="int">
+				delete from diarycomment where commentnum = #{commentnum}
+			</delete>
 		
 		<!-- 이달의 챌린지 댓글 -->
 			<delete id="deleteArticleChallengeComment" parameterType="int">
 				delete from challengecomment where commentnum = #{value}
 			</delete>
-
+			<delete id="replydeletechallenge" parameterType="int">
+				delete from challengecomment where commentnum = #{commentnum}
+			</delete>
+			
 </mapper>

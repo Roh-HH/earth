@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.board.dto.BracketsDTO;
+import earth.board.dto.DiaryDTO;
 import earth.board.dto.EventDTO;
 import earth.board.dto.FreeCommentDTO;
 import earth.board.dto.FreeDTO;
@@ -259,11 +260,192 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	
 	// 3. 환경일기
+		// 환경일기 게시글 업로드  - 이다희
+		@Override
+		public int insertDiary(DiaryDTO dto) throws SQLException {
+			int result = sqlSession.insert("board.insertDiary", dto);
+			return result;
+		}
 		
+		// 환경일기 게시글 목록 가져오기 - 이다희
+		@Override
+		public List<DiaryDTO> getDiaryArticles(int startRow, int endRow, int code) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("start", startRow);
+			map.put("end", endRow);
+			
+			List<DiaryDTO> boardList = sqlSession.selectList("board.getDiaryArticles", map);
+			
+			return boardList;
+		}
+		
+		// 환경일기 글 1개 가져오기 - 이다희
+		@Override
+		public DiaryDTO getDiaryArticle(int boardnum) throws SQLException {
+			// 조회수 1 증가
+			sqlSession.update("board.addReadCountDairy", boardnum);
+			// 글 불러오기
+			DiaryDTO article = sqlSession.selectOne("board.getDiaryArticle", boardnum); 
+			return article;
+		}
+		
+		// 검색된 게시글 수 가져오기 - 이다희
+		@Override
+		public int getSearchDiaryArticleCount(String sel, String search) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("sel", sel);
+			map.put("search", search);
+			
+			int result = sqlSession.selectOne("board.countDiarySearch", map);
+			return result;
+		}
+		
+		// 환경일기 검색된 게시글 목록 가져오기  - 이다희
+		@Override
+		public List<DiaryDTO> getSearchDiaryArticles(int start, int end, String sel, String search) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("start", start);
+			map.put("end", end);
+			map.put("sel", sel);
+			map.put("search", search);
+			
+			List<DiaryDTO> boardList = sqlSession.selectList("board.getSearchDiaryArticles", map);
+			return boardList;
+		}
+		
+		// 환경일기 좋아요 아이디 체크  - 이다희
+		@Override
+		public int recidCheck(int boardnum, String recid) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("recid", recid);
+			 
+			int idCheck = sqlSession.selectOne("board.recidCheck", map);
+			System.out.println("idCheck dao imp" + idCheck);
+			return idCheck;
+		}
+		
+		// 환경일기 글 수정처리 - 이다희
+		@Override
+		public int updateDiaryArticle(DiaryDTO dto) throws SQLException {
+			int result = sqlSession.update("board.updateDiaryArticle", dto);
+			return result;
+		}
+		
+		// 환경일기 글 수정처리(이미지포함) - 이다희
+		@Override
+		public int updateDiaryArticleImg(DiaryDTO dto) throws SQLException {
+			int result = sqlSession.update("board.updateDiaryArticleImg", dto);
+			return result;
+		}
+		
+		// 환경일기 좋아요 - 이다희
+		@Override
+		public void likeUp(int boardnum, String recid) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("recid", recid);
+			 
+			sqlSession.insert("board.likeup", map);	
+			sqlSession.update("board.likeadd", boardnum);
+			sqlSession.update("board.minusReadCountDairy", boardnum);
+		}
+		
+		// 환경일기 좋아요 취소 - 이다희
+		@Override
+		public void likeCancel(int boardnum, String recid) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("recid", recid);
+			 
+			sqlSession.delete("board.likeCancel", map);		
+			sqlSession.update("board.likedown", boardnum);
+			sqlSession.update("board.minusReadCountDairy", boardnum);		
+		}
 	
 		
 	// 4. 이달의 챌린지
+		// 이달의 챌린지 게시글 업로드  - 이다희
+		@Override
+		public void insertChallenge(MonthDTO dto) throws SQLException {
+			sqlSession.insert("board.insertChallenge", dto);
+		}
 		
+		// 이달의 챌린지 참여하기 - 이다희
+		@Override
+		public int insertChJoin(int boardnum, String id) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("id", id);
+			 
+			int result = sqlSession.insert("board.insertChJoin", map);	
+			return result;
+		}
+		
+		// 이달의 챌린지 게시글 목록 가져오기 - 이다희 
+		@Override
+		public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("start", startRow);
+			map.put("end", endRow);
+				
+			List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);		
+			return boardList;
+		}
+		
+		// 이달의 챌린지 글 1개 가져오기 - 이다희
+		@Override
+		public MonthDTO getChallengeArticle(int boardnum) throws SQLException {
+			MonthDTO article = sqlSession.selectOne("board.getChallengeArticle", boardnum);
+			return article;	 
+		}
+		
+		// 이달의 챌린지 조인 아이디 체크 - 이다희
+		@Override
+		public int joinidCheck(int boardnum, String id) throws SQLException {
+			 
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("id", id);
+			
+			int idCheck = sqlSession.selectOne("board.idCheck", map);
+			return idCheck;
+		}
+		
+		// 이달의 챌린지 마감일 확인 - 이다희
+		@Override
+		public int dateCheck(int boardnum) throws SQLException {
+			int dateCheck = sqlSession.selectOne("board.dateCheck", boardnum); 
+			return dateCheck;
+		}
+		
+		//이달의 챌린지 글 수정처리 - 이다희
+		@Override
+		public int updateChallengeArticle(MonthDTO dto) throws SQLException {
+			int result = sqlSession.update("board.updateChallengeArticle", dto);
+			return result;
+		}
+		
+		// 이달의 챌린지 글 수정처리(이미지포함) - 이다희
+		@Override
+		public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
+			int result = sqlSession.update("board.updateChallengeArticleImg", dto);
+			return result;
+		}
+		
+		// 이달의 챌린지 참여인원 올리기 - 이다희
+		@Override
+		public void joinCountUp(int boardnum) throws SQLException {
+			sqlSession.update("board.joinCountUp", boardnum);	
+		}
 		
 	
 	// 5. 오늘의 실천
@@ -510,6 +692,7 @@ public class BoardDAOImpl implements BoardDAO {
 		// 자유게시판 댓글 목록 가져오기 - 노현호
 		@Override
 		public List<FreeCommentDTO> getCommentListFree(int startRow, int endRow, int boardnum, int code) throws SQLException {
+			
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("start", startRow);
 			map.put("end", endRow);
@@ -528,11 +711,82 @@ public class BoardDAOImpl implements BoardDAO {
 	
 	
 	// 10. 환경일기 댓글
+		// 환경일기 댓글 업로드 - 이다희
+		@Override
+		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("ctt", ctt);
+			map.put("writer", writer);
+			map.put("receiver", receiver);
+			
+			sqlSession.insert("board.insertDiaryReply", map);
+			sqlSession.update("board.minusReadCountDairy", boardnum);
+		}
 		
+		// 환경일기 댓글 가져오기 - 이다희
+		@Override
+		public List<DiaryDTO> getDiaryReplyList(int startRow, int endRow, int boardnum) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("startRow", startRow); 
+			map.put("endRow", endRow);
+			map.put("boardnum", boardnum);
+								 
+			List<DiaryDTO> replyList = sqlSession.selectList("board.getDiaryReplyList", map);
+			
+			return replyList;
+		}
+		
+		// 환경일기 댓글 갯수 가져오기 - 이다희 
+		@Override
+		public int getDiaryReplyListCount(int boardnum) throws SQLException {
+			int count = sqlSession.selectOne("board.getDiaryReplyListCount", boardnum);
+			return count;
+		}
 		
 		
 	// 11. 이달의 챌린지 댓글
+		// 이달의 챌린지 댓글 업로드 - 이다희
+		@Override
+		public void insertChReply(int boardnum, String ctt, String writer) throws SQLException {
+
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("boardnum", boardnum);
+			map.put("ctt", ctt);
+			map.put("writer", writer);
+			
+			sqlSession.insert("board.insertChReply", map);
+		}
 		
+		// 이달의 챌린지 댓글 가져오기 - 이다희
+		@Override
+		public List<MonthDTO> getChReplyList(int startRow, int endRow, int boardnum) throws SQLException {
+			
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("startRow", startRow); 
+			map.put("endRow", endRow);
+			map.put("boardnum", boardnum);
+								 
+			List<MonthDTO> replyList = sqlSession.selectList("board.getChReplyList", map);
+			return replyList;
+		}
+		
+		// 이달의 챌린지 댓글 갯수 가져오기 - 이다희 
+		@Override
+		public int getChReplyListCount(int boardnum) throws SQLException {
+			int count = sqlSession.selectOne("board.getChReplyListCount", boardnum);
+			return count;
+		}
+		
+		// 이달의 챌린지 및 환경일기 댓글삭제 - 이다희
+		@Override
+		public int replydelete(int commentnum, String categ) throws SQLException {
+			String delete = "board.replydelete" + categ;
+			int result = sqlSession.delete(delete, commentnum);
+			return result;
+		}
 	
 
 }
