@@ -8,10 +8,10 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import earth.board.dao.BoardDAOImpl;
 import earth.board.dto.BracketsDTO;
+import earth.board.dto.DiaryDTO;
 import earth.board.dto.EventDTO;
 import earth.board.dto.FreeCommentDTO;
 import earth.board.dto.FreeDTO;
@@ -74,11 +74,17 @@ public class BoardServiceImpl implements BoardService {
 				break;
 			case 3:
 				// 환경일기 - 이다희
-				
+				if(count > 0){
+					List<DiaryDTO> articleList = boardDAO.getDiaryArticles(startRow, endRow, code); 
+					result.put("articleList", articleList);
+				}
 				break;
 			case 4:
 				// 이달의 챌린지 - 이다희
-	
+				if(count > 0){
+					List<MonthDTO> articleList = boardDAO.getChallengeArticles(startRow, endRow, code); 
+					result.put("articleList", articleList);
+				}
 				break;
 			case 5:
 				// 오늘의 실천 - 노현호
@@ -324,9 +330,153 @@ public class BoardServiceImpl implements BoardService {
 		
 		
 	// 3. 환경일기
-	
+		// 환경일기 게시글 업로드  - 이다희
+		@Override
+		public int insertDiary(DiaryDTO dto) throws SQLException {
+			int result = boardDAO.insertDiary(dto);
+			return result;
+		}
+		
+		// 환경일기 글 1개 가져오기 - 이다희
+		@Override
+		public DiaryDTO getDiaryArticle(int boardnum) throws SQLException {
+			DiaryDTO article = boardDAO.getDiaryArticle(boardnum);
+			return article;
+		}
+		
+		// 환경일기 검색한 게시글 목록 가져오기  - 이다희
+		@Override									 
+		public Map<String, Object> getDiaryArticleSearch (String pageNum, String sel, String search, int code) throws SQLException {
+			 
+			int pageSize = 9; 
+			// 현재 페이지 번호  
+			//String pageNum = request.getParameter("pageNum");
+			// 이미 넘어왔으니까 위에꺼 필요없음 !
+			if(pageNum == null){ // list.jsp 라고만 요청했을때, 즉 pageNum 파라미터 안넘어왔을때.
+				pageNum = "1";
+			}
+			
+			// 현재 페이지에 보여줄 게시글 시작과 끝 등등 정보 세팅 
+			int currentPage = Integer.parseInt(pageNum); // 계산을 위해 현재페이지 숫자로 변환하여 저장 
+			int startRow = (currentPage - 1) * pageSize + 1; // 페이지 시작글 번호 
+			int endRow = currentPage * pageSize; // 페이지 마지막 글번호
+			
+	 		
+			// 밖에서 사용가능하게 if문 시작 전에 미리 선언
+			List<DiaryDTO> articleList = null;  	// 검색된 게시글들 담아줄 변수
+			int count = 0; 				// (검색된 글의 개수 
+			int number = 0; 			// 브라우저 화면에 뿌려줄 가상 글 번호  
+			
+			 
+			count = boardDAO.getSearchDiaryArticleCount(sel, search); // 검색된 글의 총 개수 가져오기 
+			System.out.println("검색 count : " + count);
+			// 검색한 글이 하나라도 있으면 검색한 글 가져오기 
+				if(count > 0){
+					articleList = boardDAO.getSearchDiaryArticles(startRow, endRow, sel, search); 
+				}
+			 
+			number = count - (currentPage-1)*pageSize; 	// 게시판 목록에 뿌려줄 가상의 글 번호  
+			
+			//Controller 에게 전달해야되는 데이터가 많으니 HashMap 에넘겨줄 데이터를 저장해서 한번에 전달
+			// 이름가지고 꺼낼꺼면맵타입, 순서대로 정리해서 꺼낼거면 list
+			Map<String, Object> result = new HashMap<>();
+			result.put("pageSize", pageSize);
+			result.put("pageNum", pageNum);
+			result.put("currentPage", currentPage);
+			result.put("startRow", startRow);
+			result.put("endRow", endRow);
+			result.put("articleList", articleList);
+			result.put("count", count);
+			result.put("number", number);
+			//result.put("sel", sel);
+			//result.put("search", search);
+				// sel, search 는 비지니스 로직에 바뀌는게 없으니까 추가 안해줘도 된다. 컨프롤러에서 추가 해서 뷰로 보내줄것 
+			return result;
+		}
+		
+		// 환경일기 좋아요 아이디 체크  - 이다희 
+		@Override
+		public int recidCheck(int boardnum, String recid) throws SQLException {
+			int idCheck = boardDAO.recidCheck(boardnum, recid);
+			return idCheck;
+		}
+		
+		// 환경일기 글 수정처리 - 이다희
+		@Override
+		public int updateDiaryArticle(DiaryDTO dto) throws SQLException {
+			int result = boardDAO.updateDiaryArticle(dto);
+			return result;
+		}
+		
+		// 환경일기 글 수정처리(이미지포함) - 이다희
+		@Override
+		public int updateDiaryArticleImg(DiaryDTO dto) throws SQLException {
+			int result = boardDAO.updateDiaryArticleImg(dto);
+			return result;
+		}
+		
+		// 환경일기 좋아요 - 이다희
+		@Override
+		public void likeUp(int boardnum, String recid) throws SQLException {
+			boardDAO.likeUp(boardnum, recid);	 
+		}
+		
+		// 환경일기 좋아요 취소 - 이다희
+		@Override
+		public void likeCancel(int boardnum, String recid) throws SQLException {
+			boardDAO.likeCancel(boardnum, recid); 
+		}
+		
 		
 	// 4. 이달의 챌린지
+		// 이달의 챌린지 게시글 업로드  - 이다희
+		@Override
+		public void insertChallenge(MonthDTO dto) throws SQLException {
+			boardDAO.insertChallenge(dto);
+		}
+		
+		// 이달의 챌린지 참여하기 - 이다희
+		@Override
+		public int insertChJoin(int boardnum, String id) throws SQLException {
+			boardDAO.joinCountUp(boardnum);
+			int result = boardDAO.insertChJoin(boardnum, id);
+			return result;
+		}
+		
+		// 이달의 챌린지 글 1개 가져오기 - 이다희
+		@Override
+		public MonthDTO getChallengeArticle(int boardnum) throws SQLException {
+			MonthDTO article = boardDAO.getChallengeArticle(boardnum);
+			return article;
+		}
+		
+		// 이달의 챌린지 조인 아이디 체크 - 이다희
+		@Override
+		public int joinidCheck(int boardnum, String id) throws SQLException {
+			int idCheck = boardDAO.joinidCheck(boardnum, id);
+			return idCheck;
+		}
+		
+		// 이달의 챌린지 마감데이트 확인 - 이다희
+		@Override
+		public int dateCheck(int boardnum) throws SQLException {
+			int dateCheck = boardDAO.dateCheck(boardnum);
+			return dateCheck;
+		}
+		
+		//이달의 챌린지 글 수정처리 - 이다희
+		@Override
+		public int updateChallengeArticle(MonthDTO dto) throws SQLException {
+			int result = boardDAO.updateChallengeArticle(dto);
+			return result;
+		}
+		
+		// 이달의 챌린지 글 수정처리(이미지포함) - 이다희
+		@Override
+		public int updateChallengeArticleImg(MonthDTO dto) throws SQLException {
+			int result = boardDAO.updateChallengeArticleImg(dto);
+			return result;
+		}
 		
 		
 	// 5. 오늘의 실천
@@ -427,6 +577,7 @@ public class BoardServiceImpl implements BoardService {
 			return result;
 		}
 		
+		
 	// 9. 자유게시판 댓글
 		// 자유게시판 댓글 업로드 - 노현호
 		@Override
@@ -437,10 +588,111 @@ public class BoardServiceImpl implements BoardService {
 		
 	
 	// 10. 환경일기 댓글
+		// 환경일기 댓글 업로드 - 이다희
+		@Override
+		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException {
+			boardDAO.insertDiaryReply(boardnum, ctt, writer, receiver);
+		}
+		
+		// 환경일기 댓글 가져오기 - 이다희
+		@Override
+		public Map<String, Object> getDiaryReplyList(int boardnum, String pageN) throws SQLException {
+			
+			//테스트용 
+			//int pageSize = 5; 
+			int pageSize= 20;
+			
+			if(pageN == null){ // list.jsp 라고만 요청했을때, 즉 pageNum 파라미터 안넘어왔을때.
+				pageN = "1";
+			}
+			
+			int currentPage = Integer.parseInt(pageN); // 계산을 위해 현재페이지 숫자로 변환하여 저장 
+			int startRow = (currentPage - 1) * pageSize + 1; // 페이지 시작글 번호
+			int endRow = currentPage * pageSize; // 페이지 마지막 글번호 
+			int count = 0; 
+			int number = 0; 
+			
+			List<DiaryDTO> replyList = null;  	// 전체(검색된) 게시글들 담아줄 변수
+			// 전체(검색된) 글의 개수 
+			count = boardDAO.getDiaryReplyListCount(boardnum); 
+			if(count > 0){
+			replyList = boardDAO.getDiaryReplyList(startRow, endRow, boardnum); 
+			
+			}
+			number = count - (currentPage-1) * pageSize; 
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageSize", pageSize);
+			map.put("pageN", pageN);
+			map.put("currentPage", currentPage);
+			map.put("startRow", startRow);
+			map.put("endRow", endRow);
+			map.put("replyList", replyList);
+			map.put("count", count);	
+			map.put("number", number);	
+		 
+			return map;
+		}
 		
 		
 	// 11. 이달의 챌린지 댓글
-	
+		// 이달의 챌린지 댓글 업로드 - 이다희
+		@Override
+		public void insertChReply(int boardnum, String ctt, String writer) throws SQLException {
+			boardDAO.insertChReply(boardnum, ctt, writer);
+		}
+		
+		// 이달의 챌린지 댓글 가져오기 - 이다희
+		@Override
+		public Map<String, Object> getChReplyList(int boardnum, String pageN) throws SQLException {
+			
+			//테스트용 
+			//int pageSize = 5; 
+			int pageSize= 20;
+			if(pageN == null){ // list.jsp 라고만 요청했을때, 즉 pageNum 파라미터 안넘어왔을때.
+				pageN = "1";
+			}
+			
+			int currentPage = Integer.parseInt(pageN); // 계산을 위해 현재페이지 숫자로 변환하여 저장 
+			int startRow = (currentPage - 1) * pageSize + 1; // 페이지 시작글 번호 
+			int endRow = currentPage * pageSize; // 페이지 마지막 글번호
+			int count = 0; 
+			int number = 0; 
+			
+			
+			List<MonthDTO> replyList = null;  	// 전체(검색된) 게시글들 담아줄 변수
+							// 전체(검색된) 글의 개수 
+			count = boardDAO.getChReplyListCount(boardnum); 
+			if(count > 0){
+				replyList = boardDAO.getChReplyList(startRow, endRow, boardnum); 
+
+			}
+			number = count - (currentPage-1) * pageSize; 
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("pageSize", pageSize);
+			map.put("pageN", pageN);
+			map.put("currentPage", currentPage);
+			map.put("startRow", startRow);
+			map.put("endRow", endRow);
+			map.put("replyList", replyList);
+			map.put("count", count);	
+			map.put("number", number);	
+		
+			System.out.println("------reply-----------");
+			System.out.println("number" + number);
+			System.out.println("pageN" + pageN);
+			System.out.println("-----------------");
+			 
+			return map;
+		}
+		
+		// 이달의 챌린지 및 환경일기 댓글삭제 - 이다희
+		@Override
+		public int replydelete(int commentnum, String categ) throws SQLException {
+			int result = boardDAO.replydelete(commentnum, categ);
+			return result;
+		}
 	
 	
 }
