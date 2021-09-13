@@ -6,7 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 public class MonthDTO {
 	
-	private Integer challengenum; 
+	//컨텐츠 관련 
+	private Integer boardnum; 
 	private String subject;
 	private String id;
 	private String pw;
@@ -19,11 +20,71 @@ public class MonthDTO {
 	private Integer maxcount ;
 	private Integer code ;
 	private Timestamp actable;
-	public Integer getChallengenum() {
-		return challengenum;
+	private String enddate;
+	
+	//private Timestamp enddate; // 챌린지 종료 시간 추가 
+ 
+	private Integer ck; // 가상컬럼 리스트 페이지에서 마감 시간 보여주기 위함 - 인원 마감 
+	private Integer dateck; // 가상컬럼 리스트 페이지에서 마감 시간 보여주기 위함  - 시간 마감 
+	
+	public Integer getDateck() {
+		return dateck;
 	}
-	public void setChallengenum(Integer challengenum) {
-		this.challengenum = challengenum;
+	public void setDateck(Integer dateck) {
+		this.dateck = dateck;
+	}
+	//댓글관련 
+	private Integer commentnum;
+	private Timestamp regcomm;
+	private String writer;
+	private String commen;
+
+	
+	public String getEnddate() {
+		return enddate;
+	}
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
+	}
+	public Integer getCk() {
+		return ck;
+	}
+	public void setCk(Integer check) {
+		this.ck = check;
+	}
+	public String getCommen() {
+		return commen;
+	}
+	public void setCommen(String commen) {
+		this.commen = commen;
+	}
+	public Integer getCommentnum() {
+		return commentnum;
+	}
+	public void setCommentnum(Integer commentnum) {
+		this.commentnum = commentnum;
+	}
+	public Timestamp getRegcomm() {
+		return regcomm;
+	}
+	public void setRegcomm(Timestamp regcomm) {
+		this.regcomm = regcomm;
+	}
+	public String getWriter() {
+		return writer;
+	}
+	public void setWriter(String writer) {
+		this.writer = writer;
+	}
+	 
+	
+	
+	
+	public Integer getBoardnum() {
+		return boardnum;
+	}
+	public void setBoardnum(Integer boardnum) {
+		this.boardnum = boardnum;
 	}
 	public String getSubject() {
 		return subject;
