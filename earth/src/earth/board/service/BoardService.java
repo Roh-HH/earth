@@ -78,9 +78,9 @@ public interface BoardService {
 		public int insertChJoin(int boardnum, String id) throws SQLException;
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
-		// 이달의 챌린지 조인 아이디 체크 
+		// 이달의 챌린지 조인 아이디 체크 - 이다희
 		public int joinidCheck(int boardnum, String id) throws SQLException;		
-		// 이달의 챌린지 dateCheck 마감데이트 확인 
+		// 이달의 챌린지 dateCheck 마감데이트 확인 - 이다희 
 		public int dateCheck(int boardnum) throws SQLException;
 		//이달의 챌린지 글 수정처리 - 이다희
 		public int updateChallengeArticle(MonthDTO dto) throws SQLException;
