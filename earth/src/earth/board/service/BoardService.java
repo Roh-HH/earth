@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import earth.board.dto.BracketsDTO;
+import earth.board.dto.DiaryDTO;
 import earth.board.dto.EventDTO;
 import earth.board.dto.FreeCommentDTO;
 import earth.board.dto.FreeDTO;
@@ -53,8 +54,38 @@ public interface BoardService {
 		public int updateFreeArticle(FreeDTO dto) throws SQLException;
 		
 	// 3. 환경일기
+		// 환경일기 게시글 업로드  - 이다희
+		public int insertDiary(DiaryDTO dto) throws SQLException;
+		// 환경일기 글 1개 가져오기 - 이다희
+		public DiaryDTO getDiaryArticle(int boardnum)	throws SQLException;
+		// 환경일기 검색된 게시글 목록 가져오기  - 이다희
+		public Map<String, Object> getDiaryArticleSearch(String pageNum, String sel, String search, int code) throws SQLException;
+		// 환경일기 좋아요 아이디 체크  - 이다희
+		public int recidCheck(int boardnum, String recid) throws SQLException;
+		// 환경일기 글 수정처리 - 이다희
+		public int updateDiaryArticle(DiaryDTO dto) throws SQLException;
+		// 환경일기 글 수정처리(이미지포함) - 이다희
+		public int updateDiaryArticleImg(DiaryDTO dto) throws SQLException;
+		// 환경일기 좋아요 - 이다희
+		public void likeUp(int boardnum, String recid) throws SQLException;
+		// 환경일기 좋아요 취소 - 이다희
+		public void likeCancel(int boardnum, String recid) throws SQLException;
 		
 	// 4. 이달의 챌린지
+		// 이달의 챌린지 게시글 업로드  - 이다희
+		public void insertChallenge(MonthDTO dto) throws SQLException;
+		// 이달의 챌린지 참여하기 - 이다희
+		public int insertChJoin(int boardnum, String id) throws SQLException;
+		// 이달의 챌린지 글 1개 가져오기 - 이다희
+		public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
+		// 이달의 챌린지 조인 아이디 체크 
+		public int joinidCheck(int boardnum, String id) throws SQLException;		
+		// 이달의 챌린지 dateCheck 마감데이트 확인 
+		public int dateCheck(int boardnum) throws SQLException;
+		//이달의 챌린지 글 수정처리 - 이다희
+		public int updateChallengeArticle(MonthDTO dto) throws SQLException;
+		// 이달의 챌린지 글 수정처리(이미지포함) - 이다희
+		public int updateChallengeArticleImg(MonthDTO dto) throws SQLException;		
 		
 	// 5. 오늘의 실천
 		// 오늘의 실천 업로드 - 노현호
@@ -95,8 +126,17 @@ public interface BoardService {
 		public int uploadFreeComment(FreeCommentDTO dto) throws SQLException;
 	
 	// 10. 환경일기 댓글
+		// 환경일기 댓글 업로드 - 이다희
+		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException;
+		// 환경일기 댓글 가져오기 - 이다희
+		public Map<String, Object> getDiaryReplyList(int boardnum, String pageN) throws SQLException;
 		
 	// 11. 이달의 챌린지 댓글
-		
+		// 이달의 챌린지 댓글 업로드 - 이다희
+		public void insertChReply(int boardnum, String ctt, String writer) throws SQLException;
+		// 이달의 챌린지 댓글 가져오기 - 이다희
+		public Map<String, Object> getChReplyList(int boardnum, String pageN) throws SQLException;
+		// 이달의 챌린지 및 환경일기 댓글삭제 - 이다희
+		public int replydelete (int commentnum, String categ) throws SQLException;
 
 }
