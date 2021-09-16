@@ -184,8 +184,8 @@ public class BoardController {
 					
 					// 새 이름 지정
 					String newName = uuid.toString().replace("-", "") + ext;
-					String imgPath = path + "/" + newName;
-					//String imgPath = path + "\\" + newName; 윈도우용 
+					//String imgPath = path + "/" + newName;
+					String imgPath = path + "\\" + newName; 윈도우용 
 					System.out.println("imgPath ==>> " + imgPath);
 					
 					// 파일 객체 생성 및 저장
@@ -278,9 +278,9 @@ public class BoardController {
 					System.out.println("ext : " +  ext);
 					
 					String newName = uuid.toString().replace("-", "") + ext;
-					String imgPath = path + "/" + newName;
-					//String imgPath = path + "\\" + newName; 윈도우용 
-					System.out.println("imgPath==>> " + imgPath);
+					//String imgPath = path + "/" + newName;
+					String imgPath = path + "\\" + newName; 윈도우용 
+					//System.out.println("imgPath==>> " + imgPath);
 					
 					// 파일 객체 생성 
 					File f = new File(imgPath); 
@@ -1213,8 +1213,8 @@ public class BoardController {
 						
 						// 새 이름 지정
 						String newName = uuid.toString().replace("-", "") + ext;
-						String imgPath = path + "/" + newName;
-						//String imgPath = path + "\\" + newName; 위도우용 
+						//String imgPath = path + "/" + newName; //맥용
+						String imgPath = path + "\\" + newName; //윈도우용 
 						
 						// 파일 객체 생성 및 저장
 						File f = new File(imgPath); 
@@ -1321,8 +1321,8 @@ public class BoardController {
 					System.out.println("ext : " +  ext);
 					
 					String newName = uuid.toString().replace("-", "") + ext;
-					String imgPath = path + "/" + newName; // 맥용 
-					//String imgPath = path + "\\" + newName; //윈도우용 
+					//String imgPath = path + "/" + newName; // 맥용 
+					String imgPath = path + "\\" + newName; //윈도우용 
 					System.out.println("imgPath==>> " + imgPath);
 					
 					// 파일 객체 생성 
