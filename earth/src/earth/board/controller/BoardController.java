@@ -797,23 +797,21 @@ public class BoardController {
                 }else {
                     // 닉네임이넘어올때 
                     System.out.println("nickname ========  sel " + sel);
-
                     if(sel.equals("nickname")) {	
-
                             search = boardService.getBaordid(search);				
                             System.out.println("search ======== > " + search);
                             //search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
                             if(search == null) {
                                 search = "null";
                             }
-
+                            // 리스트 가져오기 위해 sel 를 다시 id 
                             sel = "id";
                             System.out.println("sel ======== >" + sel);
                         }
 
                     result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
                 }
-
+                //리스트 닉네임을 아이디로 저장 
                 if (result.get("articleList") != null) {
                     List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
                     for(int i=0; i<articleList.size(); i++) {
@@ -858,9 +856,8 @@ public class BoardController {
 			map = boardService.getDiaryReplyList(boardnum,pageN);
 			
 			
-			//게시글 아이디 닉네임으로 변경 
-			String id = article.getId();
-			String nicknamectt = boardService.getNicknamectt(id);
+			//게시글(content) 아이디 닉네임으로 변경 
+			String nicknamectt = boardService.getNicknamectt(article.getId());
 			System.out.println("nicknamectt " + nicknamectt);
 			
             //댓글 아이디 닉네임으로 변경 
@@ -882,7 +879,7 @@ public class BoardController {
 			model.addAttribute("replyList", map.get("replyList"));
 			model.addAttribute("count", map.get("count"));
 			model.addAttribute("number", map.get("number"));
-		
+            
 			model.addAttribute("nicknamectt", nicknamectt);
 			 
 			return "board/diaryContent";
