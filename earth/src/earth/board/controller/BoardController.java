@@ -882,67 +882,88 @@ public class BoardController {
 			
 		// 4. 이달의 챌린지 - 이다희
 			//지난 챌린지 목록 요청
-			@RequestMapping("challengeList.et") 
-			public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
-				System.out.println("challengeList.et");
-				 
-				Map<String, Object> result = null;
-				int code = 4;
-				result = boardService.getArticleList(pageNum, code);
-				 
-				// view에 전달할 데이터 보내기 
-				model.addAttribute("pageSize", result.get("pageSize"));
-				model.addAttribute("pageNum", result.get("pageNum"));
-				model.addAttribute("currentPage", result.get("currentPage"));
-				model.addAttribute("startRow", result.get("startRow"));
-				model.addAttribute("endRow", result.get("endRow"));
-				model.addAttribute("articleList", result.get("articleList"));
-				model.addAttribute("count", result.get("count"));
-				model.addAttribute("number", result.get("number"));
-				
-				return "board/challengeList";
-			}
+            @RequestMapping("challengeList.et") 
+            public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
+                // 해당 페이지에 맞는 화면에 뿌려줄 게시글 가져와서 view 전달 
+                Map<String, Object> result = null;
+                int code = 4;
+                result = boardService.getArticleList(pageNum, code);
+
+                if (result.get("articleList") != null) {
+                    List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
+                    for(int i=0; i<articleList.size(); i++) {
+                        articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
+                    }
+                }
+
+                // view에 전달할 데이터 보내기 
+                model.addAttribute("pageSize", result.get("pageSize"));
+                model.addAttribute("pageNum", result.get("pageNum"));
+                model.addAttribute("currentPage", result.get("currentPage"));
+                model.addAttribute("startRow", result.get("startRow"));
+                model.addAttribute("endRow", result.get("endRow"));
+                model.addAttribute("articleList", result.get("articleList"));
+                model.addAttribute("count", result.get("count"));
+                model.addAttribute("number", result.get("number"));
+
+
+
+                return "board/challengeList";
+            }
 			
 			// 이달의 챌린지 게시글 조회(+댓글조회)
-			@RequestMapping("challengeContent.et")
-			public String challengeContent(int boardnum, String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
-				System.out.println("challengeContent.et");
-				
-				//참여자 확인을 위해 세션아이디 필요
-				String id = (String)session.getAttribute("sid");
-				
-				//챌린지글 컨텐츠 가져오기
-				MonthDTO article = boardService.getChallengeArticle(boardnum); 
-				model.addAttribute("article", article);	
-				model.addAttribute("pageNum", pageNum);
-			
-				//댓글 가져오기
-				Map<String, Object> map = null;
-				map = boardService.getChReplyList(boardnum,pageN);
-				//참여자확인 
-				int joinidCheck = boardService.joinidCheck(boardnum, id);
-				
-				//마감데이트 확인 
-				int dateCheck = boardService.dateCheck(boardnum);
-				System.out.println("dateCheck" + dateCheck);
-				
-				model.addAttribute("pageSize", map.get("pageSize"));
-				model.addAttribute("pageN", map.get("pageN"));
-				model.addAttribute("currentPage", map.get("currentPage"));
-				model.addAttribute("startRow", map.get("startRow"));
-				model.addAttribute("endRow", map.get("endRow"));
-				model.addAttribute("replyList", map.get("replyList"));
-				model.addAttribute("count", map.get("count"));
-				//글번호 
-				model.addAttribute("number", map.get("number"));
-				//참여자확인 
-				model.addAttribute("joinidCheck", joinidCheck);
-				//마감데이트 확인
-				model.addAttribute("dateCheck", dateCheck);
-				
-				System.out.println("댓글 pageN" + pageN);
-				return "board/challengeContent"; 
-			}
+            @RequestMapping("challengeContent.et")
+            public String challengeContent(int boardnum, String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
+                System.out.println("이달의 챌린지 요청");
+
+                //참여자 확인을 위해 세션아이디 필요
+                String id = (String)session.getAttribute("sid");
+
+                //챌린지글 컨텐츠 가져오기
+                MonthDTO article = boardService.getChallengeArticle(boardnum); 
+                //게시글 아이디 닉네임으로 변경
+                article.setId(boardService.getNicknamectt(article.getId()));
+
+                //댓글 가져오기
+                Map<String, Object> map = null;
+                map = boardService.getChReplyList(boardnum,pageN);
+
+                //댓글 아이디 닉네임으로 변경 
+                 if (map.get("replyList") != null) {
+                    List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
+                    for(int i=0; i<replyList.size(); i++) {			
+                        //String writer = replyList.get(i).getWriter();
+                        replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
+                    }
+                }
+
+                //참여자확인 
+                int joinidCheck = boardService.joinidCheck(boardnum, id);
+
+                //마감데이트 확인 
+                int dateCheck = boardService.dateCheck(boardnum);
+                System.out.println("dateCheck" + dateCheck);
+
+                //컨텐츠용 
+                model.addAttribute("article", article);	
+                model.addAttribute("pageNum", pageNum);
+                //댓글용 
+                model.addAttribute("pageSize", map.get("pageSize"));
+                model.addAttribute("pageN", map.get("pageN"));
+                model.addAttribute("currentPage", map.get("currentPage"));
+                model.addAttribute("startRow", map.get("startRow"));
+                model.addAttribute("endRow", map.get("endRow"));
+                model.addAttribute("replyList", map.get("replyList"));
+                model.addAttribute("count", map.get("count"));
+                //글번호 
+                model.addAttribute("number", map.get("number"));
+                //참여자확인 
+                model.addAttribute("joinidCheck", joinidCheck);
+                //마감데이트 확인
+                model.addAttribute("dateCheck", dateCheck);
+                System.out.println("댓글 pageN" + pageN);
+                return "board/challengeContent"; 
+            }
 			
 			
 		// 5. 오늘의 실천 - 노현호
