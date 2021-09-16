@@ -783,51 +783,59 @@ public class BoardController {
 		// 3. 환경일기 - 이다희
 			//환경일기 목록 요청
 		//=====================환경일기/이다희
-        //환경일기 리스트 가져오기 
-        @RequestMapping("diaryList.et")
-        public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
-            System.out.println("diaryList요청");
+        	//환경일기 리스트 가져오기 
+            @RequestMapping("diaryList.et")
+            public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
+                System.out.println("diaryList요청");
 
-            int code = 3;
-            Map<String, Object> result = null;
-            //전체 게시글 검색 안한 전체 글 보여주기 
-            if(sel == null || search == null) {															
-                result = boardService.getArticleList(pageNum,code);
-            //검색 했을때 
-            }else {
-                // 닉네임이넘어올때 
-                System.out.println("nickname ========  sel " + sel);
+                int code = 3;
+                Map<String, Object> result = null;
+                //전체 게시글 검색 안한 전체 글 보여주기 
+                if(sel == null || search == null) {															
+                    result = boardService.getArticleList(pageNum,code);
+                //검색 했을때 
+                }else {
+                    // 닉네임이넘어올때 
+                    System.out.println("nickname ========  sel " + sel);
 
-                if(sel.equals("nickname")) {	
-                        search = boardService.getBaordid(search);				
-                        System.out.println("search ======== > " + search);
-                        sel = "id";
-                        System.out.println("sel ======== >" + sel);
+                    if(sel.equals("nickname")) {	
+
+                            search = boardService.getBaordid(search);				
+                            System.out.println("search ======== > " + search);
+                            //search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
+                            if(search == null) {
+                                search = "null";
+                            }
+
+                            sel = "id";
+                            System.out.println("sel ======== >" + sel);
+                        }
+
+                    result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
+                }
+
+                if (result.get("articleList") != null) {
+                    List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
+                    for(int i=0; i<articleList.size(); i++) {
+                        articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
                     }
+                }
 
-                result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
+                // view 에 전달할 데이터 보내기
+                model.addAttribute("pageSize", result.get("pageSize"));
+                model.addAttribute("pageNum", result.get("pageNum"));
+                model.addAttribute("currentPage", result.get("currentPage"));
+                model.addAttribute("startRow", result.get("startRow"));
+                model.addAttribute("endRow", result.get("endRow"));
+                model.addAttribute("articleList", result.get("articleList"));
+                model.addAttribute("count", result.get("count"));
+                model.addAttribute("number", result.get("number"));
+                model.addAttribute("sel", sel);
+                model.addAttribute("search", search);
+
+                return "board/diaryList";
             }
-
-            List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
-            for(int i=0; i<articleList.size(); i++) {
-                //String writer = replyList.get(i).getWriter();
-                articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
-            }
-
-            // view 에 전달할 데이터 보내기
-            model.addAttribute("pageSize", result.get("pageSize"));
-            model.addAttribute("pageNum", result.get("pageNum"));
-            model.addAttribute("currentPage", result.get("currentPage"));
-            model.addAttribute("startRow", result.get("startRow"));
-            model.addAttribute("endRow", result.get("endRow"));
-            model.addAttribute("articleList", result.get("articleList"));
-            model.addAttribute("count", result.get("count"));
-            model.addAttribute("number", result.get("number"));
-            model.addAttribute("sel", sel);
-            model.addAttribute("search", search);
-
-            return "board/diaryList";
-        }
+       
 			
 		// 환경일기 게시글 내용 조회
 		@RequestMapping("diaryContent.et")
