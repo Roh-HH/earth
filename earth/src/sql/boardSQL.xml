@@ -4,6 +4,17 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="board">
 	<!-- SQL문 정렬 순서 : CRUD순 1차 정렬 + 공용 및 게시판 번호순 2차 정렬 -->
+     
+    <!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
+            <select id="getNicknamereply" parameterType="string" resultType="string">
+                select nickname from users where id=#{writer}
+            </select>
+            <select id="getNicknamectt" parameterType="string" resultType="string">
+                select nickname from users where id=#{id}
+            </select>
+            <select id="getBaordid" parameterType="string" resultType="string">
+                select id from users where nickname=#{search}
+            </select>
 	
 	
 	<!-- Create(insert) -->
@@ -479,5 +490,6 @@
 			<delete id="replydeletechallenge" parameterType="int">
 				delete from challengecomment where commentnum = #{commentnum}
 			</delete>
+		
 			
 </mapper>

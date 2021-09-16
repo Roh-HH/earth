@@ -29,6 +29,28 @@ public class BoardDAOImpl implements BoardDAO {
 	// 공용 및 게시판 번호순 1차 정렬 CRUD순 2차 정렬
 
 	// 0. 공용
+        // 닉네임 관련 추가 =================== 이다희
+        //댓글 닉네임 가져오기
+        @Override
+        public String getNicknamereply(String writer) throws SQLException {	
+            String nicknamreply = sqlSession.selectOne("board.getNicknamereply", writer);	
+            return nicknamreply;
+        }
+        //컨텐츠 닉네임 가져오기 
+        @Override
+        public String getNicknamectt(String id) throws SQLException {	
+            String nicknamectt = sqlSession.selectOne("board.getNicknamectt", id);	
+            return nicknamectt;
+        }
+        //search 아이디 가져오기 
+        @Override
+        public String getBaordid(String search) throws SQLException {	
+            String baordid = sqlSession.selectOne("board.getBaordid", search);
+            System.out.println("baordid " + baordid);	
+            return baordid;
+        }
+    
+    
 		// 전체 게시글 글 개수 가져오기(모든 테이블 사용 가능) - 노현호
 		@Override
 		public int getArticleCount(int code) throws SQLException {

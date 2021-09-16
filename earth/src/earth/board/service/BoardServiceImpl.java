@@ -30,6 +30,26 @@ public class BoardServiceImpl implements BoardService {
 	// 공용 및 게시판 번호순 1차 정렬 CRUD순 2차 정렬
 
 	// 0. 공용
+    
+        //// ============= 닉네임 가져오기 다희 추가
+        @Override
+        public String getNicknamereply(String writer) throws SQLException {	
+            String nicknamereply = boardDAO.getNicknamereply(writer);
+            return nicknamereply;
+        }
+
+        @Override
+        public String getNicknamectt(String id) throws SQLException {
+            String nicknamectt = boardDAO.getNicknamectt(id);
+            return nicknamectt;
+        }
+
+        @Override
+        public String getBaordid(String search) throws SQLException {
+            String boardid = boardDAO.getBaordid(search);
+            return boardid;
+        }
+    
 		// 게시판의 게시글 목록 가져오기 - 노현호
 		@Override
 		public Map<String, Object> getArticleList(String pageNum, int code) throws SQLException {
