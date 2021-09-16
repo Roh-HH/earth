@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
@@ -24,8 +23,6 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
-    <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
-    
 </head>
 <body>
 
@@ -65,6 +62,7 @@
 									<a href="/earth/user/mypage.et">마이페이지</a>&ensp;
 								</c:if>
 							</li>
+				
                             <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
                             
                         </ul>
@@ -102,7 +100,7 @@
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/diaryList.et">환경일기</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/freeList.et">자유게시판</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/dailyChallenge.et">오늘의실천</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/montly.et">이달의 챌린지</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/earth/board/challengeList.et">이달의 챌린지</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="archive.html">뉴스</a></li>    
@@ -111,7 +109,7 @@
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">벳지샵</a>
                                 <ul class="dropdown-menu">
                                     <li class="nav-item"><a class="nav-link" href="/earth/badge/badgeShop.et">벳지샵</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/badge/badgeShop.et">벳지 FAQ</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/earth/badge/badgeFAQ.et">벳지 FAQ</a></li>
                                 </ul>
                             </li>                        
                           </ul>
@@ -120,80 +118,142 @@
             </nav>
         </div>
     </header>
- 
-<section class="category-page area-padding">
-        <div class="container">   	
-    	<!-- - 여기까지 손대지 마세요!!
-    	 -->
-<!--------------------------------------------------------------------------------------- #masthead 
-		여러분 여기까지는 건들거 없습니다!!!! -->
-		<div id="content" class="site-content">
-			<div id="primary" class="content-area column full">
-				<main id="main" class="site-main" role="main">
-				<div id="container">
-					<div id="content" role="main">
+    	
 
- 	
-		<h1 align="center"> 챌린지 게시글 수정 </h1>
-	<form action="/earth/board/challengeModifyPro.et?boardnum=${article.boardnum}" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="boardnum" value="${article.boardnum}" /> 
-		<table>
-           	<tr>
-				<td>작성자</td>
-					<td align="left">${article.id}</td>
-			</tr>
-			<!-- <tr>
-				<td>비밀번호</td>
-					<td align="left"><input type="password" name="pw" /></td>
-			</tr> -->
-			<tr>
-				<td>제  목</td>
-				<td align="left">
-					<input type="text" name="subject" value="${article.subject}"/>
-				</td>
-			</tr>
-			<tr>
-				<td>내  용</td>
-				<td><textarea rows="20" cols="60" name="ctt">${article.ctt}</textarea></td>
-			</tr>
-			<tr>
-				<td> 목표인원 </td>
-				<td><input type="text" name="maxcount" value="${article.maxcount}" /></td>
-			</tr>
-			<tr>
-				<td> 마감일자 </td>
-				 <td> <input type="text" name="enddate" value="${article.enddate}"> </td> 
-			</tr>
-			
-			<tr>
-				<td>썸네일 이미지</td>
-				 <td><input type="file" name="uploadFile" /></td>
-			</tr>  
-		
-								<tr>
-									<td colspan="2">
-										<input type="submit" value="수 정"
-											style="background-color:#1E88E5; color:#ffffff; float:right"/>
-										<input type="button" value="목록으로" onclick="window.location='/earth/board/challengeList.et'" 
-											style="background-color:#ffffff; color:#1E88E5;"/>									
-									</td>
-								</tr>
-							</table>
-						</form>
-					</div>
-				</div>
-				</main>
+	<section class="category-page area-padding">
+        <div class="container">
+         <h3 class="page-title">
+					커뮤니티 
+				</h3>
+				<h1 class="entry-title"> 환경일기  </h1>
+				
+				<form style="float:right;height:60px;" class="woocommerce-ordering" method="get" action="/earth/board/diaryList.et" >
+						<select name="sel" style="height:20px; border:none;">
+							<option value="nickname">닉네임</option>
+							<option value="ctt">내용</option>	
+						</select>
+						<input class="form-control" type="text" placeholder="검색" name="search" value="" title="search"
+							style="border-top:none; border-left:none; border-right:none;width:150px;height:50px;"/>
+							
+				</form>
 					
-			</div>
-			<!-- #main -->
-		</div>
-		<!-- #primary -->
-		</div>
-		<!-- #content -->
-</section>
-<!-- .container -->
-
-	<!-- .container -->
+			<!-- 	<form class="woocommerce-ordering" method="get">
+					<select name="orderby" class="orderby">
+						<option value="menu_order" selected="selected">정렬</option>
+						<option value="date">최신순</option>
+						<option value="price">포인트순</option>
+					</select>
+				</form> -->
+				<br><br><br>
+        	<div class="row">
+				<c:if test="${count == 0}">	
+				  <div class="image-wrap-2">
+           			 <div class="image-info">
+             			 <p>게시글이 없습니다. </p>			
+					</div>
+				  </div>
+				 </c:if>
+			 <!-- 다희언니용 -->	
+			<c:if test="${count != 0}">
+				<c:forEach var="article" items="${articleList}">
+           	 		<div class="col-md-6 col-lg-4">
+                		<div class="single-category">
+                        	<div class="thumb">
+								<a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
+								<c:if test="${article.img != null}">
+									<img src="${pageContext.request.contextPath}/save/${article.img}" style="width:290px; height:290px;"/>
+								</c:if>
+								<c:if test="${article.img == null}">
+									<img src="" style="width:290px; height:290px;"/>
+								</c:if>							
+								</a>
+							</div>
+	                    	<div class="short_details">
+		                    	<div class="meta-top d-flex">
+		                            <a href="#">${article.id}</a>
+                                	<a href="#" >조회수 :${article.readcount} </a>
+		                        </div>
+		                        <a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
+									<h4>${article.subject}</h4>
+								</a><br>
+	                           	<div class="meta-bottom d-flex">
+	                           		<c:if test="${article.recommend == 0}">	
+	                           			<a href="#">♡ ${article.recommend}like</a>
+	                           		</c:if>
+	                           		<c:if test="${article.recommend > 0}">	
+                                		<a href="#">♥ ${article.recommend}like</a>
+                                	</c:if>                    
+	                            </div>
+								<p><fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH:mm"/></p>
+								
+							</div>
+                     	</div> 
+                	</div>  
+                 </c:forEach>
+               </c:if>
+				<div class="col-12 text-center">
+				<c:if test="${sessionScope.sid != null}">
+					<button type="button"class="main_btn" style="text-align:center;"
+						onclick="window.location='/earth/board/diaryWriteForm.et'">일기쓰기 
+					</button>	
+				</c:if>
+                </div>			
+ 			</div>
+        </div>
+    </section>
+                		
+		<br /><br><br>
+				<%-- 페이지 번호 --%>
+				<div align="center">
+					<nav class="pagination">
+				
+					<c:if test="${count > 0}">
+						<c:set var="pageBlock" value="5" />
+						<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+						<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+						<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+						<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+						<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+						<c:if test="${endPage > pageCount}">
+							<c:set var="endPage" value="${pageCount}" /> 
+						</c:if>
+						
+						<%-- 검색했을때 페이지번호들 --%>
+						<c:if test="${sel != null && search != null}">
+							<c:if test="${startPage > pageBlock}">
+								<a class="back page-numbers"  href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «back</a>
+							</c:if>
+							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums"> &nbsp; ${i} &nbsp; </a>
+							</c:forEach>
+							<c:if test="${endPage < pageCount}">
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> Next»</a>
+							</c:if>
+						</c:if>
+						
+						<%-- 검색 안했을때 페이지번호들   --%> 
+						<c:if test="${sel == null || search == null}">
+							<c:if test="${startPage > pageBlock}">
+								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back</a>
+							</c:if>
+							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+							</c:forEach>
+							
+							<c:if test="${endPage < pageCount}">
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»</a>
+							</c:if>
+						</c:if>
+						
+					</c:if> <%-- end:count > 0 --%>
+					</nav>
+						<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p>
+				</div>
+					
+					
+					
+	
+	
 	<footer id="colophon" class="site-footer">
 	<div class="container">
 		<div class="site-info">
@@ -204,9 +264,6 @@
 	</div>	
 	</footer>
 <!-- #page -->
-<script src='/earth/resources/bootstrap/js/jquery.js'></script>
-<script src='/earth/resources/bootstrap/js/plugins.js'></script>
-<script src='/earth/resources/bootstrap/js/scripts.js'></script>
-<script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
+
 </body>
 </html>

@@ -20,59 +20,11 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">  
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">   
+    <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+    
+    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
+    
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	
-	<!-- 프로그래스 바  -->
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<style type="text/css">
-		progress {
-			height: 60px;
-			width: 60%;
-		}
-	</style>
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-	<script type="text/javascript">
-		window.onload = function() {
-			var dis = document.getElementsByClassName("display");
-
-			gsap.to("progress", {
-				duration: 2,
-				// value: 'random(0, 100)',
-				value: function(i, v) {
-					var arrValue = [];
-					for(var i = 0; i < dis.length; i++) {
-						// arrValue.push((this._targets[i]).getAttribute("data-limit"));
-						// console.log(i);
-						return v.getAttribute("data-limit"); 
-					} 
-				},
-				onUpdate:function() {
-					//값이 바뀔때마다 실행
-					console.log(this._targets[0].value);
-					dis[0].innerText = '참여도' + Math.floor(this._targets[0].value) + '%';
-					//dis[0].innerText = Math.floor(100-(this._targets[0].value)) + '%';
-				}
-			});
-		}
-		
-	</script>
-	
-	<script>
-		function popupOpen(){
-			var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=4&uri=/earth/board/challengeList.et&pageNum=${pageNum}";
-			var popOption = "width=500, height=200, resizable=no, scrollbars=no, status=no;";
-			window.open(popUrl,"",popOption);
-		}
-		
-		$(document).ready(function(){
-			var hash = $.trim( window.location.hash );
-			if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
-		});
-
-	</script>
- 
 </head>
 <body>
      <!--================ Start header Top Area =================-->
@@ -149,7 +101,7 @@
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/diaryList.et">환경일기</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/freeList.et">자유게시판</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/dailyChallenge.et">오늘의실천</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/challengeList.et">이달의 챌린지</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/earth/board/challengeContent.et">이달의 챌린지</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="archive.html">뉴스</a></li>    
@@ -167,161 +119,162 @@
             </nav>
         </div>
     </header>	
-    
 <section class="category-page area-padding">
         <div class="container">   	
-      <h3 class="page-title">
-					커뮤니티 
-				</h3>	
-	<h1 class="entry-title"> 이달의 챌린지  </h1>
-<!-- 상단 컨텐츠  -->	
-	<table >
+    	
+	<h1 align="center">환경일기 </h1>
+	
+	<table>
 		<tr>
-			<td colspan="2"> <b style="font-size: 30px;">${article.subject}</b> <br />
-			등록일 : <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/> 
+			<td width="200px"> 제목 </td>
+			<td colspan="3"> <b>${article.subject}</b> </td>
+			<td width="100px"> 조회수 </td>
+			<td>${article.readcount} </td>
+		</tr>
+		<tr>
+			<td width="200px"> 작성자 </td>
+			<td> <img src="/earth/resources/bootstrap/imgs/heart.png" alt="badge" style="width:20px;">
+			${nicknamectt}</td>
+		</tr>
+		<tr>
+			<td width="200px">  게시글 등록일자 </td>
+			<td>
+				<fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/>
 			</td>
+			
 		</tr>
-	<c:if test="${article.img != null}">
-		<tr>	
-		 <td colspan="2" height="100"> <img src="${pageContext.request.contextPath}/save/${article.img}" style="max-width: 80%" />
-		</tr>
-	</c:if>
 		<tr>
-			<td colspan="2" height="100"> ${article.ctt} </td>
+			<td colspan="4" height="100"> ${article.ctt} </td>
 		</tr>
-		
+		<tr>
+			<td colspan="6" align="right">
+                <c:if test="${sessionScope.sid == article.id}">
+					<button onclick="window.location='/earth/board/diaryModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
+							style="background-color:#1E88E5; color:#ffffff; border:none;float:right;">수 정</button>
+                </c:if> 
+                <c:if test="${sessionScope.sid == article.id or sessionScope.sid == 'admin'}">
+					<button onclick="popupOpen()"
+							style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
+					               	
+				</c:if>
+					<button onclick="window.location='/earth/board/diaryList.et?pageNum=${pageNum}'"
+							style="background-color:#ffffff; color:#1E88E5; border:none;">목록으로</button>
+			</td>
+		</tr> 
 	</table>
-<br /> <br />	
-<!-- 첼린지 참여  -->
-<div align="center"style="text-align:center">
-				<p style="font-size:17px; font-weight:bold; color:black;"><span>목표인원 ${article.maxcount}</span> / <span style="color:red;"> 참여인원 ${article.joincount} </span>
-</div>
-<!-- 프로그래스바  -->
-<div align="center">
-<c:set var="maxcount" value="${article.maxcount}" />
-<c:set var="joincount" value="${article.joincount}" />
-<fmt:parseNumber var="joinpercent" value="${joincount/maxcount*100}"/>
-<fmt:parseNumber var="rest" value="${100-joinpercent}"/>
-	<progress value="0" max="100" data-limit="${joinpercent}" > </progress>
- 	 <div class="display" style="color: black;" >  </div>
- 	 		 
-</div>
 
-<br><br>
-<!--  챌린지참여 에이작스  
-article.dateck == 1 : 데이트 마감 안됨 
--->
-<div align="center">
-<c:if test="${sessionScope.sid != null}">
-	<c:if test="${article.dateck == 1}">
-	
-		 <c:if test="${article.maxcount > article.joincount}">
-			<c:if test="${joinidCheck == 0}">
-				<td colspan="2" align="center">
-					<input type="hidden" name="boardnum" id="boardnum" value="${article.boardnum}"/>
-					<input type="hidden" name="pageNum" id="pageNum" value="${pageNum}"/>
-				
-					<button type="button" onclick="chajax()"
-					style="background-color:#1E88E5; color:#ffffff; border:none;float:center;"> 챌린지 참여하기 </button>
-				</td>	 
-			</c:if>
-			<c:if test="${joinidCheck != 0}">
-				 <button type="button" 
-				 		style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">챌린지에 참여하셨습니다!  </button>
-			</c:if> <!-- 참여여부  -->
-		</c:if><!-- 목표인원 보다 참여자가 적을때  -->	
+<!--삭제팝업  -->
+    	<script>
+		function popupOpen(){
+			var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=4&uri=/earth/board/diaryList.et&pageNum=${pageNum}";
+			var popOption = "width=500, height=200, resizable=no, scrollbars=no, status=no;";
+			window.open(popUrl,"",popOption);
+		}
 		
-		<c:if test="${article.maxcount == article.joincount}">
-			<p> 챌린지가 마감되었습니다!  </p>
-			  챌린지 성공 ! 	
-		</c:if>
-		
-	</c:if>
+		$(document).ready(function(){
+			var hash = $.trim( window.location.hash );
+			if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
+		});
 
-<c:if test="${article.dateck == 0}">
-		<p> 챌린지가 마감되었습니다!  </p>
-		<c:if test="${article.maxcount ==  article.joincount}">
-			 챌린지 성공 ! 	
-		</c:if>
-		<c:if test="${article.maxcount > article.joincount}">
-			 챌린지 실패 ! 	
-		</c:if>	 
-	</c:if>	
-</c:if>	
+	</script>
 
-<!-- 비로그인   -->
-<c:if test="${sessionScope.sid == null}">
-	<c:if test="${dateCheck != 1}">
-		<c:if test="${article.maxcount == article.joincount}">
-			<br /> 챌린지 성공 ! 	
-		</c:if>
-		<c:if test="${article.maxcount > article.joincount}">
-			<br /> 챌린지 실패 ! 	
-		</c:if>
-	
-		<br /> 챌린지 날짜가 마감되었습니다. 
-	</c:if>
-</c:if>
-
-</div>
-
-<!-- 챌린지 참여 받기  -->
+<!-- 좋아요   ♡ ♥-->
 	<script>
-	//문서가 준비되면 function안에 있는거를 실행해라 
-	function chajax() {
+	// 좋아요 insert 
+	function likeajax() {
             var boardnum = $("#boardnum").val();
             var pageNum = $("#pageNum").val();
- 
+ 			 
 			// ajax 요청 
 			$.ajax({
-				url : "/earth/board/challengeJoin.et",
+				url : "/earth/board/likeUp.et",
 				type : "post",
-				data:{boardnum : boardnum, pageNum:pageNum},  
+				data:{boardnum : boardnum, pageNum:pageNum}, 
 				//data:JSON.stringify(obj),
 				//contentType:'application/json; charset=UTF-8',
 				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
 											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
-		
-				alert(" 챌린지 참여 ! ");
+				//alert(" 좋아요 등록  ");
+				location.reload();
+				},
+				 
+			}); //ajax
+	}
+	
+	// 좋아요 cancel
+	function likeajaxCancel() {
+            var boardnum = $("#boardnum").val();
+            var pageNum = $("#pageNum").val();
+ 			 
+			// ajax 요청 
+			$.ajax({
+				url : "/earth/board/likeCancel.et",
+				type : "post",
+				data:{boardnum : boardnum, pageNum:pageNum}, 
+				//data:JSON.stringify(obj),
+				//contentType:'application/json; charset=UTF-8',
+				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
+											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
+				//alert(" 좋아요 취소  ");
 				location.reload();
 				},
 				 
 			}); //ajax
 	}
 	</script>
-	
-<br /> <br />
+ 
+<c:if test="${sessionScope.sid != null}">
+	<div align="center">
+		<table>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="hidden" name="boardnum" id="boardnum" value="${article.boardnum}"/>
+					<input type="hidden" name="pageNum" id="pageNum" value="${pageNum}"/>
+			     <c:if test="${idCheck != 0}">		 
+		                <button type="button" id="like" onclick="likeajaxCancel()" class="button button-contactForm"
+		                        style="width:150px; height:45px; background-color:#1E88E5; border:none;float:right;">
+		                        ♥ 좋아요 ${article.recommend}
+		                </button>
+				 </c:if>
+				 <c:if test="${idCheck == 0}">
+				  	<button type="button" id="like" onclick="likeajax()" class="button button-contactForm"
+		                        style="width:150px; height:45px; background-color:#1E88E5; border:none;float:right;">
+		                       ♡ 좋아요 ${article.recommend}
+		                </button>
+				  </c:if>
+				</td>
+			</tr>
+		</table>
+	</div>
+</c:if>
 
-
-<!-- 코멘트 리스트   -->
-
+<!-- 댓글  -->
 	<script>
-	//문서가 준비되면 function안에 있는거를 실행해라 
 	function replyajax() {
             var boardnum = $("#boardnum").val();
+          
             var pageNum = $("#pageNum").val();
             var pageN = $("#pageN").val(); // 댓글 페이징 처리 
             var ctt = $("#ctt").val();
- 
+            var receiver = $("#receiver").val();
+            
 			// ajax 요청 
 			$.ajax({
-				url : "/earth/board/challengeReply.et",
+				url : "/earth/board/diaryReply.et",
 				type : "post",
-				data:{boardnum : boardnum, pageNum:pageNum, pageN:pageN, ctt:ctt},  
+				data:{boardnum : boardnum, pageNum:pageNum, pageN:pageN, ctt:ctt, receiver:receiver},  
 				//data:JSON.stringify(obj),
 				//contentType:'application/json; charset=UTF-8',
 				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
 											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
-		
 				alert("댓글입력 성공! ");
 				location.reload();
 				
-			 
-				 
-
+				document.getElementById("ctt").value = "참여하시고 댓글을 올려주세요!"; // input replace
+				
 				},
 				 
-			}); //ajax
+			}); 
 	}
 	</script>
 <div>
@@ -348,6 +301,7 @@ article.dateck == 1 : 데이트 마감 안됨
 		                                  <div class="d-flex justify-content-between">
 		                                      <div class="d-flex align-items-center">
 		                                          <h5>
+		                                       
 		                                             ${replyList.writer}
 		                                          </h5>
 		                                          <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
@@ -359,7 +313,7 @@ article.dateck == 1 : 데이트 마감 안됨
 		                                          		style="cursor:default;">삭제</a>
 												</c:if>
 												<c:if test="${sessionScope.sid != replyList.writer and sessionScope.sid != 'admin'}">
-		                                          	<a class="btn-reply text-uppercase" style="cursor:default;">신고</a>
+		                                          	<a class="btn-reply text-uppercase">신고</a>
 												</c:if>
 		                                      </div>
 		                                  </div>
@@ -371,15 +325,14 @@ article.dateck == 1 : 데이트 마감 안됨
 					</c:if>	
                 </div>
      </div><!-- comments-area -->
-</div>
-	 	
-<!-- 댓글삭제 -->
+</div>	
+<!-- 댓글삭제 -->	
 <script>
 	function replydelete() {
-		 var commentnum = $("#commentnum").val();
-		 var categ = "challenge";
-        console.log(commentnum);  
-
+		var commentnum = $("#commentnum").val();
+		var categ = "diary";
+       	console.log(commentnum);   
+       	  
 		// ajax 요청 
 		$.ajax({
 			url : "/earth/board/replydelete.et",
@@ -398,9 +351,14 @@ article.dateck == 1 : 데이트 마감 안됨
 		}); //ajax
 }
 </script>
-<!--  코멘트 쓰기 부분 에이작스로 처리  -->
-<c:if test="${joinidCheck != 0}">
-<div class="comment-form">
+
+<!-- 페이징 처리후 돌아오는 부분  -->
+<a href="#comment"></a>	
+
+
+<!--  댓글 입력   -->
+<c:if test="${sessionScope.sid != null}">
+	<div class="comment-form">
            <h4>댓글달기</h4>
            <form class="form-contact comment_form" action="#" id="commentForm">
                <div class="row">
@@ -409,7 +367,8 @@ article.dateck == 1 : 데이트 마감 안됨
                         <input type="hidden" name="boardnum" id="boardnum" value="${article.boardnum}"/>
 						<input type="hidden" name="pageNum" id="pageNum" value="${pageNum}"/>
 						<input type="hidden" name="pageN" id="pageN" value="${pageN}"/>
-                        <input class="form-control" name="ctt" id="ctt" type="text" placeholder="예쁘고 바른말을 사용합시다.">
+						<input type="hidden" name="receiver" id="receiver" value="${article.id}"/>
+                           <input class="form-control" name="ctt" id="ctt" type="text" placeholder="예쁘고 바른말을 사용합시다.">
                        </div>
                    </div>
                </div>
@@ -421,23 +380,9 @@ article.dateck == 1 : 데이트 마감 안됨
            </form>
 	</div>
 </c:if>
-	<c:if test="${sessionScope.sid != null}">
-			<c:if test="${joinidCheck == 0}">
-				<p> 챌린지에 참여하시고 댓글을 올려주세요</p>
-			</c:if>
-	</c:if>	
- 		
-		<br>
-		<%-- <c:if test="${sessionScope.sid == 'admin'}">
-			<button onclick="window.location='/earth/board/challengeWriteForm.et'" class="main_btn">챌린지 추가</button>
-		</c:if> --%>
-<%-- 앵커태그(위치이동/지우지말것) --%>
-<a href="#comment"></a>
-
-
+<!-- 페이징처리  -->	
 	 <div align="center">
 		<nav class="pagination">
-	
 		<c:if test="${count > 0}">
 			<c:set var="pageBlock" value="5" />
 			<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
@@ -450,37 +395,26 @@ article.dateck == 1 : 데이트 마감 안됨
 		</c:if> 
 		
 				<c:if test="${startPage > pageBlock}">
-					<a class="back page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage-pageBlock}&pageNum=${pageNum}#comment" class="pageNums"> «back</a>
+					<a class="back page-numbers" href="/earth/board/diaryContent.et?pageN=${startPage-pageBlock}#comment" class="pageNums"> «back</a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-					<a class="page-numbers" href="/earth/board/challengeContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a class="page-numbers" href="/earth/board/diaryContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 				</c:forEach>
 				
 				<c:if test="${endPage < pageCount}">
-					<a class="next page-numbers"href="/earth/board/challengeContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> Next»</a>
+					<a class="next page-numbers"href="/earth/board/diaryContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> Next»</a>
 				</c:if>
 	
 		</c:if>  
 		</nav> 
 		<p style="color:grey"> 현재페이지 : ${pageN} </p> 
- 
 	</div>
- <br /> <br />
-<div id="button" align="center">	
-		<!-- 관리자 -->
-		<c:if test="${sessionScope.sid == 'admin'}">
-		
-		<button onclick="window.location='/earth/board/challengeModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
-				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">수정 </button>	
-		<button onclick="popupOpen()"
-				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">삭제</button> <br>
-				
-		</c:if><br>
-		<!-- 모두 보기  -->
-		
-		<button onclick="window.location='/earth/board/challengeList.et?pageNum=${pageNum}'"class="main_btn">지난챌린지 보기 </button>	
-</div>  
-</div>
+	
+
+	<button onclick="window.location='/earth/board/diaryList.et'"
+				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">목록으로 </button>
+	
+	</div>
 </section>
  <br /> <br /> 
 	<!-- .container -->

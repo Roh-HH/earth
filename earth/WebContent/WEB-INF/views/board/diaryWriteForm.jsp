@@ -102,7 +102,7 @@
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/diaryList.et">환경일기</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/freeList.et">자유게시판</a></li>
                                     <li class="nav-item"><a class="nav-link" href="/earth/board/dailyChallenge.et">오늘의실천</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/montly.et">이달의 챌린지</a></li>
+                                    <li class="nav-item"><a class="nav-link" href="/earth/board/challengeList.et">이달의 챌린지</a></li>
                                 </ul>
                             </li>
                             <li class="nav-item"><a class="nav-link" href="archive.html">뉴스</a></li>    
@@ -125,65 +125,58 @@
         <div class="container">   	
     	<!-- - 여기까지 손대지 마세요!!
     	 -->
-<!--------------------------------------------------------------------------------------- #masthead 
+<!--------------------------------------------------------------------------------------- #masthead
 		여러분 여기까지는 건들거 없습니다!!!! -->
 		<div id="content" class="site-content">
 			<div id="primary" class="content-area column full">
 				<main id="main" class="site-main" role="main">
-				<div id="container">
-					<div id="content" role="main">
-
- 	
-		<h1 align="center"> 챌린지 게시글 수정 </h1>
-	<form action="/earth/board/challengeModifyPro.et?boardnum=${article.boardnum}" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="boardnum" value="${article.boardnum}" /> 
-		<table>
-           	<tr>
-				<td>작성자</td>
-					<td align="left">${article.id}</td>
-			</tr>
-			<!-- <tr>
-				<td>비밀번호</td>
-					<td align="left"><input type="password" name="pw" /></td>
-			</tr> -->
-			<tr>
-				<td>제  목</td>
-				<td align="left">
-					<input type="text" name="subject" value="${article.subject}"/>
-				</td>
-			</tr>
-			<tr>
-				<td>내  용</td>
-				<td><textarea rows="20" cols="60" name="ctt">${article.ctt}</textarea></td>
-			</tr>
-			<tr>
-				<td> 목표인원 </td>
-				<td><input type="text" name="maxcount" value="${article.maxcount}" /></td>
-			</tr>
-			<tr>
-				<td> 마감일자 </td>
-				 <td> <input type="text" name="enddate" value="${article.enddate}"> </td> 
-			</tr>
-			
-			<tr>
-				<td>썸네일 이미지</td>
-				 <td><input type="file" name="uploadFile" /></td>
-			</tr>  
-		
-								<tr>
-									<td colspan="2">
-										<input type="submit" value="수 정"
+					<div id="container">
+						<div id="content" role="main">
+							<h1 align="center"> 환경일기 쓰기 </h1>
+							<form action="/earth/board/diaryWritePro.et" method="post" enctype="multipart/form-data">
+								<table>
+									<tr>
+										<td>작성자</td>
+										<td align="left">${sessionScope.sid}</td> 
+									</tr>
+									<tr>
+										<td>제  목</td>
+										<td align="left">
+											<input type="text" name="subject" style="width:700px;" />
+										</td>
+									</tr>
+									<tr>
+										<td>비밀번호</td>
+										<td align="left">
+											<input type="password" name="pw" style="width:700px;"/>
+										</td>
+									</tr>
+									<tr>
+										<td>내  용</td>
+										<td>
+											<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'></textarea>
+											<script type="text/javascript">
+												CKEDITOR.replace('p_content', {filebrowserUploadUrl:'${pageContext.request.contextPath}/fileupload.et'});
+											</script>
+										</td>
+									</tr>
+									<tr>
+										<td> 썸네일이미지</td>
+										<td align="left"><input type="file" name="uploadFile"/></td>
+									</tr>
+									<tr>
+										<td colspan="2" >
+											<input type="submit" value="등 록"
 											style="background-color:#1E88E5; color:#ffffff; float:right"/>
-										<input type="button" value="목록으로" onclick="window.location='/earth/board/challengeList.et'" 
-											style="background-color:#ffffff; color:#1E88E5;"/>									
-									</td>
-								</tr>
-							</table>
-						</form>
+											<input type="button" value="목록으로" onclick="window.location='/earth/board/diaryList.et'" 
+											style="background-color:#ffffff; color:#1E88E5;"/>
+										</td>
+									</tr>
+								</table>
+							</form>
+						</div>
 					</div>
-				</div>
 				</main>
-					
 			</div>
 			<!-- #main -->
 		</div>
@@ -192,7 +185,7 @@
 		<!-- #content -->
 </section>
 <!-- .container -->
-
+ 
 	<!-- .container -->
 	<footer id="colophon" class="site-footer">
 	<div class="container">

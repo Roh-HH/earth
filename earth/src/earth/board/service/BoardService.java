@@ -34,6 +34,14 @@ public interface BoardService {
 		public String getImg(int boardnum, int code) throws SQLException;
 		// 게시글 삭제 처리 - 노현호
 		public int deleteArticle(int boardnum, int code) throws SQLException;
+    
+        // ============= 닉네임 가져오기 다희 추가 
+        //댓글 닉네임 가져오기
+	    public String getNicknamereply(String writer) throws SQLException;
+	    //게시글 닉네임 가져오기 
+	    public String getNicknamectt(String id) throws SQLException;
+	    //search 로 아이디 가져오기 
+	    public String getBaordid(String search) throws SQLException;
 
 	// 1. 공지사항
 		// 공지사항 게시글 업로드 - 노현호

@@ -130,60 +130,58 @@
 		<div id="content" class="site-content">
 			<div id="primary" class="content-area column full">
 				<main id="main" class="site-main" role="main">
-				<div id="container">
-					<div id="content" role="main">
-
- 	
-		<h1 align="center"> 챌린지 게시글 수정 </h1>
-	<form action="/earth/board/challengeModifyPro.et?boardnum=${article.boardnum}" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="boardnum" value="${article.boardnum}" /> 
-		<table>
-           	<tr>
-				<td>작성자</td>
-					<td align="left">${article.id}</td>
-			</tr>
-			<!-- <tr>
-				<td>비밀번호</td>
-					<td align="left"><input type="password" name="pw" /></td>
-			</tr> -->
-			<tr>
-				<td>제  목</td>
-				<td align="left">
-					<input type="text" name="subject" value="${article.subject}"/>
-				</td>
-			</tr>
-			<tr>
-				<td>내  용</td>
-				<td><textarea rows="20" cols="60" name="ctt">${article.ctt}</textarea></td>
-			</tr>
-			<tr>
-				<td> 목표인원 </td>
-				<td><input type="text" name="maxcount" value="${article.maxcount}" /></td>
-			</tr>
-			<tr>
-				<td> 마감일자 </td>
-				 <td> <input type="text" name="enddate" value="${article.enddate}"> </td> 
-			</tr>
-			
-			<tr>
-				<td>썸네일 이미지</td>
-				 <td><input type="file" name="uploadFile" /></td>
-			</tr>  
-		
+					<div id="container">
+						<div id="content" role="main">
+							<h1 align="center"> 환경일기 수정 </h1>
+							<form action="/earth/board/diaryModifyPro.et" method="post" enctype="multipart/form-data">
+								<input type="hidden" name="boardnum" value="${boardnum}" />
+								<table>
+								<tr>
+								<%-- ${sessionScope.sid} 회원가입 연동후 --%>
+									<td>작성자</td>
+									<td align="left">${article.id}</td>
+								</tr>
+								<tr>
+									<td>제 목</td>
+									<td align="left">
+										<input type="text" name="subject" style="width:700px;" value="${article.subject}" />
+									</td>
+								</tr>
+								<tr>
+									<td>비밀번호</td>
+									<td align="left">
+										<input type="password" name="pw" style="width:700px;"/>
+									</td>
+								</tr>
+								<tr>
+									<td>내 용</td>
+									<td align="left">
+									<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'>${ article.ctt}</textarea>
+										<script type="text/javascript">
+											CKEDITOR.replace('p_content', {filebrowserUploadUrl:'${pageContext.request.contextPath}/fileupload.et'});
+									</script>
+								</tr>
+								<tr>
+									<td>대표 이미지</td>
+									<td align="left"><input type="file" name="uploadFile"/>
+									</td>
+									<c:if test="${article.img != null}">
+									<td> <img src="${pageContext.request.contextPath}/save/${article.img}" width="300"/>
+									</c:if>
+								</tr>
 								<tr>
 									<td colspan="2">
 										<input type="submit" value="수 정"
 											style="background-color:#1E88E5; color:#ffffff; float:right"/>
-										<input type="button" value="목록으로" onclick="window.location='/earth/board/challengeList.et'" 
+										<input type="button" value="목록으로" onclick="window.location='/earth/board/diaryList.et'" 
 											style="background-color:#ffffff; color:#1E88E5;"/>									
 									</td>
 								</tr>
-							</table>
-						</form>
+								</table>
+							</form>
+						</div>
 					</div>
-				</div>
 				</main>
-					
 			</div>
 			<!-- #main -->
 		</div>
