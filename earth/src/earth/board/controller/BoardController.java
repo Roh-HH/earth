@@ -782,70 +782,103 @@ public class BoardController {
 			
 		// 3. 환경일기 - 이다희
 			//환경일기 목록 요청
-			@RequestMapping("diaryList.et")
-			public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
-				System.out.println("diaryList.et");
-			
-				int code = 3;
-				Map<String, Object> result = null;
+		//=====================환경일기/이다희
+        //환경일기 리스트 가져오기 
+        @RequestMapping("diaryList.et")
+        public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
+            System.out.println("diaryList요청");
 
-				if(sel == null || search == null) {															
-					result = boardService.getArticleList(pageNum,code);
-				}else {
-					result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);		
+            int code = 3;
+            Map<String, Object> result = null;
+            //전체 게시글 검색 안한 전체 글 보여주기 
+            if(sel == null || search == null) {															
+                result = boardService.getArticleList(pageNum,code);
+            //검색 했을때 
+            }else {
+                // 닉네임이넘어올때 
+                System.out.println("nickname ========  sel " + sel);
+
+                if(sel.equals("nickname")) {	
+                        search = boardService.getBaordid(search);				
+                        System.out.println("search ======== > " + search);
+                        sel = "id";
+                        System.out.println("sel ======== >" + sel);
+                    }
+
+                result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
+            }
+
+            List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
+            for(int i=0; i<articleList.size(); i++) {
+                //String writer = replyList.get(i).getWriter();
+                articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
+            }
+
+            // view 에 전달할 데이터 보내기
+            model.addAttribute("pageSize", result.get("pageSize"));
+            model.addAttribute("pageNum", result.get("pageNum"));
+            model.addAttribute("currentPage", result.get("currentPage"));
+            model.addAttribute("startRow", result.get("startRow"));
+            model.addAttribute("endRow", result.get("endRow"));
+            model.addAttribute("articleList", result.get("articleList"));
+            model.addAttribute("count", result.get("count"));
+            model.addAttribute("number", result.get("number"));
+            model.addAttribute("sel", sel);
+            model.addAttribute("search", search);
+
+            return "board/diaryList";
+        }
+			
+		// 환경일기 게시글 내용 조회
+		@RequestMapping("diaryContent.et")
+		public String diaryContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, String pageN, 
+				Model model, HttpServletRequest request, HttpSession session) throws SQLException {
+			
+			System.out.println(" diary content !!!!!!!!!!!!!!!!!");
+			// 글 고유번호(boardnum)를 가지고 게시글 하나의 정보 불러오기 + 조회수 1 올리기
+			DiaryDTO article = boardService.getDiaryArticle(boardnum);
+			
+	
+			//session 아이디로 좋아요 누른 아이디 체크 
+			String recid = (String)session.getAttribute("sid"); 
+			int idCheck = boardService.recidCheck(boardnum, recid);
+			System.out.println("idCheck diary content " + idCheck);
+			
+		
+			//환경일기 댓글 가져오기 
+			Map<String, Object> map = null;
+			map = boardService.getDiaryReplyList(boardnum,pageN);
+			
+			
+			//게시글 아이디 닉네임으로 변경 
+			String id = article.getId();
+			String nicknamectt = boardService.getNicknamectt(id);
+			System.out.println("nicknamectt " + nicknamectt);
+			
+            //댓글 아이디 닉네임으로 변경 
+			 if (map.get("replyList") != null) {
+				List<DiaryDTO> replyList = (List<DiaryDTO>)map.get("replyList");	
+				for(int i=0; i<replyList.size(); i++) {			
+					//String writer = replyList.get(i).getWriter();
+					replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
 				}
-				
-				//String id = (String)session.getAttribute("sid"); - 일단 필요업뜸 
-				
-				// view 에 전달할 데이터 보내기
-				model.addAttribute("pageSize", result.get("pageSize"));
-				model.addAttribute("pageNum", result.get("pageNum"));
-				model.addAttribute("currentPage", result.get("currentPage"));
-				model.addAttribute("startRow", result.get("startRow"));
-				model.addAttribute("endRow", result.get("endRow"));
-				model.addAttribute("articleList", result.get("articleList"));
-				model.addAttribute("count", result.get("count"));
-				model.addAttribute("number", result.get("number"));
-				model.addAttribute("sel", sel);
-				model.addAttribute("search", search);
-				
-				return "board/diaryList";
 			}
 			
-			// 환경일기 게시글 내용 조회
-			@RequestMapping("diaryContent.et")
-			public String diaryContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, String pageN, Model model, HttpServletRequest request, HttpSession session) throws SQLException {
-				System.out.println("diaryContent.et");
-			
-				// 글 고유번호(boardnum)를 가지고 게시글 하나의 정보 불러오기 + 조회수 1 올리기
-				DiaryDTO article = boardService.getDiaryArticle(boardnum);
-				
-				//session 아이디로 좋아요 누른 아이디 체크 
-				String recid = (String)session.getAttribute("sid"); 
-				int idCheck = boardService.recidCheck(boardnum, recid);
-				System.out.println("idCheck diary content " + idCheck);
-				
-				model.addAttribute("article", article);
-				model.addAttribute("idCheck", idCheck);
-				
-				//환경일기 댓글 가져오기 
-				Map<String, Object> map = null;
-				map = boardService.getDiaryReplyList(boardnum,pageN);
-				
-				//매개변수에서 직접 보내기 
-				//model.addAttribute("pageNum", pageNum);
-				//model.addAttribute("boardnum", boardnum);	
-				model.addAttribute("pageSize", map.get("pageSize"));
-				model.addAttribute("pageN", map.get("pageN"));
-				model.addAttribute("currentPage", map.get("currentPage"));
-				model.addAttribute("startRow", map.get("startRow"));
-				model.addAttribute("endRow", map.get("endRow"));
-				model.addAttribute("replyList", map.get("replyList"));
-				model.addAttribute("count", map.get("count"));
-				model.addAttribute("number", map.get("number"));
-
-				return "board/diaryContent";
-			}
+			model.addAttribute("article", article);
+			model.addAttribute("idCheck", idCheck);
+			model.addAttribute("pageSize", map.get("pageSize"));
+			model.addAttribute("pageN", map.get("pageN"));
+			model.addAttribute("currentPage", map.get("currentPage"));
+			model.addAttribute("startRow", map.get("startRow"));
+			model.addAttribute("endRow", map.get("endRow"));
+			model.addAttribute("replyList", map.get("replyList"));
+			model.addAttribute("count", map.get("count"));
+			model.addAttribute("number", map.get("number"));
+		
+			model.addAttribute("nicknamectt", nicknamectt);
+			 
+			return "board/diaryContent";
+		}
 			
 			
 		// 4. 이달의 챌린지 - 이다희
