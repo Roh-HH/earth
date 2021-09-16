@@ -159,6 +159,7 @@
 				</c:if>
 					<button onclick="window.location='/earth/board/diaryList.et?pageNum=${pageNum}'"
 							style="background-color:#ffffff; color:#1E88E5; border:none;">목록으로</button>
+				    <a class="btn-reply text-uppercase">신고</a>
 			</td>
 		</tr> 
 	</table>
