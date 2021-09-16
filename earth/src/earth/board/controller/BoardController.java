@@ -843,22 +843,18 @@ public class BoardController {
 			System.out.println(" diary content !!!!!!!!!!!!!!!!!");
 			// 글 고유번호(boardnum)를 가지고 게시글 하나의 정보 불러오기 + 조회수 1 올리기
 			DiaryDTO article = boardService.getDiaryArticle(boardnum);
-			
-	
+            
+            //게시글 닉네임 가져오기 아이디에 set 해주기 
+			article.setId(boardService.getNicknamectt(article.getId()));
+			   
 			//session 아이디로 좋아요 누른 아이디 체크 
 			String recid = (String)session.getAttribute("sid"); 
 			int idCheck = boardService.recidCheck(boardnum, recid);
 			System.out.println("idCheck diary content " + idCheck);
-			
-		
+				
 			//환경일기 댓글 가져오기 
 			Map<String, Object> map = null;
 			map = boardService.getDiaryReplyList(boardnum,pageN);
-			
-			
-			//게시글(content) 아이디 닉네임으로 변경 
-			String nicknamectt = boardService.getNicknamectt(article.getId());
-			System.out.println("nicknamectt " + nicknamectt);
 			
             //댓글 아이디 닉네임으로 변경 
 			 if (map.get("replyList") != null) {
@@ -879,9 +875,7 @@ public class BoardController {
 			model.addAttribute("replyList", map.get("replyList"));
 			model.addAttribute("count", map.get("count"));
 			model.addAttribute("number", map.get("number"));
-            
-			model.addAttribute("nicknamectt", nicknamectt);
-			 
+    
 			return "board/diaryContent";
 		}
 			

@@ -134,7 +134,7 @@
 		<tr>
 			<td width="200px"> 작성자 </td>
 			<td> <img src="/earth/resources/bootstrap/imgs/heart.png" alt="badge" style="width:20px;">
-			${nicknamectt}</td>
+			${article.id}</td>
 		</tr>
 		<tr>
 			<td width="200px">  게시글 등록일자 </td>
