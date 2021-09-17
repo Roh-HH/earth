@@ -5,8 +5,9 @@ views/adminmypage/adminUser.jsp가 기본적인 뷰페이지이며, 현재 스�
 
 src/admin/dao, controller, service 외 손대지않음
 
-user-context.xml에 다음을 
+user-context.xml에 다음을 추가함
+
 <context:component-scan base-package="earth.admin.controller"/>
-	<context:component-scan base-package="earth.admin.dao"/>
-	<context:component-scan base-package="earth.admin.service"/>
+<context:component-scan base-package="earth.admin.dao"/>
+<context:component-scan base-package="earth.admin.service"/>
 	
