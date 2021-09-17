@@ -176,14 +176,14 @@
 			</select>
 			<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
 				<![CDATA[
-					select B.*, case when b.enddate > to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
+					select B.*, case when b.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
 					DECODE(B.joincount, B.maxcount, 1, 0) ck from (select A.*, rownum r 
 					from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
 				]]>
 			</select>
 			<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
 			 	<![CDATA[
-			 		select A.*, case when A.enddate > to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck from (select * from challenge)A where boardnum=${value}
+			 		select A.*, case when A.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck from (select * from challenge)A where boardnum=${value}
 				]]>
 			</select>
 			<select id="getChReplyListCount" parameterType="int" resultType="int">
