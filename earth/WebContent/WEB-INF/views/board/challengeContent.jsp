@@ -177,8 +177,17 @@
 <!-- 상단 컨텐츠  -->	
 	<table >
 		<tr>
-			<td colspan="2"> <b style="font-size: 30px;">${article.subject}</b> <br />
-			등록일 : <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/> 
+			<td colspan="2"> <b style="font-size: 30px;">${article.subject}</b> <br />		 
+			</td>
+		</tr>
+		<tr>
+			<td> 
+			작성자 : ${article.id}	 
+			</td>
+		</tr>
+		<tr>
+			<td> 
+			등록일 : <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/> 		 
 			</td>
 		</tr>
 	<c:if test="${article.img != null}">
@@ -214,8 +223,8 @@ article.dateck == 1 : 데이트 마감 안됨
 <div align="center">
 <c:if test="${sessionScope.sid != null}">
 	<c:if test="${article.dateck == 1}">
-	
 		 <c:if test="${article.maxcount > article.joincount}">
+		 <p>   챌린지 진행중 	</p>
 			<c:if test="${joinidCheck == 0}">
 				<td colspan="2" align="center">
 					<input type="hidden" name="boardnum" id="boardnum" value="${article.boardnum}"/>
@@ -233,34 +242,44 @@ article.dateck == 1 : 데이트 마감 안됨
 		
 		<c:if test="${article.maxcount == article.joincount}">
 			<p> 챌린지가 마감되었습니다!  </p>
-			  챌린지 성공 ! 	
+			<p>   챌린지 성공 ! 	</p>
 		</c:if>
-		
 	</c:if>
 
 <c:if test="${article.dateck == 0}">
 		<p> 챌린지가 마감되었습니다!  </p>
 		<c:if test="${article.maxcount ==  article.joincount}">
-			 챌린지 성공 ! 	
+			<p>  챌린지 성공 ! </p>
 		</c:if>
 		<c:if test="${article.maxcount > article.joincount}">
-			 챌린지 실패 ! 	
+			<p>  챌린지 실패 ! </p>	
 		</c:if>	 
 	</c:if>	
 </c:if>	
 
 <!-- 비로그인   -->
 <c:if test="${sessionScope.sid == null}">
-	<c:if test="${dateCheck != 1}">
+	<c:if test="${article.dateck == 0}">
+		<p> 챌린지가 마감되었습니다!  </p>
 		<c:if test="${article.maxcount == article.joincount}">
-			<br /> 챌린지 성공 ! 	
+			<p> 챌린지 성공 ! 	</p>
 		</c:if>
 		<c:if test="${article.maxcount > article.joincount}">
-			<br /> 챌린지 실패 ! 	
+			<p> 챌린지 실패 ! 	</p>
 		</c:if>
-	
-		<br /> 챌린지 날짜가 마감되었습니다. 
 	</c:if>
+	
+	<c:if test="${article.dateck == 1}">
+		<c:if test="${article.maxcount == article.joincount}">
+			<p>  챌린지 성공 ! 	</p>
+			<p> 챌린지 날짜가 마감되었습니다. </p>
+		</c:if>
+		<c:if test="${article.maxcount > article.joincount}">
+			<p> 챌린지 진행중 	</p>
+		</c:if>
+	</c:if>
+	
+	
 </c:if>
 
 </div>

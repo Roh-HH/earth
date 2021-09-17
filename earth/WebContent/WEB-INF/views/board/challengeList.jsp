@@ -157,17 +157,17 @@
 		                        </div>
 		                        <a href="/earth/board/challengeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">	 
 										<c:if test="${article.dateck == 0}">[챌린지 마감]
-											<c:if test="${article.ck == 1}">[챌린지 성공]</c:if>
-											<c:if test="${article.ck == 0}">[챌린지 실패]</c:if> 
+											<c:if test="${article.ck == 1}"><span style="color:blue;">[챌린지 성공]</span></c:if>
+											<c:if test="${article.ck == 0}"><span style="color:red;">[챌린지 실패]</span></c:if> 
 										</c:if>	
 										
 										<c:if test="${article.maxcount > article.joincount}">
-											<c:if test="${article.dateck == 1}">[챌린지 진행중]	</c:if>	
+											<c:if test="${article.dateck == 1}"> [챌린지 진행중] </c:if>	
 										</c:if>	
 										<c:if test="${article.maxcount == article.joincount}">
 											<c:if test="${article.dateck == 1}">[챌린지 마감]	
-												<c:if test="${article.ck == 1}">[챌린지 성공]</c:if>
-												<c:if test="${article.ck == 0}">[챌린지 실패]</c:if> 
+												<c:if test="${article.ck == 1}"><span style="color:blue;">[챌린지 성공]</span></c:if>
+												<c:if test="${article.ck == 0}"><span style="color:red;">[챌린지 실패]</span></c:if> 
 											</c:if>
 										</c:if>
 										
