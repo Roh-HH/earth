@@ -15,5 +15,14 @@ public interface AdminService {
 	
 	public void deleteUser(String id) throws SQLException;
 	
+	public Map<String, Object> getCommentList(String pageNum) throws SQLException;
+	
+	public Map<String, Object> getCommentSearch(String pageNum, String sel, String search) throws SQLException;
+	
+	public Map<String, Object> getQuestionList(String pageNum) throws SQLException;
+	
+	public Map<String, Object> getQuestionSearch(String pageNum, String sel, String search) throws SQLException;
+	
+	
 	
 }
