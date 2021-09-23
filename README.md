@@ -1,13 +1,21 @@
 # earth
 글로벌 아이티 - 최종 프로젝트(Model2) 어뜨
 
-views/adminmypage/adminUser.jsp가 기본적인 뷰페이지이며, 현재 스타일이 적용되지 않아 검수중임.
+adminUser에서 삭제기능을 추가중임
+
+현재 추가된 뷰 9/23
+
+adminUser
+adminModify
+adminBoard
+adminComment
+adminQuestion
 
 src/admin/dao, controller, service 외 손대지않음
 
-user-context.xml에 다음을 추가함
+user-context.xml에 다음을 추가해야함
 
 <context:component-scan base-package="earth.admin.controller"/>
 <context:component-scan base-package="earth.admin.dao"/>
 <context:component-scan base-package="earth.admin.service"/>
-	
+* DTO 중 UserDTO는 user.dto에 있는것을 사용함.
