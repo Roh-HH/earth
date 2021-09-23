@@ -1,7 +1,9 @@
 # earth
 글로벌 아이티 - 최종 프로젝트(Model2) 어뜨
 
-adminUser에서 삭제기능을 추가중임
+adminUser에서 삭제기능을 추가중
+
+adminQuestion에서 1:1문의 답변하기 폼을 작성중
 
 현재 추가된 뷰 9/23
 
