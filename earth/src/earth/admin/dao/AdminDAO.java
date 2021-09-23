@@ -4,7 +4,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 import earth.admin.dto.AdminBoardDTO;
-import earth.admin.dto.UserDTO;
+import earth.admin.dto.AdminCommentDTO;
+import earth.admin.dto.AdminQuestionDTO;
+import earth.user.dto.UserDTO;
 
 public interface AdminDAO {
 
@@ -29,5 +31,21 @@ public interface AdminDAO {
 	public List<AdminBoardDTO> getSearchBoard(int startRow, int endRow, String sel, String search) throws SQLException;
 	
 	public void deleteUser(String id) throws SQLException;
+	
+	public int getCommentCount() throws SQLException;
+	
+	public List<AdminCommentDTO> getComment(int startRow, int endRow) throws SQLException;
+	
+	public int getSearchCommentCount(String sel, String search) throws SQLException;
+	
+	public List<AdminCommentDTO> getSearchComment(int startRow, int endRow, String sel, String search) throws SQLException;
+	
+	public int getQuestionCount() throws SQLException;
+	
+	public List<AdminQuestionDTO> getQuestion(int startRow, int endRow) throws SQLException;
+	
+	public int getSearchQuestionCount(String sel, String search) throws SQLException;
+	
+	public List<AdminQuestionDTO> getSearchQuestion(int startRow, int endRow, String sel, String search) throws SQLException;
 	
 }

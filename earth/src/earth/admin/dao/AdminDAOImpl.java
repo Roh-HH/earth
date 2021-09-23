@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.admin.dto.AdminBoardDTO;
-import earth.admin.dto.UserDTO;
+import earth.admin.dto.AdminCommentDTO;
+import earth.admin.dto.AdminQuestionDTO;
+import earth.user.dto.UserDTO;
 
 @Repository
 public class AdminDAOImpl implements AdminDAO {
@@ -112,7 +114,7 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return BoardList;
 	}
-/*
+
 	@Override
 	public void deleteUser(String id) throws SQLException {
 		
@@ -120,6 +122,98 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	}
 
-	*/
+	@Override
+	public int getCommentCount() throws SQLException {
+		int result = sqlSession.selectOne("admin.getCommentCount");
+		
+		return result;
+	}
+
+	@Override
+	public List<AdminCommentDTO> getComment(int startRow, int endRow) throws SQLException {
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+	
+		List<AdminCommentDTO> commentList = sqlSession.selectList("admin.getComment", map);
+		
+		return commentList;
+	}
+
+	@Override
+	public int getSearchCommentCount(String sel, String search) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		int result = sqlSession.selectOne("admin.getSearchCommentCount", map);
+		
+		return result;
+	}
+
+	@Override
+	public List<AdminCommentDTO> getSearchComment(int startRow, int endRow, String sel, String search)throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		List<AdminCommentDTO> commentList = sqlSession.selectList("admin.getSearchComment", map);
+		
+		return commentList;
+	}
+
+	@Override
+	public int getQuestionCount() throws SQLException {
+		
+		int result = sqlSession.selectOne("admin.getQuestionCount");
+		
+		return result;
+	}
+
+	@Override
+	public List<AdminQuestionDTO> getQuestion(int startRow, int endRow) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+	
+		List<AdminQuestionDTO> questionList = sqlSession.selectList("admin.getQuestion", map);
+		
+		return questionList;
+	}
+
+	@Override
+	public int getSearchQuestionCount(String sel, String search) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		int result = sqlSession.selectOne("admin.getSearchQuestionCount", map);
+		
+		return result;
+	}
+
+	@Override
+	public List<AdminQuestionDTO> getSearchQuestion(int startRow, int endRow, String sel, String search)
+			throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		List<AdminQuestionDTO> questionList = sqlSession.selectList("admin.getSearchQuestion", map);
+		
+		return questionList;
+		
+	}
+
+	
 	
 }
