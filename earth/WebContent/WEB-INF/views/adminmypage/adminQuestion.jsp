@@ -223,20 +223,23 @@
 					            <td align="center"><%--체크박스용--%></td>
 					            <td align="center">ID</td>
 					            <td align="center">닉네임</td> 
-					            <td align="center">이메일</td>
-					            <td align="center">경고</td>
-					            <td align="center">신고</td>
+					            <td align="center">제목</td>
+					            <td align="center">작성일</td>
+					            <td align="center">답변상태</td>
 				       		</tr>
 				       
 				       		<%-- 유저정보 view, 옵션추가시 해당 tr onclick으로 유저 세부정보 팝업창 호출 --%>
-				      		<c:forEach var="user" items="${UserList}" varStatus="status">
+				      		<c:forEach var="question" items="${questionList}" varStatus="status">
 								<tr align="center">
-									<td><input type="checkbox" name="info" value="${user.id}"/>
-									<td>${user.id}</td>
-									<td>${user.nickname}</td>
-									<td>${user.email}</td>
-									<td>${user.warncount}</td>
-									<td>${user.reportcount}</td>
+									<td><input type="checkbox" name="info" value="${question.questionnum}"/>
+									<td>${question.id}</td>
+									<td>${question.nickname}</td>
+									<td>${question.subject}</td>
+									<td>${question.reg}</td>
+									<td>
+									<c:if test="${question.reply == 0}"><button onclick="">답변하기</button></c:if>
+									<c:if test="${question.reply == 1}">답변완료</c:if>
+									</td>
 								</tr>
 							</c:forEach>
 				            </table>
@@ -256,31 +259,31 @@
 								<%-- 검색O 페이지번호 --%>
 								<c:if test="${sel != null && search != null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
 									</c:if>
 								</c:if>
 								
 								<%-- 검색X 페이지번호   --%> 
 								<c:if test="${sel == null || search == null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 										<c:if test="${pagenum == i}">
 										<h3 style="colorgray">${i}</h3>
 										</c:if>
 										<c:if test="${pagenum != i}">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 										</c:if>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
 									</c:if>
 								</c:if>
 							</c:if> 
@@ -292,7 +295,7 @@
 							
 							<br /> 
 							 <%-- 작성자/내용 검색 --%>
-							<form action="/earth/adminmypage/adminUser.et" >								
+							<form action="/earth/adminmypage/adminQuestion.et" >								
 								<select style="boder:none;" name="sel">
      								<option value="id">아이디 </option>
 									<option value="ctt">내용</option>
@@ -303,7 +306,7 @@
 								
 								<input type="button" value="삭제" onclick="chkUser()" style=" margin-left:100px"/> 
 								<c:if test="${sel != null && search != null}">
-									<button onclick="window.location='/earth/adminmypage/adminUser.et?'">초기화</button> <br />
+									<button onclick="window.location='/earth/adminmypage/adminQuestion.et?'">초기화</button> <br />
 								</c:if>
 							</form>
                     </div>
