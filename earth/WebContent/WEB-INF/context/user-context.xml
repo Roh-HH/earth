@@ -25,7 +25,16 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>	
 	
+	<context:component-scan base-package="earth.admin.controller"/>
+	<context:component-scan base-package="earth.admin.dao"/>
+	<context:component-scan base-package="earth.admin.service"/>
+	<!--  
 	<context:component-scan base-package="earth.user.controller"/>
-
+	<context:component-scan base-package="earth.user.dao"/>
+	<context:component-scan base-package="earth.user.service"/>
+	-->
+	
+	
+	
 	
 </beans>
