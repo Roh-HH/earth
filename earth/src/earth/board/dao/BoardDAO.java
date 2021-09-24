@@ -33,7 +33,7 @@ public interface BoardDAO {
             // 댓글 닉네임 가져오기 
             public String getNicknamereply(String writer) throws SQLException;
             // 컨텐츠 닉네임 가져오기 
-	        public String getNicknamectt(String id) throws SQLException;
+	        public String getNickname(String id) throws SQLException;
             // search id 가져오기 
             public String getBaordid(String search) throws SQLException;
 

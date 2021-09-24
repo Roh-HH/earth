@@ -9,7 +9,7 @@
             <select id="getNicknamereply" parameterType="string" resultType="string">
                 select nickname from users where id=#{writer}
             </select>
-            <select id="getNicknamectt" parameterType="string" resultType="string">
+            <select id="getNickname" parameterType="string" resultType="string">
                 select nickname from users where id=#{id}
             </select>
             <select id="getBaordid" parameterType="string" resultType="string">

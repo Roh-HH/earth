@@ -38,9 +38,9 @@ public class BoardDAOImpl implements BoardDAO {
         }
         //컨텐츠 닉네임 가져오기 
         @Override
-        public String getNicknamectt(String id) throws SQLException {	
-            String nicknamectt = sqlSession.selectOne("board.getNicknamectt", id);	
-            return nicknamectt;
+        public String getNickname(String id) throws SQLException {	
+            String nickname = sqlSession.selectOne("board.getNickname", id);	
+            return nickname;
         }
         //search 아이디 가져오기 
         @Override

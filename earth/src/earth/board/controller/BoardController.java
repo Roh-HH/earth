@@ -815,7 +815,7 @@ public class BoardController {
                 if (result.get("articleList") != null) {
                     List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
                     for(int i=0; i<articleList.size(); i++) {
-                        articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
+                        articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
                     }
                 }
 
@@ -845,7 +845,7 @@ public class BoardController {
 			DiaryDTO article = boardService.getDiaryArticle(boardnum);
             
             //게시글 닉네임 가져오기 아이디에 set 해주기 
-			article.setId(boardService.getNicknamectt(article.getId()));
+			article.setId(boardService.getNickname(article.getId()));
 			   
 			//session 아이디로 좋아요 누른 아이디 체크 
 			String recid = (String)session.getAttribute("sid"); 
@@ -892,7 +892,7 @@ public class BoardController {
                 if (result.get("articleList") != null) {
                     List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
                     for(int i=0; i<articleList.size(); i++) {
-                        articleList.get(i).setId(boardService.getNicknamectt(articleList.get(i).getId()));
+                        articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
                     }
                 }
 
@@ -922,7 +922,7 @@ public class BoardController {
                 //챌린지글 컨텐츠 가져오기
                 MonthDTO article = boardService.getChallengeArticle(boardnum); 
                 //게시글 아이디 닉네임으로 변경
-                article.setId(boardService.getNicknamectt(article.getId()));
+                article.setId(boardService.getNickname(article.getId()));
 
                 //댓글 가져오기
                 Map<String, Object> map = null;

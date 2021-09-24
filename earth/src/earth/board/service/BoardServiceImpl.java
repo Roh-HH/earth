@@ -39,9 +39,9 @@ public class BoardServiceImpl implements BoardService {
         }
 
         @Override
-        public String getNicknamectt(String id) throws SQLException {
-            String nicknamectt = boardDAO.getNicknamectt(id);
-            return nicknamectt;
+        public String getNickname(String id) throws SQLException {
+            String nickname = boardDAO.getNickname(id);
+            return nickname;
         }
 
         @Override
