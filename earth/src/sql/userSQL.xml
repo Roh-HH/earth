@@ -173,5 +173,29 @@
 			select B.* from (select A.*, rownum r from (select * from report order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
 		]]>	
 	</select>	
+	
+	
+	<!-- 출석체크 김하영 이다희 -->
+	
+	<!--출석 인서트 -->
+	<insert id="insertCheck" parameterType="hashmap">
+		insert into checkattend (id, startdate) select #{id}, #{date} from dual 
+		where not exists (select id, startdate from checkattend where id = #{id} and startdate = #{date})
+	</insert> 
+	<!-- 출석 개수 가져오기 -->
+	<select id="getAttendListCount" parameterType="string" resultType="int">
+		select count(*) from checkAttend where id=#{id}
+	</select>
+	<!-- 출석 목록 가져오기 -->
+	<select id="getAttendList" parameterType="hashmap" resultType="attendDTO">		
+		select * from checkAttend where id=#{id}
+	</select>
+	<!--출석 포인트 업데이트 -->
+	<update id = "updateCheck" parameterType="hashmap">
+	<![CDATA[
+		update point set attendcount = 1, point = point+5 where id=#{id} and attendcount = 0
+	]]>
+	</update>
+
 		
 </mapper>
