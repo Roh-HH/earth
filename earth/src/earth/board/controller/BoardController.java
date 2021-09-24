@@ -1113,14 +1113,33 @@ public class BoardController {
 				// notice 테이블에서 전체 게시글 가져오기
 				int code = 7;
 				Map<String, Object> result = boardService.getArticleList(pageNum, code);
-					
+				
 				// 전체 게시글 sel search == null (검색 안한 전체 글 보여주기) 
 				if(sel == null || search == null) {
 					result = boardService.getArticleList(pageNum, code);
 				}else { // 검색 게시글 sel search != null
+					
+					if(sel.equals("nickname")) {
+						search = boardService.getBaordid(search);
+						System.out.println("search=====>" + search);
+						if(search == null) {
+							search = "null";
+						}
+						sel ="id";
+						System.out.println("sel====> "+ sel);
+					}
 					result = boardService.getArticleSearch(pageNum, sel, search, code);
 				}
 					
+				
+				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
+				if (result.get("articleList") != null) {
+					List<EventDTO> articleList = (List<EventDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+					}
+				}
 				// view 에 전달할 데이터 보내기
 				model.addAttribute("pageSize", result.get("pageSize"));
 				model.addAttribute("pageNum", result.get("pageNum"));
@@ -1141,6 +1160,9 @@ public class BoardController {
 				
 				EventDTO article = boardService.getEventArticle(boardnum);
 				model.addAttribute("article", article);
+				
+				article.setNickname(boardService.getNicknamectt(article.getId()));
+				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	
 				
 				String path = request.getRealPath("save");
 				path += "\\" + article.getImg();
@@ -1167,8 +1189,28 @@ public class BoardController {
 				if(sel == null || search == null) {
 					result = boardService.getArticleList(pageNum, code);
 				}else { // 검색 게시글 sel search != null
+					if(sel.equals("nickname")) {
+						search = boardService.getBaordid(search);
+						System.out.println("search=====>" + search);
+						if(search == null) {
+							search = "null";
+						}
+						sel ="id";
+						System.out.println("sel====> "+ sel);
+					}
 					result = boardService.getArticleSearch(pageNum, sel, search, code);
 				}
+					
+				
+				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
+				if (result.get("articleList") != null) {
+					List<TipDTO> articleList = (List<TipDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+					}
+				}
+							
 				
 			// view에 전달할 데이터 보내기 
 				model.addAttribute("pageSize", result.get("pageSize"));
@@ -1190,6 +1232,10 @@ public class BoardController {
 				
 				TipDTO article = boardService.getTipArticle(boardnum);
 				System.out.println(article.getBoardnum());
+
+				//닉네임이랑 뱃지이미지 추가. 
+				article.setNickname(boardService.getNicknamectt(article.getId()));
+				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	
 
 				model.addAttribute("article", article);
 				
