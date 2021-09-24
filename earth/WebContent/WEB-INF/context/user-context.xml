@@ -25,7 +25,16 @@
 		<property name="suffix" value=".jsp"/>
 	</bean>	
 	
+	<!--  자동주입 설정 <context:component-scan> + @Repository -->
 	<context:component-scan base-package="earth.user.controller"/>
+	<context:component-scan base-package="earth.user.dao" />
+	<context:component-scan base-package="earth.user.service" />
+	
+	<context:component-scan base-package="earth.board.controller"/>
+	<context:component-scan base-package="earth.board.dao"/>
+	<context:component-scan base-package="earth.board.service"/>
+	
+	<context:component-scan base-package="earth.main.controller" />
 
 	
 </beans>
