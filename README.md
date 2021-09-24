@@ -5,13 +5,14 @@ adminUser에서 삭제기능을 추가중
 
 adminQuestion에서 1:1문의 답변하기 폼을 작성중
 
-현재 추가된 뷰 9/23
+현재 추가된 뷰 9/24
 
-adminUser
-adminModify
 adminBoard
 adminComment
+adminModify
+adminNotice
 adminQuestion
+adminUser
 
 src/admin/dao, controller, service 외 손대지않음
 
