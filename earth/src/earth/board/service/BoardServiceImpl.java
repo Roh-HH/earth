@@ -33,12 +33,6 @@ public class BoardServiceImpl implements BoardService {
     
         //// ============= 닉네임 가져오기 다희 추가
         @Override
-        public String getNicknamereply(String writer) throws SQLException {	
-            String nicknamereply = boardDAO.getNicknamereply(writer);
-            return nicknamereply;
-        }
-
-        @Override
         public String getNickname(String id) throws SQLException {
             String nickname = boardDAO.getNickname(id);
             return nickname;
@@ -48,6 +42,25 @@ public class BoardServiceImpl implements BoardService {
         public String getBaordid(String search) throws SQLException {
             String boardid = boardDAO.getBaordid(search);
             return boardid;
+        }
+
+         @Override
+         public String getNicknamereply(String writer) throws SQLException {	
+             String nicknamereply = boardDAO.getNicknamereply(writer);
+             return nicknamereply;
+         }
+
+        @Override
+        public String getBadgeimg(String id) throws SQLException {
+            String badgeimg = boardDAO.getBadgeimg(id);
+            return badgeimg;
+        }
+        
+        //// ============= 뱃지이미지 가져오기 다희 추가
+        @Override
+        public String getBadgeimgreply(String writer) throws SQLException {
+            String badgeimg = boardDAO.getBadgeimgreply(writer);
+            return badgeimg;
         }
     
 		// 게시판의 게시글 목록 가져오기 - 노현호
@@ -462,6 +475,13 @@ public class BoardServiceImpl implements BoardService {
 			int result = boardDAO.insertChJoin(boardnum, id);
 			return result;
 		}
+        //이달의 챌린지 최신글 가져오기 
+        @Override
+        public MonthDTO getChallenge() throws SQLException {
+            MonthDTO article = boardDAO.getChallenge();
+            return article;
+        }
+
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		@Override

@@ -36,12 +36,18 @@ public interface BoardService {
 		public int deleteArticle(int boardnum, int code) throws SQLException;
     
         // ============= 닉네임 가져오기 다희 추가 
-        //댓글 닉네임 가져오기
-	    public String getNicknamereply(String writer) throws SQLException;
-	    //게시글 닉네임 가져오기 
-	    public String getNickname(String id) throws SQLException;
-	    //search 로 아이디 가져오기 
-	    public String getBaordid(String search) throws SQLException;
+        //search 로 아이디 가져오기 
+        public String getBaordid(String search) throws SQLException;
+        //writer로 댓글 닉네임 가져오기
+        public String getNicknamereply(String writer) throws SQLException;
+        //id로 게시글, 리스트 닉네임 가져오기 
+        public String getNickname(String id) throws SQLException;
+    
+        // ============= 뱃지이미지 가져오기 다희 추가 
+        // 뱃지 이미지 (게시글 리스트)
+        public String getBadgeimg(String id) throws SQLException;
+        // 뱃지 이미지 가져오기 (댓글 리스트)
+        public String getBadgeimgreply(String writer) throws SQLException;
 
 	// 1. 공지사항
 		// 공지사항 게시글 업로드 - 노현호
@@ -84,6 +90,8 @@ public interface BoardService {
 		public void insertChallenge(MonthDTO dto) throws SQLException;
 		// 이달의 챌린지 참여하기 - 이다희
 		public int insertChJoin(int boardnum, String id) throws SQLException;
+        // 이달의 챌린지 최신글 1개 가져오기 (추가)
+        public MonthDTO getChallenge() throws SQLException;
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
 		// 이달의 챌린지 조인 아이디 체크 - 이다희

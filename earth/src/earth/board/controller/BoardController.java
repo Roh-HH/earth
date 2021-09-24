@@ -782,8 +782,6 @@ public class BoardController {
 			
 		// 3. 환경일기 - 이다희
 			//환경일기 목록 요청
-		//=====================환경일기/이다희
-        	//환경일기 리스트 가져오기 
             @RequestMapping("diaryList.et")
             public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
                 System.out.println("diaryList요청");
@@ -796,26 +794,28 @@ public class BoardController {
                 //검색 했을때 
                 }else {
                     // 닉네임이넘어올때 
-                    System.out.println("nickname ========  sel " + sel);
+                    System.out.println("nickname ========>sel " + sel);
+
                     if(sel.equals("nickname")) {	
                             search = boardService.getBaordid(search);				
-                            System.out.println("search ======== > " + search);
+                            System.out.println("search ========> " + search);
                             //search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
                             if(search == null) {
                                 search = "null";
                             }
-                            // 리스트 가져오기 위해 sel 를 다시 id 
                             sel = "id";
-                            System.out.println("sel ======== >" + sel);
+                            System.out.println("sel ========>" + sel);
                         }
 
                     result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
                 }
-                //리스트 닉네임을 아이디로 저장 
+
+                // 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
                 if (result.get("articleList") != null) {
                     List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
                     for(int i=0; i<articleList.size(); i++) {
-                        articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
+                        articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+                        articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
                     }
                 }
 
@@ -833,37 +833,41 @@ public class BoardController {
 
                 return "board/diaryList";
             }
-       
-			
+ 	
 		// 환경일기 게시글 내용 조회
-		@RequestMapping("diaryContent.et")
+        @RequestMapping("diaryContent.et")
 		public String diaryContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, String pageN, 
 				Model model, HttpServletRequest request, HttpSession session) throws SQLException {
 			
 			System.out.println(" diary content !!!!!!!!!!!!!!!!!");
 			// 글 고유번호(boardnum)를 가지고 게시글 하나의 정보 불러오기 + 조회수 1 올리기
 			DiaryDTO article = boardService.getDiaryArticle(boardnum);
-            
-            //게시글 닉네임 가져오기 아이디에 set 해주기 
-			article.setId(boardService.getNickname(article.getId()));
-			   
 			//session 아이디로 좋아요 누른 아이디 체크 
 			String recid = (String)session.getAttribute("sid"); 
 			int idCheck = boardService.recidCheck(boardnum, recid);
 			System.out.println("idCheck diary content " + idCheck);
-				
+			
 			//환경일기 댓글 가져오기 
 			Map<String, Object> map = null;
 			map = boardService.getDiaryReplyList(boardnum,pageN);
-			
-            //댓글 아이디 닉네임으로 변경 
+					
+			//댓글 아이디 닉네임으로 바꾸기 , 뱃지 이미지 넣기 
+			// 리스트 불러올때만 nickname 추가 메서드 이용해서 닉네임값으로 set해주기 
 			 if (map.get("replyList") != null) {
-				List<DiaryDTO> replyList = (List<DiaryDTO>)map.get("replyList");	
+				@SuppressWarnings("unchecked")
+				List<DiaryDTO> replyList = (List<DiaryDTO>)map.get("replyList");	 
 				for(int i=0; i<replyList.size(); i++) {			
-					//String writer = replyList.get(i).getWriter();
-					replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
+					replyList.get(i).setNickname(boardService.getNicknamereply(replyList.get(i).getWriter()));
+					replyList.get(i).setBadgeimg(boardService.getBadgeimgreply(replyList.get(i).getWriter()));
 				}
 			}
+   
+			//게시글 닉네임 가져오기 아이디에 set 해주기 -> 이렇게하면 수정 삭제 분기 처리 불가능 
+			//article.setId(boardService.getNicknamectt(article.getId()));
+			String nickname = boardService.getNickname(article.getId());
+			System.out.println("id ============> " + article.getId());
+			//컨텐츠용 뱃지 이미지 
+			String badgeimg = boardService.getBadgeimg(article.getId());
 			
 			model.addAttribute("article", article);
 			model.addAttribute("idCheck", idCheck);
@@ -875,95 +879,157 @@ public class BoardController {
 			model.addAttribute("replyList", map.get("replyList"));
 			model.addAttribute("count", map.get("count"));
 			model.addAttribute("number", map.get("number"));
-    
+			
+			model.addAttribute("nickname", nickname);
+			model.addAttribute("badgeimg", badgeimg);
+		 
 			return "board/diaryContent";
 		}
-			
-			
+    
 		// 4. 이달의 챌린지 - 이다희
 			//지난 챌린지 목록 요청
-            @RequestMapping("challengeList.et") 
-            public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
-                // 해당 페이지에 맞는 화면에 뿌려줄 게시글 가져와서 view 전달 
-                Map<String, Object> result = null;
-                int code = 4;
-                result = boardService.getArticleList(pageNum, code);
+        @RequestMapping("challengeList.et") 
+        public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
+            Map<String, Object> result = null;
+            int code = 4;
+            result = boardService.getArticleList(pageNum, code);
 
-                if (result.get("articleList") != null) {
-                    List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
-                    for(int i=0; i<articleList.size(); i++) {
-                        articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
-                    }
+            // 아이디를 닉네임으로 변경 
+            if (result.get("articleList") != null) {
+                @SuppressWarnings("unchecked")
+                List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
+                for(int i=0; i<articleList.size(); i++) {
+                    articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
                 }
-
-                // view에 전달할 데이터 보내기 
-                model.addAttribute("pageSize", result.get("pageSize"));
-                model.addAttribute("pageNum", result.get("pageNum"));
-                model.addAttribute("currentPage", result.get("currentPage"));
-                model.addAttribute("startRow", result.get("startRow"));
-                model.addAttribute("endRow", result.get("endRow"));
-                model.addAttribute("articleList", result.get("articleList"));
-                model.addAttribute("count", result.get("count"));
-                model.addAttribute("number", result.get("number"));
-
-
-
-                return "board/challengeList";
             }
-			
-			// 이달의 챌린지 게시글 조회(+댓글조회)
-            @RequestMapping("challengeContent.et")
-            public String challengeContent(int boardnum, String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
-                System.out.println("이달의 챌린지 요청");
+            // view에 전달할 데이터 보내기 
+            model.addAttribute("pageSize", result.get("pageSize"));
+            model.addAttribute("pageNum", result.get("pageNum"));
+            model.addAttribute("currentPage", result.get("currentPage"));
+            model.addAttribute("startRow", result.get("startRow"));
+            model.addAttribute("endRow", result.get("endRow"));
+            model.addAttribute("articleList", result.get("articleList"));
+            model.addAttribute("count", result.get("count"));
+            model.addAttribute("number", result.get("number"));
+            return "board/challengeList";
+        }
 
-                //참여자 확인을 위해 세션아이디 필요
-                String id = (String)session.getAttribute("sid");
+        // 상단메뉴에서 보여지는 최신글 이달의 챌린지 컨텐츠 
+        @RequestMapping("monthlyChallenge.et")
+        public String monthlyChallenge(Model model, HttpSession session) throws SQLException {
+            System.out.println("이달의 챌린지 요청");
 
-                //챌린지글 컨텐츠 가져오기
-                MonthDTO article = boardService.getChallengeArticle(boardnum); 
-                //게시글 아이디 닉네임으로 변경
-                article.setId(boardService.getNickname(article.getId()));
+            //참여자 확인을 위해 세션아이디 필요
+            String id = (String)session.getAttribute("sid");
+            System.out.println("monthly challenge id " + id);
 
-                //댓글 가져오기
-                Map<String, Object> map = null;
-                map = boardService.getChReplyList(boardnum,pageN);
+            //챌린지글 컨텐츠 가져오기
+            MonthDTO article = boardService.getChallenge(); 
+            int boardnum = article.getBoardnum();
 
-                //댓글 아이디 닉네임으로 변경 
-                 if (map.get("replyList") != null) {
-                    List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
-                    for(int i=0; i<replyList.size(); i++) {			
-                        //String writer = replyList.get(i).getWriter();
-                        replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
-                    }
+            //게시글용 
+            article.setId(boardService.getNickname(article.getId()));
+
+            String pageN = "1";
+
+            //댓글 가져오기
+            Map<String, Object> map = null;
+            map = boardService.getChReplyList(boardnum, pageN);
+
+            //댓글 아이디 닉네임으로 변경 
+             if (map.get("replyList") != null) {
+                @SuppressWarnings("unchecked")
+                List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
+                for(int i=0; i<replyList.size(); i++) {			
+                    replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
                 }
-
-                //참여자확인 
-                int joinidCheck = boardService.joinidCheck(boardnum, id);
-
-                //마감데이트 확인 
-                int dateCheck = boardService.dateCheck(boardnum);
-                System.out.println("dateCheck" + dateCheck);
-
-                //컨텐츠용 
-                model.addAttribute("article", article);	
-                model.addAttribute("pageNum", pageNum);
-                //댓글용 
-                model.addAttribute("pageSize", map.get("pageSize"));
-                model.addAttribute("pageN", map.get("pageN"));
-                model.addAttribute("currentPage", map.get("currentPage"));
-                model.addAttribute("startRow", map.get("startRow"));
-                model.addAttribute("endRow", map.get("endRow"));
-                model.addAttribute("replyList", map.get("replyList"));
-                model.addAttribute("count", map.get("count"));
-                //글번호 
-                model.addAttribute("number", map.get("number"));
-                //참여자확인 
-                model.addAttribute("joinidCheck", joinidCheck);
-                //마감데이트 확인
-                model.addAttribute("dateCheck", dateCheck);
-                System.out.println("댓글 pageN" + pageN);
-                return "board/challengeContent"; 
             }
+            //참여자확인 
+            int joinidCheck = boardService.joinidCheck(boardnum, id);
+            System.out.println("join id check monthlychallege" + joinidCheck);
+            //마감데이트 확인 
+            int dateCheck = boardService.dateCheck(boardnum);
+            System.out.println("dateCheck" + dateCheck);
+            String pageNum = "1";
+            //컨텐츠용 
+            model.addAttribute("article", article);	
+            model.addAttribute("pageNum", pageNum);
+            //보드넘 보내주기 
+            model.addAttribute("boardnum", boardnum);
+            //댓글용 
+            model.addAttribute("pageSize", map.get("pageSize"));
+            model.addAttribute("pageN", map.get("pageN"));
+            model.addAttribute("currentPage", map.get("currentPage"));
+            model.addAttribute("startRow", map.get("startRow"));
+            model.addAttribute("endRow", map.get("endRow"));
+            model.addAttribute("replyList", map.get("replyList"));
+            model.addAttribute("count", map.get("count"));
+            model.addAttribute("number", map.get("number"));
+            //참여자확인 
+            model.addAttribute("joinidCheck", joinidCheck);
+            //마감데이트 확인
+            model.addAttribute("dateCheck", dateCheck);
+
+            return "redirect:/board/challengeContent.et";	 
+
+            }
+    
+        // 이달의 챌린지 게시글 가져오기   - 이다희
+        @RequestMapping("challengeContent.et")
+        public String challengeContent(@ModelAttribute("boardnum") int boardnum,  String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
+            System.out.println("이달의 챌린지 요청");
+
+            //참여자 확인을 위해 세션아이디 필요
+            String id = (String)session.getAttribute("sid");
+
+            //챌린지글 컨텐츠 가져오기
+            MonthDTO article = boardService.getChallengeArticle(boardnum); 
+
+            //댓글 가져오기
+            Map<String, Object> map = null;
+            map = boardService.getChReplyList(boardnum,pageN);
+
+
+            //댓글 아이디 닉네임으로 변경 
+             if (map.get("replyList") != null) {
+                List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
+                for(int i=0; i<replyList.size(); i++) {			
+                    replyList.get(i).setNickname(boardService.getNicknamereply(replyList.get(i).getWriter()));
+                    replyList.get(i).setBadgeimg(boardService.getBadgeimgreply(replyList.get(i).getWriter()));
+                }
+            }
+            //게시글 닉네임 가져오기
+            String nickname = boardService.getNickname(article.getId());
+            System.out.println("id ============> " + article.getId());
+
+            //참여자확인 
+            int joinidCheck = boardService.joinidCheck(boardnum, id);
+
+            //마감데이트 확인 
+            int dateCheck = boardService.dateCheck(boardnum);
+            System.out.println("dateCheck" + dateCheck);
+
+            //컨텐츠용 
+            model.addAttribute("article", article);	
+            model.addAttribute("pageNum", pageNum);
+            //댓글용 
+            model.addAttribute("pageSize", map.get("pageSize"));
+            model.addAttribute("pageN", map.get("pageN"));
+            model.addAttribute("currentPage", map.get("currentPage"));
+            model.addAttribute("startRow", map.get("startRow"));
+            model.addAttribute("endRow", map.get("endRow"));
+            model.addAttribute("replyList", map.get("replyList"));
+            model.addAttribute("count", map.get("count"));
+            model.addAttribute("number", map.get("number"));
+            //참여자확인 
+            model.addAttribute("joinidCheck", joinidCheck);
+            //마감데이트 확인
+            model.addAttribute("dateCheck", dateCheck);
+            // 컨텐츠아이디 닉네임으로 
+            model.addAttribute("nickname", nickname);
+
+            return "board/challengeContent"; 
+        }
 			
 			
 		// 5. 오늘의 실천 - 노현호
