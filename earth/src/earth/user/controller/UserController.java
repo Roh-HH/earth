@@ -584,59 +584,66 @@ public class UserController {
 		}		
 	
 		
-		// 작성자 : 이다희 김하영	
-		// 마이페이지 : 출석체크
-		
-			//출석체크 페이지 불러오기
-			@RequestMapping("myCheck.et")
-			public String myCheck(String date, Model model) throws SQLException {
-				System.out.println("출석체크 페이지 요청 ");
+	// 작성자 : 이다희 김하영	
+	// 마이페이지 : 출석체크
 
-				return "user/myCheck";
+		//출석체크 페이지 불러오기
+		@RequestMapping("myCheck.et")
+		public String myCheck(String date, Model model) throws SQLException {
+			System.out.println("출석체크 페이지 요청 ");
+
+			UserDTO user = userService.getUser();
+			model.addAttribute("user", user);	
+
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());						
+
+			return "user/myCheck";
+		}
+
+		//출석체크 인서트 
+		@RequestMapping("ajaxCkPo.et")
+			public ResponseEntity<String> ajaxCkPo(Model model, String date, HttpSession session) throws SQLException {
+
+			System.out.println("date" + date);
+			String id = (String)session.getAttribute("sid");
+
+			int result = userService.insertCheck(id, date); 
+
+			String data = "";  
+			if(result == 1) {	 
+				data = "1";  
+			}else if(result ==0){				 
+				data ="0";	 
 			}
-
-			//출석체크 인서트 
-			@RequestMapping("ajaxCkPo.et")
-				public ResponseEntity<String> ajaxCkPo(Model model, String date, HttpSession session) throws SQLException {
-
-				System.out.println("date" + date);
-				String id = (String)session.getAttribute("sid");
-
-				int result = userService.insertCheck(id, date); 
-
-				String data = "";  
-				if(result == 1) {	 
-					data = "1";  
-				}else if(result ==0){				 
-					data ="0";	 
-				}
-				System.out.println("result" + result);
+			System.out.println("result" + result);
 
 
-				model.addAttribute("result", result);
-				HttpHeaders respHeaders = new HttpHeaders();
-				respHeaders.add("Content-Type", "test/html;charset=UTF-8");
+			model.addAttribute("result", result);
+			HttpHeaders respHeaders = new HttpHeaders();
+			respHeaders.add("Content-Type", "test/html;charset=UTF-8");
 
-				return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
-			}
+			return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
+		}
 
-			//출석체크 리스트 가져오기
-			@RequestMapping("attend.et")
-			public ResponseEntity<ArrayList<String>> attend(String id, HttpSession session) throws SQLException{
-				System.out.println("attendList.et 요청 ");
-				ArrayList<String> attendList = new ArrayList<>();
+		//출석체크 리스트 가져오기
+		@RequestMapping("attend.et")
+		public ResponseEntity<ArrayList<String>> attend(String id, HttpSession session) throws SQLException{
+			System.out.println("attendList.et 요청 ");
+			ArrayList<String> attendList = new ArrayList<>();
 
-				id = (String)session.getAttribute("sid");
-				System.out.println("세션아이디로 바꿔주기 -> "+ id);
+			id = (String)session.getAttribute("sid");
+			System.out.println("세션아이디로 바꿔주기 -> "+ id);
 
-				attendList = userService.getAttendList(id);
-				System.out.println("attendList============." + attendList);
+			attendList = userService.getAttendList(id);
+			System.out.println("attendList============." + attendList);
 
-				HttpHeaders respHeaders = new HttpHeaders();
-				respHeaders.add("Content-Type", "test/html;charset=UTF-8");
+			HttpHeaders respHeaders = new HttpHeaders();
+			respHeaders.add("Content-Type", "test/html;charset=UTF-8");
 
-				return new ResponseEntity<ArrayList<String>>(attendList, respHeaders, HttpStatus.OK);
+			return new ResponseEntity<ArrayList<String>>(attendList, respHeaders, HttpStatus.OK);
 
-			}
+		}
 		
 }
