@@ -24,13 +24,12 @@
 
     <style>
     
-     tr.space {border-bottom: 5px solid #fff;}
+     	tr.space {border-bottom: 5px solid #fff;}
 
 	.center {
 	    Text-align:center;
-		Horizontal-align:middle;
+	    vertical-align:middle;
 	}
-    
     </style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
