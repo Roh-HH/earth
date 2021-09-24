@@ -57,8 +57,7 @@
  
 	<context:component-scan base-package="earth.news.controller"/>
 	
-	 <!--  스케쥴링 관련 class 빈 등록 -->
-    <context:component-scan base-package="earth.board.task" />
+	
     <!--   AOP 어노테이션으로 작업할 Asppect클래스 빈으로 등록 -->
 	<bean id="earthAspect" class="earth.board.task.EarthAspect" />
 	<aop:aspectj-autoproxy />
