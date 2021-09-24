@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import earth.badge.dto.BadgeDTO;
 import earth.board.dto.TodayDTO;
 import earth.user.dto.QuestionDTO;
 import earth.user.dto.UserDTO;
@@ -114,6 +115,12 @@ public class UserController {
 			
 			return "redirect:/main/main.et";	// main 페이지 컨트롤러로 다시 요청하는 것 <c:redirect url="/member/main.do" /> 와 같은 처리. jsp를 거치지 않고 main 페이지 요청
 		}
+		
+		// 아이디 찾기 폼 페이지, 로직 처리 요청
+		@RequestMapping("idFind.et")
+		public String idFind() {
+			return "user/idFind";
+		}
 
 
 	//******** 사용자 마이페이지 ********
@@ -127,6 +134,10 @@ public class UserController {
 			WarningDTO warn = userService.getUserWarn();							// 회원 한명의 경고내역 가져오기
 			model.addAttribute("warn", warn);
 			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
+			
 			return "user/mypage"; 
 	   }
 		
@@ -134,9 +145,13 @@ public class UserController {
 		
 		// 마이페이지 - 내프로필보기 : 회원정보 수정 폼 페이지 요청 : 회원정보 하나 가져오는 메서드 활용해 DB에서 회원정보 가져오기
 		@RequestMapping("userModifyForm.et")
-		public String userModifyForm(Model model) throws SQLException {
+		public String userModifyForm(Model model, HttpSession session) throws SQLException {
 			UserDTO user = userService.getUser(); 									// (*id 값 컨트롤러에서 안넘겨주는 방법 : id 매개변수 안넘김(로직 처리 할 때 세션 아이디 추가))
 			model.addAttribute("user", user);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/userModifyForm";
 		}
@@ -158,6 +173,10 @@ public class UserController {
 		public String userPwModifyForm(Model model) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/userPwModifyForm";
 		}
@@ -185,6 +204,10 @@ public class UserController {
 		public String userDeleteForm(Model model) throws SQLException{
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/userDeleteForm";
 		}
@@ -219,6 +242,9 @@ public class UserController {
 			// 세션 아이디로 해당 사용자 정보 가져오기
 			UserDTO user = userService.getUser();
 			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			
 			// view 에 전달할 데이터 보내기
 			model.addAttribute("user", user);
 			model.addAttribute("pageSize", result.get("pageSize"));
@@ -229,6 +255,7 @@ public class UserController {
 			model.addAttribute("articleList", result.get("articleList"));
 			model.addAttribute("count", result.get("count"));
 			model.addAttribute("number", result.get("number"));		
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/myToday";
 		}
@@ -266,6 +293,9 @@ public class UserController {
 			
 			// 세션 아이디로 해당 사용자 정보 가져오기
 			UserDTO user = userService.getUser();
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
 						
 			// 검색 기능 사용X : 전체 게시글 가져오기
 			if(sel == null || search == null) {
@@ -286,6 +316,7 @@ public class UserController {
 			model.addAttribute("number", result.get("number"));		
 			model.addAttribute("sel", sel);
 			model.addAttribute("search", search);	
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/myDiary";
 		}
@@ -304,7 +335,10 @@ public class UserController {
 			Map<String, Object> result = userService.getMyArticleList(pageNum, code, id);
 
 			// 세션 아이디로 해당 사용자 정보 가져오기
-			UserDTO user = userService.getUser();		
+			UserDTO user = userService.getUser();	
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
 			
 			// view 에 전달할 데이터 보내기
 			model.addAttribute("user", user);
@@ -316,6 +350,7 @@ public class UserController {
 			model.addAttribute("freeArticleList", result.get("freeArticleList"));
 			model.addAttribute("count", result.get("count"));
 			model.addAttribute("number", result.get("number"));		
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 	
 			return "user/myBoard";
 		}
@@ -342,6 +377,9 @@ public class UserController {
 			// 세션 아이디로 해당 사용자 정보 가져오기
 			UserDTO user = userService.getUser();
 			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			
 			// view 에 전달할 데이터 보내기
 			model.addAttribute("user", user);
 			model.addAttribute("pageSize", result.get("pageSize"));
@@ -354,6 +392,7 @@ public class UserController {
 			model.addAttribute("number", result.get("number"));
 			model.addAttribute("sel", sel);
 			model.addAttribute("search", search);	
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 					
 			return "user/myComment";
 		}
@@ -374,9 +413,12 @@ public class UserController {
 			
 			// 세션 아이디로 해당 사용자 정보 가져오기
 			UserDTO user = userService.getUser();
-			model.addAttribute("user", user);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
 			
 			// view 에 전달할 데이터 보내기
+			model.addAttribute("user", user);
 			model.addAttribute("pageSize", result.get("pageSize"));
 			model.addAttribute("pageNum", result.get("pageNum"));
 			model.addAttribute("currentPage", result.get("currentPage"));
@@ -387,6 +429,7 @@ public class UserController {
 			model.addAttribute("number", result.get("number"));	
 			model.addAttribute("sel", sel);
 			model.addAttribute("search", search);		
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/myOnetoOne";
 		}
@@ -396,6 +439,10 @@ public class UserController {
 		public String myQnAWriteForm(Model model) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/myQnAWriteForm";
 		}		
@@ -410,10 +457,14 @@ public class UserController {
 		@RequestMapping("myQnAModifyForm.et")
 		public String myQnAModifyForm(Model model, HttpSession session, @RequestParam("questionnum") int questionnum) throws SQLException {
 			UserDTO user = userService.getUser();
-			model.addAttribute("user", user);		
+			model.addAttribute("user", user);	
 			
 			QuestionDTO question = userService.getMyQnAOne(questionnum);	// 1:1 문의글 고유번호로 문의글 한개의 정보 가져오기
 			model.addAttribute("question", question);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 			
 			return "user/myQnAModifyForm";
 		}
@@ -450,9 +501,12 @@ public class UserController {
 			
 			// 세션 아이디로 해당 사용자 정보 가져오기
 			UserDTO user = userService.getUser();
-			model.addAttribute("user", user);
+
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
 			
 			// view 에 전달할 데이터 보내기
+			model.addAttribute("user", user);
 			model.addAttribute("pageSize", result.get("pageSize"));
 			model.addAttribute("pageNum", result.get("pageNum"));
 			model.addAttribute("currentPage", result.get("currentPage"));
@@ -461,69 +515,128 @@ public class UserController {
 			model.addAttribute("rpArticleList", result.get("rpArticleList"));
 			model.addAttribute("count", result.get("count"));
 			model.addAttribute("number", result.get("number"));				
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
 					
 			return "user/myReport";
 		}
 	
-	
+	// 작성자 : 김예찬	
+	// 마이페이지 : 나의 에코백
+
+		// mybag - 김예찬
+		@RequestMapping("myBag.et")	
+		public String myBag(String pageNum,HttpSession session, Model model) throws SQLException{
+			System.out.println("나의 에코백 요청");
+			
+			// 세션에서 유저 아이디 불러오기 
+			String id = (String)session.getAttribute("sid");
+			
+			// 세션 아이디로 해당 사용자 정보 가져오기
+			UserDTO user = userService.getUser();
+			model.addAttribute("user", user);
+		
+			Map<String, Object> result;
+			
+			// 보유 뱃지 목록 가져오기 
+			result = userService.getMyBadgeList(pageNum,id);
+
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(id);
+			
+			// view 에 전달할 데이터 보내기
+			model.addAttribute("pageSize", result.get("pageSize"));
+			model.addAttribute("pageNum", result.get("pageNum"));
+			model.addAttribute("currentPage", result.get("currentPage"));
+			model.addAttribute("startRow", result.get("startRow"));
+			model.addAttribute("endRow", result.get("endRow"));
+			model.addAttribute("articleList", result.get("articleList"));
+			model.addAttribute("count", result.get("count"));
+			model.addAttribute("number", result.get("number"));
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
+
+			return "user/myBag";
+		}
+		
+		// 뱃지 해제하기 - 김예찬
+		@RequestMapping("releaseBadge.et")	
+		public String releaseBadge(HttpSession session, Model model) throws SQLException{
+			System.out.println("해제하기 요청");
+			
+			// 세션에서 유저 아이디 불러오기 
+			String id = (String)session.getAttribute("sid");
+					
+			userService.releaseBadge(id);
+			
+			return "redirect:/user/myBag.et";
+		}
+		
+		// 뱃지 착용하기 - 김예찬
+		@RequestMapping("equipBadge.et")	
+		public String equipBadge(int badgenum, HttpSession session, Model model) throws SQLException{
+			System.out.println("해제하기 요청");
+			
+			// 세션에서 유저 아이디 불러오기 
+			String id = (String)session.getAttribute("sid");
+			
+			userService.equipBadge(id,badgenum);
+			
+			return "redirect:/user/myBag.et";
+		}		
 	
 		
-	//출석체크 ---이다희 김하영 
-	
-		//출석체크 페이지 불러오기
-		@RequestMapping("myCheck.et")
-		public String myCheck(String date, Model model) throws SQLException {
-			System.out.println("출석체크 페이지 요청 ");
+		// 작성자 : 이다희 김하영	
+		// 마이페이지 : 출석체크
+		
+			//출석체크 페이지 불러오기
+			@RequestMapping("myCheck.et")
+			public String myCheck(String date, Model model) throws SQLException {
+				System.out.println("출석체크 페이지 요청 ");
 
-			return "user/myCheck";
-		}
-
-		//출석체크 인서트 
-		@RequestMapping("ajaxCkPo.et")
-			public ResponseEntity<String> ajaxCkPo(Model model, String date, HttpSession session) throws SQLException {
-
-			System.out.println("date" + date);
-			String id = (String)session.getAttribute("sid");
-
-			int result = userService.insertCheck(id, date); 
-
-			String data = "";  
-			if(result == 1) {	 
-				data = "1";  
-			}else if(result ==0){				 
-				data ="0";	 
+				return "user/myCheck";
 			}
-			System.out.println("result" + result);
+
+			//출석체크 인서트 
+			@RequestMapping("ajaxCkPo.et")
+				public ResponseEntity<String> ajaxCkPo(Model model, String date, HttpSession session) throws SQLException {
+
+				System.out.println("date" + date);
+				String id = (String)session.getAttribute("sid");
+
+				int result = userService.insertCheck(id, date); 
+
+				String data = "";  
+				if(result == 1) {	 
+					data = "1";  
+				}else if(result ==0){				 
+					data ="0";	 
+				}
+				System.out.println("result" + result);
 
 
-			model.addAttribute("result", result);
-			HttpHeaders respHeaders = new HttpHeaders();
-			respHeaders.add("Content-Type", "test/html;charset=UTF-8");
+				model.addAttribute("result", result);
+				HttpHeaders respHeaders = new HttpHeaders();
+				respHeaders.add("Content-Type", "test/html;charset=UTF-8");
 
-			return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
-		}
+				return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
+			}
 
-		//출석체크 리스트 가져오기
-		@RequestMapping("attend.et")
-		public ResponseEntity<ArrayList<String>> attend(String id, HttpSession session) throws SQLException{
-			System.out.println("attendList.et 요청 ");
-			ArrayList<String> attendList = new ArrayList<>();
+			//출석체크 리스트 가져오기
+			@RequestMapping("attend.et")
+			public ResponseEntity<ArrayList<String>> attend(String id, HttpSession session) throws SQLException{
+				System.out.println("attendList.et 요청 ");
+				ArrayList<String> attendList = new ArrayList<>();
 
-			id = (String)session.getAttribute("sid");
-			System.out.println("세션아이디로 바꿔주기 -> "+ id);
+				id = (String)session.getAttribute("sid");
+				System.out.println("세션아이디로 바꿔주기 -> "+ id);
 
-			attendList = userService.getAttendList(id);
-			System.out.println("attendList============." + attendList);
+				attendList = userService.getAttendList(id);
+				System.out.println("attendList============." + attendList);
 
-			HttpHeaders respHeaders = new HttpHeaders();
-			respHeaders.add("Content-Type", "test/html;charset=UTF-8");
+				HttpHeaders respHeaders = new HttpHeaders();
+				respHeaders.add("Content-Type", "test/html;charset=UTF-8");
 
-			return new ResponseEntity<ArrayList<String>>(attendList, respHeaders, HttpStatus.OK);
+				return new ResponseEntity<ArrayList<String>>(attendList, respHeaders, HttpStatus.OK);
 
-		}
-
-
-	
-	
-	
+			}
+		
 }
