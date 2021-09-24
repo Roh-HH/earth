@@ -49,6 +49,19 @@ public class BoardDAOImpl implements BoardDAO {
             System.out.println("baordid " + baordid);	
             return baordid;
         }
+        
+        // 뱃지이미지 추가 =================== 이다희
+        @Override
+        public String getBadgeimg(String id) throws SQLException {
+            String badgeimg = sqlSession.selectOne("board.getBadgeimg", id);
+            return badgeimg;
+        }
+
+        @Override
+        public String getBadgeimgreply(String writer) throws SQLException {
+            String badgeimg = sqlSession.selectOne("board.getBadgeimgreply", writer);
+            return badgeimg;
+        }
     
     
 		// 전체 게시글 글 개수 가져오기(모든 테이블 사용 가능) - 노현호
@@ -422,6 +435,12 @@ public class BoardDAOImpl implements BoardDAO {
 			List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);		
 			return boardList;
 		}
+        //최신글 하나 가져오기 (추가)
+        @Override
+	    public MonthDTO getChallenge() throws SQLException {
+            MonthDTO article = sqlSession.selectOne("board.getChallenge");
+            return article;
+        }
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		@Override

@@ -7,13 +7,21 @@
      
     <!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
             <select id="getNicknamereply" parameterType="string" resultType="string">
-                select nickname from users where id=#{writer}
+                   select nickname from users where id=#{writer}
             </select>
+
             <select id="getNickname" parameterType="string" resultType="string">
                 select nickname from users where id=#{id}
             </select>
             <select id="getBaordid" parameterType="string" resultType="string">
                 select id from users where nickname=#{search}
+            </select>
+    <!-- 공용 뱃지 이미지 불러오기  -->
+            <select id="getBadgeimg" parameterType="string" resultType="string">
+                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{id}
+            </select>
+                <select id="getBadgeimgreply" parameterType="string" resultType="string">
+                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{writer}
             </select>
 	
 	
@@ -181,6 +189,9 @@
 					from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
 				]]>
 			</select>
+			<select id="getChallenge" resultType="monthDTO">
+		        select * from (select * from challenge order by reg desc) where rownum = 1
+	        </select>
 			<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
 			 	<![CDATA[
 			 		select A.*, case when A.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck from (select * from challenge)A where boardnum=${value}
