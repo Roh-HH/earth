@@ -500,5 +500,35 @@ public class UserServiceImpl implements UserService {
 			return result;		
 		}
 	
+	
+	
+	//출석체크 
+	
+		@Override
+		public int insertCheck(String id, String date) throws SQLException {
+
+			int result = userDAO.insertCheck(id, date);
+
+			return result;
+		}
+
+		@Override
+		public ArrayList<String> getAttendList(String id) throws SQLException {		
+			int count = 0; 
+
+			ArrayList<String> attendList = null;  	
+
+			count = userDAO.getAttendListCount(id); 
+
+			if(count > 0){
+				attendList = userDAO.getAttendList(id); 
+			}
+
+			System.out.println(count);
+
+			return attendList;
+		}
+
+	
 
 }
