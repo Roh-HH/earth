@@ -502,8 +502,9 @@ public class UserServiceImpl implements UserService {
 	
 	
 	
-	//출석체크 
-	
+	//출석체크 -이다희 김하영 
+		
+		//출석 인서트
 		@Override
 		public int insertCheck(String id, String date) throws SQLException {
 
@@ -511,7 +512,8 @@ public class UserServiceImpl implements UserService {
 
 			return result;
 		}
-
+		
+		//출석 리스트 받아오기
 		@Override
 		public ArrayList<String> getAttendList(String id) throws SQLException {		
 			int count = 0; 
