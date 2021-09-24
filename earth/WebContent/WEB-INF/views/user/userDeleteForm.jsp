@@ -56,7 +56,7 @@
                               <div class="input-group mb-3">
                               
 								<!--  여기 벳지 받아오는 이미지 입니다.  -->
-								<img src='/earth/resources/bootstrap/imgs/logo.png' height='100px' width='100px'/><br>
+								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	

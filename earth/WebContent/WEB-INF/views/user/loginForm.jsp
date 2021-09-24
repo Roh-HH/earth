@@ -120,7 +120,7 @@
 					<tr>
 						<td colspan="2">
 							<input type="submit" value="로그인" style="background-color:#1E88E5; border : none;width:330px; height:40px; border-radius:3px;color:#ffffff;"/><br><br>
-							<input type="button" value="아이디/비밀번호 찾기" onclick="window.location='/earth/user/.et'" style="border:none; float:left; color:black;"/>
+							<input type="button" value="아이디/비밀번호 찾기" onclick="window.location='/earth/user/idFind.et'" style="border:none; float:left; color:black;"/>
 							<input type="button" value="회원가입" onclick="window.location='/earth/user/signupForm.et'"
 									style="background-color:#ffffff; border:none; color:#1E88E5; float:right;"/>
 						</td>

@@ -25,6 +25,11 @@
     <style>
     
      tr.space {border-bottom: 5px solid #fff;}
+
+	.center {
+	    Text-align:center;
+		Horizontal-align:middle;
+	}
     
     </style>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -69,7 +74,7 @@
                               <div class="input-group mb-3">
                               
 								<!--  여기 벳지 받아오는 이미지 입니다.  -->
-								<img src='/earth/resources/bootstrap/imgs/logo.png' height='100px' width='100px'/><br>
+								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	
@@ -168,7 +173,7 @@
 							</table>
 							<table>
 								<tr>
-									<td>
+									<td class ="center">
 										<!--  경고 이미지 -->
 										<img src='/earth/resources/bootstrap/imgs/warn_icon.png' height='50px' width='50px'/>																
 									</td>

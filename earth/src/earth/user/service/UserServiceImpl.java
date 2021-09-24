@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 
+import earth.badge.dto.BadgeDTO;
 import earth.board.dto.DiaryDTO;
 import earth.board.dto.FreeDTO;
 import earth.board.dto.TodayDTO;
@@ -500,9 +501,78 @@ public class UserServiceImpl implements UserService {
 			return result;		
 		}
 	
+	// 작성자 : 김예찬	
+	// 마이페이지 : 나의 에코백
+
+		// 나의 뱃지 보유목록 가져오기 - 김예찬
+		@Override
+		public Map<String, Object> getMyBadgeList(String pageNum, String id) throws SQLException {
+			
+			// 한 페이지에서 보여줄 뱃지 갯수 
+			int pageSize = 5;
+			
+			// 현재 페이지 번호  
+			if(pageNum == null){ // pageNum 파라미터 안넘어왔을때.
+				pageNum = "1";
+			}
+			
+			// 현재 페이지에 보여줄 게시글 시작과 끝 등등 정보 세팅 
+			int currentPage = Integer.parseInt(pageNum); 
+			int startRow = (currentPage - 1) * pageSize + 1; 		// 페이지 시작글 번호 
+			int endRow = currentPage * pageSize; 					// 페이지 마지막 글번호
+			int count = 0; 											// 전체(검색된) 글의 개수 
+			int number = 0; 										// 브라우저 화면에 뿌려줄 가상 글 번호
+			
+			// DB에 저장되어있는 전체 글의 개수를 가져와 담기
+			count = userDAO.getMyBadgeCount(id);					
+			number = count - (currentPage-1) * pageSize; 			// 게시판 목록에 뿌려줄 가상의 글 번호 
+			System.out.println("등록된 뱃지 개수 : " + count);
+			
+			Map<String, Object> result = new HashMap<String, Object>();
+
+			if(count > 0){
+				List<BadgeDTO> articleList = userDAO.getMyBadgeArticles(startRow, endRow, id); 
+				result.put("articleList", articleList);
+			}
+				
+			// Controller 에게 전달
+			result.put("pageSize", pageSize);
+			result.put("pageNum", pageNum);
+			result.put("currentPage", currentPage);
+			result.put("startRow", startRow);
+			result.put("endRow", endRow);
+			result.put("count", count);
+			result.put("number", number);
+			
+			return result;
+		}
+		
+		// 내 적용중 뱃지 가져오기 - 김예찬
+		@Override
+		public BadgeDTO getMyBadge(String id) throws SQLException {
+			BadgeDTO result = userDAO.getMyBadge(id); 
+
+			return result;
+		}
+		
+		// 착용중인 뱃지 해제하기 (1- Default)
+		@Override
+		public void releaseBadge(String id) throws SQLException {
+			
+			userDAO.releaseBadge(id);
+				
+		}
+		
+		// 뱃지 장착하기
+		@Override
+		public void equipBadge(String id, int badgenum) throws SQLException {
+			
+			userDAO.equipBadge(id,badgenum);
+			
+		}	
 	
-	
-	//출석체크 -이다희 김하영 
+	// 작성자 : 이다희 김하영
+	// 마이페이지 : 출석체크
 		
 		//출석 인서트
 		@Override
@@ -530,7 +600,5 @@ public class UserServiceImpl implements UserService {
 
 			return attendList;
 		}
-
-	
 
 }

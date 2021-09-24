@@ -3,6 +3,7 @@ package earth.user.service;
 import java.sql.SQLException;
 import java.util.Map;
 
+import earth.badge.dto.BadgeDTO;
 import earth.board.dto.TodayDTO;
 import earth.user.dto.QuestionDTO;
 import earth.user.dto.UserDTO;
@@ -86,9 +87,23 @@ public interface UserService {
 	// 마이페이지 - 신고내역
 		public Map<String, Object> getMyReportList(String pageNum) throws SQLException;
 	
-	
-	
-	// 출석하기- 이다희 김하영 
+	// 작성자 : 김예찬	
+	// 마이페이지 : 나의 에코백	
+		
+		// 나의 뱃지 보유목록 가져오기 - 김예찬
+		public Map<String, Object> getMyBadgeList(String pageNum, String id) throws SQLException;
+
+		// 내 적용중 뱃지 가져오기 - 김예찬
+		public BadgeDTO getMyBadge(String id) throws SQLException;
+		
+		// 착용중인 뱃지 해제하기 (1- Default)
+		public void releaseBadge(String id) throws SQLException;
+
+		// 뱃지 장착하기
+		public void equipBadge(String id,int badgenum) throws SQLException;
+			
+	// 작성자 : 이다희 김하영
+	// 마이페이지 출석하기
 	
 		//출석 인서트 
 		public int insertCheck(String id, String date) throws SQLException;
