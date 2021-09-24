@@ -113,8 +113,7 @@
 						<a href="/earth/user/myBag.et">나의 에코백</a>
 						</li>
 						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;">출석체크하기</button><br>	<br>							
-						<button type="button" style="float:right; background-color:#ffffff; color:#1E88E5; border-radius:5px; float:left;">출석체크현황</button>							
+						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
 						</li>
 						</ul>
                       </aside>

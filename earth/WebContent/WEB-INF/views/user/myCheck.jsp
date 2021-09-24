@@ -128,7 +128,7 @@
                             		<div class="form-group">
 		                              <div class="input-group mb-3">
 										<!--  여기 벳지 받아오는 이미지 입니다.  -->
-										<img src='/earth/resources/bootstrap/imgs/logo.png' height='100px' width='100px'/><br>
+										<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
 		                              </div>
 		                            </div>
 		                        	<h4>${user.nickname}</h4>                      	
@@ -178,8 +178,7 @@
 										<a href="/earth/user/myBag.et">나의 에코백</a>
 										</li>
 										<li>
-										<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;"
-												onclick="/earth/user/myCheck.et">출석체크하기</button><br>	<br>							
+										<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
 										</li>
 										</ul>
 				                      </aside>
