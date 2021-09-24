@@ -77,14 +77,14 @@
 				insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt})
 			</insert>
 		
-		<!-- 환경일기 댓글 -->
+        <!-- 환경일기 댓글 -->
 			<insert id="insertDiaryReply" parameterType="hashmap">
-			 	insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt})
+				insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt}, 10)
 			</insert>
 		
 		<!-- 이달의 챌린지 댓글 -->
 			<insert id="insertChReply" parameterType="hashmap">
-			 	insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt})
+			 	insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt}, 11)
 			</insert>
 		
 	
