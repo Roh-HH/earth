@@ -559,6 +559,8 @@ public class BoardDAOImpl implements BoardDAO {
 		// 상점소개 글 1개 가져오기 - 김하영
 		@Override
 		public ShopDTO getShopArticle(int boardnum) throws SQLException {
+			sqlSession.update("board.addReadCountShop", boardnum);
+
 			ShopDTO article = sqlSession.selectOne("board.getShopArticle", boardnum);
 			return article;
 		}
@@ -628,7 +630,7 @@ public class BoardDAOImpl implements BoardDAO {
 		@Override
 		public EventDTO getEventArticle(int boardnum) throws SQLException {
 			// 조회수 1 증가
-			//sqlSession.update("board.addReadCountEvent", boardnum);
+			sqlSession.update("board.addReadCountEvent", boardnum);
 			// 글 불러오기
 			EventDTO article = sqlSession.selectOne("board.getEventArticle", boardnum); 
 			return article;
@@ -699,7 +701,7 @@ public class BoardDAOImpl implements BoardDAO {
 		@Override
 		public TipDTO getTipArticle(int boardnum) throws SQLException {
 			// 조회수 1 증가
-			//sqlSession.update("board.addReadCountEvent", boardnum);
+			sqlSession.update("board.addReadCountTip", boardnum);
 			// 글 불러오기
 			TipDTO article = sqlSession.selectOne("board.getTipArticle", boardnum); 
 			return article;

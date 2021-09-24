@@ -64,7 +64,7 @@
 		
 		<!-- 행사 -->
 			<insert id="insertEvent" parameterType="eventDTO">
-				insert into event values(event_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code}, #{sch})
+				insert into event values(event_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code}, #{sch}, #{schend})
 			</insert>
 		
 		<!-- 꿀팁 -->
@@ -405,6 +405,11 @@
 		
 		
 		<!-- 상점소개 -->
+			<update id="addReadCountShop" parameterType="int">
+				<![CDATA[
+					update shop set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
 			<update id="updateShopArticle" parameterType="shopDTO"> 	
 				update shop set subject = #{subject}, hyperlink = #{hyperlink} where boardnum = #{boardnum} 
 			</update>
@@ -413,14 +418,24 @@
 			</update>
 		
 		<!-- 행사 -->
+			<update id="addReadCountEvent" parameterType="int">
+				<![CDATA[
+					update event set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
 			<update id="updateEventArticle" parameterType="eventDTO">
-				update event set subject = #{subject}, sch = #{sch}, ctt = #{ctt} where boardnum = #{boardnum} 
+				update event set subject = #{subject}, sch = #{sch},  schend = #{schend}, ctt = #{ctt} where boardnum = #{boardnum} 
 			</update>
 			<update id="updateEventArticleImg" parameterType="eventDTO">
-				update event set subject = #{subject}, sch = #{sch}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+				update event set subject = #{subject}, sch = #{sch}, schend = #{schend}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
 			</update>
 		
 		<!-- 꿀팁 -->
+			<update id="addReadCountTip" parameterType="int">
+				<![CDATA[
+					update tip set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
 			<update id="updateTipArticle" parameterType="tipDTO">
 				update tip set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} 
 			</update>
