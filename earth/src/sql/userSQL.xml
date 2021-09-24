@@ -176,15 +176,6 @@
 
 	<!-- 작성자 : 김예찬 -->
 	<!-- 마이페이지 : 나의 에코백 -->	
-
-	<update id="updatePoint">
-		update point set attendcount = 0, boardcount=0,  commentcount=0
-	</update>
-	
-	<insert id="insertCheck" parameterType="hashmap">
-		insert into checkattend values(#{id}, #{date})
-	</insert>
-	
 	<select id="countUserBadge" resultType="int">
 		select count(*) from mybag where id=#{id}
 	</select>
@@ -223,11 +214,20 @@
 	<select id="getAttendList" parameterType="hashmap" resultType="attendDTO">		
 		select * from checkAttend where id=#{id}
 	</select>
-	<!--출석 포인트 업데이트 -->
-	<update id = "updateCheck" parameterType="hashmap">
-	<![CDATA[
-		update point set attendcount = 1, point = point+5 where id=#{id} and attendcount = 0
-	]]>
+	
+    <!-- 포인트 관련  -->
+	<update id="updatePoint">
+		update point set attendcount = 0, boardcount=0,  commentcount=0
+	</update>
+	
+	<update id="updateCheck" parameterType="hashmap">
+		update point set attendcount = 1, point = point+5 where id = #{id} and attendcount = 0
+	</update>
+	<update id="updateReplyPoint" parameterType="hashmap">
+		update point set commentcount = 1, point = point+5 where id = #{writer} and commentcount = 0
+	</update>
+	<update id="updateBoardPoint" parameterType="string">
+		update point set boardcount = 1, point = point+5 where id = #{id} and boardcount = 0
 	</update>
 
 		
