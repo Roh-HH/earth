@@ -16,6 +16,25 @@ public class TipDTO {
 	private Integer readcount;
 	private Integer code;
 	private MultipartFile uploadFile;
+	private String nickname;
+	 
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+	
+	// 뱃지 이미지 추가 
+	private String badgeimg;
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
+	
 	public Integer getBoardnum() {
 		
 		return boardnum;
