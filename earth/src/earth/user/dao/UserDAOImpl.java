@@ -311,4 +311,57 @@ public class UserDAOImpl implements UserDAO {
 			return myReportList;
 		}
 
+	// 작성자 : 김예찬	
+	// 마이페이지 : 나의 에코백	
+		
+		// 나의 뱃지 총 개수 - 김예찬
+		@Override
+		public int getMyBadgeCount(String id) throws SQLException {		
+			int result = sqlSession.selectOne("user.countUserBadge",id);	
+			
+			return result;
+		}
+		
+		// 나의 뱃지 보유목록 가져오기 - 김예찬
+		@Override
+		public List<BadgeDTO> getMyBadgeArticles(int startRow, int endRow, String id) throws SQLException {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			List<BadgeDTO> badgeList;
+
+			map.put("start", startRow);
+			map.put("end", endRow);
+			map.put("id", id);
+			
+			badgeList = sqlSession.selectList("user.getMyBadgeArticles", map);
+		
+			return badgeList;
+			
+			
+		}
+		
+		// 내 적용중 뱃지 가져오기 - 김예찬
+		@Override
+		public BadgeDTO getMyBadge(String id) throws SQLException {
+			BadgeDTO result = sqlSession.selectOne("user.getMyBadge", id);
+			
+			return result;
+		}
+		
+		// 착용중인 뱃지 해제하기 (1- Default)
+		@Override
+		public void releaseBadge(String id) throws SQLException {
+			sqlSession.update("user.releaseBadge", id);
+		}
+		
+		// 뱃지 장착하기 - 김예찬
+		@Override
+		public void equipBadge(String id, int badgenum) throws SQLException {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			
+			map.put("id", id);
+			map.put("badgenum", badgenum);
+			
+			sqlSession.update("user.equipBadge", map);
+		}			
+
 }
