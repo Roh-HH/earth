@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
+import earth.admin.dto.NoticeDTO;
 import earth.user.dto.UserDTO;
 
 @Repository
@@ -199,8 +200,7 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public List<AdminQuestionDTO> getSearchQuestion(int startRow, int endRow, String sel, String search)
-			throws SQLException {
+	public List<AdminQuestionDTO> getSearchQuestion(int startRow, int endRow, String sel, String search)throws SQLException {
 		
 		HashMap map = new HashMap();
 		map.put("startRow", startRow);
@@ -211,6 +211,54 @@ public class AdminDAOImpl implements AdminDAO {
 		List<AdminQuestionDTO> questionList = sqlSession.selectList("admin.getSearchQuestion", map);
 		
 		return questionList;
+		
+	}
+	
+	
+	@Override
+	public int getNoticeCount() throws SQLException {
+		
+		int result = sqlSession.selectOne("admin.getNoticeCount");
+		
+		return result;
+	}
+
+	@Override
+	public List<NoticeDTO> getNotice(int startRow, int endRow) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+	
+		List<NoticeDTO> noticeList = sqlSession.selectList("admin.getNotice", map);
+		
+		return noticeList;
+	}
+
+	@Override
+	public int getSearchNoticeCount(String sel, String search) throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		int result = sqlSession.selectOne("admin.getSearchNoticeCount", map);
+		
+		return result;
+	}
+
+	@Override
+	public List<NoticeDTO> getSearchNotice(int startRow, int endRow, String sel, String search)throws SQLException {
+		
+		HashMap map = new HashMap();
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		List<NoticeDTO> noticeList = sqlSession.selectList("admin.getSearchNotice", map);
+		
+		return noticeList;
 		
 	}
 
