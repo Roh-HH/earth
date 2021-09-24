@@ -23,6 +23,9 @@ public interface AdminService {
 	
 	public Map<String, Object> getQuestionSearch(String pageNum, String sel, String search) throws SQLException;
 	
+	public Map<String, Object> getNoticeList(String pageNum) throws SQLException;
+	
+	public Map<String, Object> getNoticeSearch(String pageNum, String sel, String search) throws SQLException;
 	
 	
 }
