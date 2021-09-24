@@ -88,7 +88,8 @@ public interface UserService {
 	
 	
 	
-	// 출석하기
+	// 출석하기- 이다희 김하영 
+	
 		//출석 인서트 
 		public int insertCheck(String id, String date) throws SQLException;
 		//출석현황 불러오기
