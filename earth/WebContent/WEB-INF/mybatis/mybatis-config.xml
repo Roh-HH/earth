@@ -27,6 +27,10 @@
 		<typeAlias alias="warningDTO" type="earth.user.dto.WarningDTO"/>	
 		<typeAlias alias="commentDTO" type="earth.user.dto.CommentDTO"/>
 		
+			
+		<typeAlias alias="attendDTO" type="earth.user.dto.AttendDTO"/>
+		<typeAlias alias="userDTO" type="earth.user.dto.UserDTO"/>
+		
 	</typeAliases>
 	
  	<!-- mapper의 위치 설정 -->
@@ -34,5 +38,6 @@
  		<mapper resource="/sql/adminSQL.xml"/>
  		<mapper resource="/sql/boardSQL.xml"/>
  		<mapper resource="/sql/userSQL.xml"/>
+ 		<mapper resource="/sql/mainSQL.xml"/>
  	</mappers>
 </configuration>
