@@ -21,6 +21,12 @@
 		<typeAlias alias="tipDTO" type="earth.board.dto.TipDTO"/>
 		<typeAlias alias="todayDTO" type="earth.board.dto.TodayDTO"/>
 		
+		<typeAlias alias="userDTO" type="earth.user.dto.UserDTO"/>
+		<typeAlias alias="questionDTO" type="earth.user.dto.QuestionDTO"/>
+		<typeAlias alias="reportDTO" type="earth.user.dto.ReportDTO"/>	
+		<typeAlias alias="warningDTO" type="earth.user.dto.WarningDTO"/>	
+		<typeAlias alias="commentDTO" type="earth.user.dto.CommentDTO"/>
+		
 	</typeAliases>
 	
  	<!-- mapper의 위치 설정 -->
