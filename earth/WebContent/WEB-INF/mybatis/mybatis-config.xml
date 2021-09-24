@@ -21,15 +21,15 @@
 		<typeAlias alias="tipDTO" type="earth.board.dto.TipDTO"/>
 		<typeAlias alias="todayDTO" type="earth.board.dto.TodayDTO"/>
 		
-		<typeAlias alias="userDTO" type="earth.user.dto.UserDTO"/>
+		<typeAlias alias="attendDTO" type="earth.user.dto.AttendDTO"/>
+		<typeAlias alias="commentDTO" type="earth.user.dto.CommentDTO"/>	
+		<typeAlias alias="mybagDTO" type="earth.user.dto.MybagDTO"/>				
 		<typeAlias alias="questionDTO" type="earth.user.dto.QuestionDTO"/>
 		<typeAlias alias="reportDTO" type="earth.user.dto.ReportDTO"/>	
-		<typeAlias alias="warningDTO" type="earth.user.dto.WarningDTO"/>	
-		<typeAlias alias="commentDTO" type="earth.user.dto.CommentDTO"/>
-		
-			
-		<typeAlias alias="attendDTO" type="earth.user.dto.AttendDTO"/>
 		<typeAlias alias="userDTO" type="earth.user.dto.UserDTO"/>
+		<typeAlias alias="warningDTO" type="earth.user.dto.WarningDTO"/>
+		
+		<typeAlias alias="badgeDTO" type="earth.badge.dto.BadgeDTO"/>	
 		
 	</typeAliases>
 	
@@ -39,5 +39,6 @@
  		<mapper resource="/sql/boardSQL.xml"/>
  		<mapper resource="/sql/userSQL.xml"/>
  		<mapper resource="/sql/mainSQL.xml"/>
+		<mapper resource="/sql/badgeSQL.xml"/>
  	</mappers>
 </configuration>
