@@ -17,7 +17,22 @@ public class EventDTO {
 	private Integer code;
 	private MultipartFile uploadFile;
 	private String sch;
+	private String schend;
+	private String nickname;
+	private String badgeimg;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
 	public Integer getBoardnum() {
 		
 		return boardnum;
@@ -84,6 +99,12 @@ public class EventDTO {
 	}
 	public void setSch(String sch) {
 		this.sch = sch;
+	}
+	public String getSchend() {
+		return schend;
+	}
+	public void setSchend(String schend) {
+		this.schend = schend;
 	}
 	
 }
