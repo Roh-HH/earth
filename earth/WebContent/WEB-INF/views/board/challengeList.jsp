@@ -21,6 +21,7 @@
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+<<<<<<< Updated upstream
     
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
@@ -120,6 +121,26 @@
     </header>
     	
 
+=======
+    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
+</head>
+<style>
+
+.badgeImg{
+width:18px; 
+height:18px; 
+margin-top:4px; 
+margin-right:4px;
+}
+</style>
+
+<body>
+
+
+<!--================ Start header Top Area =================-->
+<%@ include file = "../include/header.jsp" %>
+   
+>>>>>>> Stashed changes
 	<section class="category-page area-padding">
         <div class="container">
          <h3 class="page-title">
@@ -153,6 +174,10 @@
 							</div>
 	                    	<div class="short_details">
 		                    	<div class="meta-top d-flex">
+<<<<<<< Updated upstream
+=======
+		                    		<img class="badgeImg" src="${pageContext.request.contextPath}/save/admin.png"/>
+>>>>>>> Stashed changes
 		                            <a href="#">${article.id}</a>                         
 		                        </div>
 		                        <a href="/earth/board/challengeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">	 
@@ -170,11 +195,15 @@
 												<c:if test="${article.ck == 0}"><span style="color:red;">[챌린지 실패]</span></c:if> 
 											</c:if>
 										</c:if>
+<<<<<<< Updated upstream
 										
 									<h4>
 										<br /> ${article.subject}
 									</h4>
 								</a><br>
+=======
+										<h4  style="height:60px;">${article.subject}</h4></a><br>
+>>>>>>> Stashed changes
 								<p><fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH:mm"/></p>
 								
 								
@@ -226,6 +255,7 @@
 			</c:if>
 		</nav>
 			<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p>
+<<<<<<< Updated upstream
 	
 	</div>
 	<footer id="colophon" class="site-footer">
@@ -237,6 +267,11 @@
 		</div>
 	</div>	
 	</footer>
+=======
+	</div>
+					
+<%@ include file = "../include/footer.jsp" %>
+>>>>>>> Stashed changes
 <!-- #page -->
 
 </body>

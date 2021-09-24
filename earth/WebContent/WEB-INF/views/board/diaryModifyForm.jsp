@@ -22,12 +22,16 @@
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
     <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
     
 </head>
 <body>
+<<<<<<< Updated upstream
 
      <!--================ Start header Top Area =================-->
     <section class="header-top">
@@ -120,6 +124,9 @@
             </nav>
         </div>
     </header>
+=======
+<%@ include file = "../include/header.jsp" %>
+>>>>>>> Stashed changes
  
 <section class="category-page area-padding">
         <div class="container">   	
@@ -190,6 +197,7 @@
 		<!-- #content -->
 </section>
 <!-- .container -->
+<<<<<<< Updated upstream
 
 	<!-- .container -->
 	<footer id="colophon" class="site-footer">
@@ -208,3 +216,12 @@
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
 </html>
+=======
+					
+<%@ include file = "../include/footer.jsp" %>
+<!-- #page -->
+
+</body>
+</html>
+ 
+>>>>>>> Stashed changes

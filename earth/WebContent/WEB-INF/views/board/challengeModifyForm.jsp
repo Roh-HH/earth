@@ -22,11 +22,15 @@
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+<<<<<<< Updated upstream
     
+=======
+>>>>>>> Stashed changes
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
     <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
     
 </head>
+<<<<<<< Updated upstream
 <body>
 
      <!--================ Start header Top Area =================-->
@@ -127,6 +131,14 @@
     	 -->
 <!--------------------------------------------------------------------------------------- #masthead 
 		여러분 여기까지는 건들거 없습니다!!!! -->
+=======
+ <body>
+     <!--================ Start header Top Area =================-->
+<%@ include file = "../include/header.jsp" %>
+ 
+<section class="category-page area-padding">
+        <div class="container">   	
+>>>>>>> Stashed changes
 		<div id="content" class="site-content">
 			<div id="primary" class="content-area column full">
 				<main id="main" class="site-main" role="main">
@@ -192,6 +204,7 @@
 		<!-- #content -->
 </section>
 <!-- .container -->
+<<<<<<< Updated upstream
 
 	<!-- .container -->
 	<footer id="colophon" class="site-footer">
@@ -210,3 +223,12 @@
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
 </html>
+=======
+<%@ include file = "../include/footer.jsp" %>
+<!-- #page -->
+
+</body>
+</html>
+
+ 
+>>>>>>> Stashed changes

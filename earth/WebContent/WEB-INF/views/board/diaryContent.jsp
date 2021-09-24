@@ -21,6 +21,7 @@
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+<<<<<<< Updated upstream
     
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
     
@@ -124,6 +125,34 @@
     	
 	<h1 align="center">환경일기 </h1>
 	
+=======
+    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<style>
+.badgeImg{
+width:20px; 
+height:20px; 
+margin-bottom:2px;
+margin-right:4px;
+}
+.singo{
+ float:right; 
+ background-color:#f3f3f3; 
+ border:none; 
+ border-radius:3px;
+ margin-bottom:15px;
+ }
+</style>
+
+<body>  
+<%@ include file = "../include/header.jsp" %>
+ 	
+<section class="category-page area-padding">
+        <div class="container">   	
+    	<button class="singo"> 👎🏻 신고</button>
+	<h1 align="center">환경일기 </h1>
+>>>>>>> Stashed changes
 	<table>
 		<tr>
 			<td width="200px"> 제목 </td>
@@ -133,8 +162,13 @@
 		</tr>
 		<tr>
 			<td width="200px"> 작성자 </td>
+<<<<<<< Updated upstream
 			<td> <img src="/earth/resources/bootstrap/imgs/heart.png" alt="badge" style="width:20px;">
 			${article.id}</td>
+=======
+			<td><img class="badgeImg" src="${pageContext.request.contextPath}/save/${badgeimg}" />
+			${nickname}</td>
+>>>>>>> Stashed changes
 		</tr>
 		<tr>
 			<td width="200px">  게시글 등록일자 </td>
@@ -155,11 +189,18 @@
                 <c:if test="${sessionScope.sid == article.id or sessionScope.sid == 'admin'}">
 					<button onclick="popupOpen()"
 							style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
+<<<<<<< Updated upstream
 					               	
 				</c:if>
 					<button onclick="window.location='/earth/board/diaryList.et?pageNum=${pageNum}'"
 							style="background-color:#ffffff; color:#1E88E5; border:none;">목록으로</button>
 				    <a class="btn-reply text-uppercase">신고</a>
+=======
+				</c:if>
+				<c:if test="${sessionScope.sid != article.id and sessionScope.sid != 'admin'}">
+					<a class="btn-reply text-uppercase">신고</a>
+				</c:if>
+>>>>>>> Stashed changes
 			</td>
 		</tr> 
 	</table>
@@ -268,10 +309,16 @@
 				//contentType:'application/json; charset=UTF-8',
 				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
 											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
+<<<<<<< Updated upstream
 				alert("댓글입력 성공! ");
 				location.reload();
 				
 				document.getElementById("ctt").value = "참여하시고 댓글을 올려주세요!"; // input replace
+=======
+				//alert("댓글입력 성공! ");
+				location.reload();
+				//document.getElementById("ctt").value = "참여하시고 댓글을 올려주세요!"; // input replace
+>>>>>>> Stashed changes
 				
 				},
 				 
@@ -293,7 +340,11 @@
 	                       <div class="single-comment justify-content-between d-flex">
 	                           <div class="user justify-content-between d-flex">
 	                               <div class="thumb">
+<<<<<<< Updated upstream
 	                                   <img src="/earth/resources/bootstrap/imgs/logo.png" alt="">
+=======
+	                                  <img src="${pageContext.request.contextPath}/save/${replyList.badgeimg}"  alt="" />
+>>>>>>> Stashed changes
 	                               </div>
 		                              <div class="desc">
 			                                  <p class="comment" style="width:800px;">
@@ -302,8 +353,12 @@
 		                                  <div class="d-flex justify-content-between">
 		                                      <div class="d-flex align-items-center">
 		                                          <h5>
+<<<<<<< Updated upstream
 		                                       
 		                                             ${replyList.writer}
+=======
+		                                             ${replyList.nickname}
+>>>>>>> Stashed changes
 		                                          </h5>
 		                                          <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
@@ -375,8 +430,12 @@
                </div>
                <div class="form-group">
                    <button type="button" onclick="replyajax()" class="button button-contactForm"
+<<<<<<< Updated upstream
                    		style="width:150px; height:45px; background-color:#1E88E5; border:none;float:right;"
                    >댓글달기</button>
+=======
+                   		style="width:150px; height:45px; background-color:#1E88E5; border:none;float:right;">댓글달기</button>
+>>>>>>> Stashed changes
                </div>
            </form>
 	</div>
@@ -408,12 +467,17 @@
 	
 		</c:if>  
 		</nav> 
+<<<<<<< Updated upstream
 		<p style="color:grey"> 현재페이지 : ${pageN} </p> 
+=======
+	<%-- 	<p style="color:grey"> 현재페이지 : ${pageN} </p> --%> 
+>>>>>>> Stashed changes
 	</div>
 	
 
 	<button onclick="window.location='/earth/board/diaryList.et'"
 				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">목록으로 </button>
+<<<<<<< Updated upstream
 	
 	</div>
 </section>
@@ -432,3 +496,14 @@
 
 </body>
 </html>
+=======
+				
+	
+	</div>
+</section>
+<%@ include file = "../include/footer.jsp" %>
+<!-- #page -->
+
+</body>
+</html> 
+>>>>>>> Stashed changes

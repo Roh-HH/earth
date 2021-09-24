@@ -28,6 +28,7 @@
     
 </head>
 <body>
+<<<<<<< Updated upstream
 
      <!--================ Start header Top Area =================-->
     <section class="header-top">
@@ -125,6 +126,11 @@
         <div class="container">   	
     	<!-- - 여기까지 손대지 마세요!!
     	 -->
+=======
+<%@ include file = "../include/header.jsp" %>
+<section class="category-page area-padding">
+        <div class="container">   	
+>>>>>>> Stashed changes
 <!--------------------------------------------------------------------------------------- #masthead
 		여러분 여기까지는 건들거 없습니다!!!! -->
 		<div id="content" class="site-content">
@@ -185,6 +191,7 @@
 		<!-- #content -->
 </section>
 <!-- .container -->
+<<<<<<< Updated upstream
  
 	<!-- .container -->
 	<footer id="colophon" class="site-footer">
@@ -203,3 +210,12 @@
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
 </html>
+=======
+ 					
+<%@ include file = "../include/footer.jsp" %>
+<!-- #page -->
+
+</body>
+</html>
+ 
+>>>>>>> Stashed changes

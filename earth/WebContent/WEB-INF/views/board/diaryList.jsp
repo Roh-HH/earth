@@ -21,6 +21,7 @@
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
+<<<<<<< Updated upstream
     
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
@@ -120,11 +121,29 @@
     </header>
     	
 
+=======
+    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
+</head>
+<style>
+
+.badgeImg{
+width:18px; 
+height:18px; 
+margin-top:4px; 
+margin-right:4px;
+}
+</style>
+
+<body>
+ <%@ include file = "../include/header.jsp" %>
+ 
+>>>>>>> Stashed changes
 	<section class="category-page area-padding">
         <div class="container">
          <h3 class="page-title">
 					커뮤니티 
 				</h3>
+<<<<<<< Updated upstream
 				<h1 class="entry-title"> 환경일기  </h1>
 				
 				<form style="float:right;height:60px;" class="woocommerce-ordering" method="get" action="/earth/board/diaryList.et" >
@@ -144,6 +163,19 @@
 						<option value="price">포인트순</option>
 					</select>
 				</form> -->
+=======
+				    	<h1 class="entry-title"> 환경일기  </h1>
+					<form action="/earth/board/diaryList.et" >
+	         		<div class="input-group" style="width:300px; float:right;">
+	         			<select name="sel" style="height:30px;">
+							<option value="nickname">닉네임</option>
+							<option value="ctt">내용</option>	
+						</select>
+                       	<input class="form-control" type="text" placeholder="검색" name="search" value="" title="search" style="border-top:none; border-left:none; border-right:none; height:30px;" onfocus="this.placeholder = '내용 검색'" onblur="this.placeholder = '내용 검색'">
+                        <input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px;">
+                	</div>
+                </form>
+>>>>>>> Stashed changes
 				<br><br><br>
         	<div class="row">
 				<c:if test="${count == 0}">	
@@ -170,12 +202,21 @@
 							</div>
 	                    	<div class="short_details">
 		                    	<div class="meta-top d-flex">
+<<<<<<< Updated upstream
 		                            <a href="#">${article.id}</a>
                                 	<a href="#" >조회수 :${article.readcount} </a>
 		                        </div>
 		                        <a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
 									<h4>${article.subject}</h4>
 								</a><br>
+=======
+		                    		<img class="badgeImg" src="${pageContext.request.contextPath}/save/${article.badgeimg}" />
+		                            <a href="#">${article.nickname}</a>
+                                	<a href="#" >조회수 :${article.readcount} </a>
+		                        </div>
+		                        <a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
+		                        	<h4 style="height:60px;"> ${article.subject}</h4></a><br>
+>>>>>>> Stashed changes
 	                           	<div class="meta-bottom d-flex">
 	                           		<c:if test="${article.recommend == 0}">	
 	                           			<a href="#">♡ ${article.recommend}like</a>
@@ -197,6 +238,14 @@
 						onclick="window.location='/earth/board/diaryWriteForm.et'">일기쓰기 
 					</button>	
 				</c:if>
+<<<<<<< Updated upstream
+=======
+				<c:if test="${sel != null}">
+					<button type="button"class="main_btn" style="text-align:center;"
+						onclick="window.location='/earth/board/diaryList.et?pageNum=${pageNum}'"class="main_btn">목록으로
+					</button>	
+				</c:if>
+>>>>>>> Stashed changes
                 </div>			
  			</div>
         </div>
@@ -250,6 +299,7 @@
 						<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p>
 				</div>
 					
+<<<<<<< Updated upstream
 					
 					
 	
@@ -267,3 +317,11 @@
 
 </body>
 </html>
+=======
+<%@ include file = "../include/footer.jsp" %>
+<!-- #page -->
+
+</body>
+</html>				
+ 
+>>>>>>> Stashed changes

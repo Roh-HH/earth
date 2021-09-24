@@ -24,6 +24,15 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">   
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	
+<style>
+.badgeImg{
+width:20px; 
+height:20px; 
+margin-bottom:2px;
+margin-right:4px;
+}
+</style>
+
 	<!-- 프로그래스 바  -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<style type="text/css">
@@ -74,116 +83,9 @@
 	</script>
  
 </head>
-<<<<<<< Updated upstream
 <body>
-     <!--================ Start header Top Area =================-->
-    <section class="header-top">
-        <div class="container">
-            <div class="row align-items-center justify-content-between">
-                <div class="col-6 col-lg-4">
-                    <div class="float-right">
-                        <ul class="header_social">
-                            
-                        </ul>   
-                    </div>
-                </div>
-                <div class="col-6 col-lg-4 col-md-6 col-sm-6 logo-wrapper">
-                    <a href="/earth/main/main.et" class="logo">
-                        <img src="/earth/resources/bootstrap/imgs/logo.png" style="width:300px;" alt="">
-                    </a>
-                    <p> 지구를 살리는 작은 실천</p>
-                </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 search-trigger">
-                    <div class="right-button">
-                        <ul>
-                             <li>	
-                            	<c:if test="${sessionScope.sid == null}">
-									<a href="/earth/user/loginForm.et">로그인</a>&ensp;
-								</c:if>
-								<c:if test="${sessionScope.sid != null}">
-									<a href="/earth/user/logout.et">로그아웃</a>&ensp;			
-								</c:if>
-							</li>
-							<li>	
-                            	<c:if test="${sessionScope.sid == null}">
-									<a href="/earth/user/signupForm.et">회원가입</a>&ensp;		
-								</c:if>
-								<c:if test="${sessionScope.sid != null}">
-									<a href="/earth/user/mypage.et">마이페이지</a>&ensp;
-								</c:if>
-							</li>
-				
-                            <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
-                            
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-       
-    </section>
-    <!--================ End header top Area =================-->
-
-    <!-- Start header Menu Area -->
-    <header id="header" class="header_area">
-        <div class="main_menu">
-            <nav class="navbar navbar-expand-lg navbar-light">
-                <div class="container">
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        
-                    </button>
-                    <!-- Collect the nav links, forms, and other content for toggling -->
-                    <div class="collapse navbar-collapse offset" id="navbarSupportedContent">
-                        <ul class="nav navbar-nav menu_nav ml-auto mr-auto">
-                        
-                            <li class="nav-item submenu dropdown">
-                            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">어뜨</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/about.et">어뜨</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/event.et">행사일정</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/tip.et">꿀팁</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">커뮤니티</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/diaryList.et">환경일기</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/freeList.et">자유게시판</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/dailyChallenge.et">오늘의실천</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/board/challengeList.et">이달의 챌린지</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item"><a class="nav-link" href="archive.html">뉴스</a></li>    
-                            <li class="nav-item"><a class="nav-link" href="/earth/board/shop.et">상점소개</a></li>
- 							 <li class="nav-item submenu dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">벳지샵</a>
-                                <ul class="dropdown-menu">
-                                    <li class="nav-item"><a class="nav-link" href="/earth/badge/badgeShop.et">벳지샵</a></li>
-                                    <li class="nav-item"><a class="nav-link" href="/earth/badge/badgeFAQ.et">벳지 FAQ</a></li>
-                                </ul>
-                            </li>                        
-                          </ul>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </header>	
-=======
-<style>
-.badgeImg{
-width:20px; 
-height:20px; 
-margin-bottom:2px;
-margin-right:4px;
-}
-</style>
-<body>
-
-
-<!--================ Start header Top Area =================-->
-<%@ include file = "../include/header.jsp" %>   
->>>>>>> Stashed changes
-    
+      <!--================ Start header Top Area =================-->
+<%@ include file = "../include/header.jsp" %>
 <section class="category-page area-padding">
         <div class="container">   	
       <h3 class="page-title">
@@ -191,20 +93,6 @@ margin-right:4px;
 				</h3>	
 	<h1 class="entry-title"> 이달의 챌린지  </h1>
 <!-- 상단 컨텐츠  -->	
-<<<<<<< Updated upstream
-	<table >
-		<tr>
-			<td colspan="2"> <b style="font-size: 30px;">${article.subject}</b> <br />		 
-			</td>
-		</tr>
-		<tr>
-			<td> 
-			작성자 : ${article.id}	 
-			</td>
-		</tr>
-		<tr>
-			<td> 
-=======
 	<table>
 		<tr>
 			<td colspan="2" style ="text-align: center;" > <b style="font-size: 30px;">${article.subject}</b> <br />		 
@@ -217,25 +105,16 @@ margin-right:4px;
 		</tr>
 		<tr>
 			<td style ="text-align: right;">
->>>>>>> Stashed changes
 			등록일 : <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/> 		 
 			</td>
 		</tr>
 	<c:if test="${article.img != null}">
 		<tr>	
-<<<<<<< Updated upstream
-		 <td colspan="2" height="100"> <img src="${pageContext.request.contextPath}/save/${article.img}" style="max-width: 80%" />
-		</tr>
-	</c:if>
-		<tr>
-			<td colspan="2" height="100"> ${article.ctt} </td>
-=======
 			 <td colspan="2" height="100" style ="text-align: center;"> <img src="${pageContext.request.contextPath}/save/${article.img}" style="max-width: 80%;" /> </td>
 		</tr>
 	</c:if>
 		<tr>
 			<td colspan="2" height="100" style ="text-align: center;"> ${article.ctt} </td>
->>>>>>> Stashed changes
 		</tr>
 		
 	</table>
@@ -263,11 +142,7 @@ article.dateck == 1 : 데이트 마감 안됨
 <c:if test="${sessionScope.sid != null}">
 	<c:if test="${article.dateck == 1}">
 		 <c:if test="${article.maxcount > article.joincount}">
-<<<<<<< Updated upstream
 		 <p>   챌린지 진행중 	</p>
-=======
-		 <p> 챌린지 진행중 	</p>
->>>>>>> Stashed changes
 			<c:if test="${joinidCheck == 0}">
 				<td colspan="2" align="center">
 					<input type="hidden" name="boardnum" id="boardnum" value="${article.boardnum}"/>
@@ -313,22 +188,13 @@ article.dateck == 1 : 데이트 마감 안됨
 	</c:if>
 	
 	<c:if test="${article.dateck == 1}">
-<<<<<<< Updated upstream
-=======
-		<c:if test="${article.maxcount > article.joincount}">
-			<p> 챌린지 진행중 	</p>
-		</c:if>
->>>>>>> Stashed changes
 		<c:if test="${article.maxcount == article.joincount}">
 			<p>  챌린지 성공 ! 	</p>
 			<p> 챌린지 날짜가 마감되었습니다. </p>
 		</c:if>
-<<<<<<< Updated upstream
 		<c:if test="${article.maxcount > article.joincount}">
 			<p> 챌린지 진행중 	</p>
 		</c:if>
-=======
->>>>>>> Stashed changes
 	</c:if>
 	
 	
@@ -353,11 +219,7 @@ article.dateck == 1 : 데이트 마감 안됨
 				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
 											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
 		
-<<<<<<< Updated upstream
-				alert(" 챌린지 참여 ! ");
-=======
 				alert("챌린지에 참여하셨습니다!");
->>>>>>> Stashed changes
 				location.reload();
 				},
 				 
@@ -388,11 +250,7 @@ article.dateck == 1 : 데이트 마감 안됨
 				success : function(data) { //응답받을 데이터를 받아줄 매개변수 
 											//컨트롤러에서 넘어온 데이터가 data 매개변수에 들어간다 
 		
-<<<<<<< Updated upstream
-				alert("댓글입력 성공! ");
-=======
-				//alert("댓글 성공");
->>>>>>> Stashed changes
+				//alert("댓글입력 성공! ");
 				location.reload();
 				
 			 
@@ -418,11 +276,7 @@ article.dateck == 1 : 데이트 마감 안됨
 	                       <div class="single-comment justify-content-between d-flex">
 	                           <div class="user justify-content-between d-flex">
 	                               <div class="thumb">
-<<<<<<< Updated upstream
 	                                   <img src="/earth/resources/bootstrap/imgs/logo.png" alt="">
-=======
-	                                  <img src="${pageContext.request.contextPath}/save/${replyList.badgeimg}"  alt="" />
->>>>>>> Stashed changes
 	                               </div>
 		                              <div class="desc">
 			                                  <p class="comment" style="width:800px;">
@@ -431,11 +285,7 @@ article.dateck == 1 : 데이트 마감 안됨
 		                                  <div class="d-flex justify-content-between">
 		                                      <div class="d-flex align-items-center">
 		                                          <h5>
-<<<<<<< Updated upstream
 		                                             ${replyList.writer}
-=======
-		                                             ${replyList.nickname}
->>>>>>> Stashed changes
 		                                          </h5>
 		                                          <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
@@ -549,11 +399,7 @@ article.dateck == 1 : 데이트 마감 안됨
 	
 		</c:if>  
 		</nav> 
-<<<<<<< Updated upstream
 		<p style="color:grey"> 현재페이지 : ${pageN} </p> 
-=======
-		<%-- <p style="color:grey"> 현재페이지 : ${pageN} </p>  --%>
->>>>>>> Stashed changes
  
 	</div>
  <br /> <br />
@@ -567,31 +413,14 @@ article.dateck == 1 : 데이트 마감 안됨
 				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">삭제</button> <br>
 				
 		</c:if><br>
-<<<<<<< Updated upstream
 		<!-- 모두 보기  -->
 		
-=======
-		<!-- 모두 보기  -->	
->>>>>>> Stashed changes
 		<button onclick="window.location='/earth/board/challengeList.et?pageNum=${pageNum}'"class="main_btn">지난챌린지 보기 </button>	
 </div>  
 </div>
 </section>
-<<<<<<< Updated upstream
- <br /> <br /> 
-	<!-- .container -->
-	<footer id="colophon" class="site-footer">
-	<div class="container">
-		<div class="site-info">
-			<h1 style="color: #ccc;text-align:left;margin-bottom:0;margin-top:0;line-height:1.4;font-size: 25px;">어뜨</h1><br>
-			어뜨 운영팀: help@earthKorea.com <br> 지구를 살리는 작은 실천, 어뜨는 건강한 커뮤니티를 위해 엄격하게 관리되고 있습니다. <br><i class="fa fa-love"> Copyright ⓒ 어뜨 All Right Reserved.
-			</i>
-		</div>
-	</div>	
-	</footer>
-=======
-<%@ include file = "../include/footer.jsp" %>
->>>>>>> Stashed changes
+ 
+ <%@ include file = "../include/footer.jsp" %>
 <!-- #page -->
 
 </body>
