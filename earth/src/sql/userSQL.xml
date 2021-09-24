@@ -173,6 +173,39 @@
 			select B.* from (select A.*, rownum r from (select * from report order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
 		]]>	
 	</select>	
+
+	<!-- 작성자 : 김예찬 -->
+	<!-- 마이페이지 : 나의 에코백 -->	
+
+	<update id="updatePoint">
+		update point set attendcount = 0, boardcount=0,  commentcount=0
+	</update>
+	
+	<insert id="insertCheck" parameterType="hashmap">
+		insert into checkattend values(#{id}, #{date})
+	</insert>
+	
+	<select id="countUserBadge" resultType="int">
+		select count(*) from mybag where id=#{id}
+	</select>
+
+	<select id="getMyBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select X.badgenum,badgename,badgeprice,badgeimg,sellnum,reg from mybag X, badge Y where X.badgenum = Y.badgenum and id=#{id} order by badgenum) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+
+	<select id="getMyBadge" resultType="badgeDTO">
+		select badgenum,badgeprice,badgeimg,sellnum,Y.reg from users X, badge Y where X.badge = Y.badgenum and id=#{id}	
+	</select>
+
+	<update id="releaseBadge">
+		update users set badge = 1 where id=#{id}
+	</update>
+	
+	<update id="equipBadge" parameterType="hashmap" >
+		update users set badge=#{badgenum} where id=#{id}
+	</update>		
 	
 	
 	<!-- 출석체크 김하영 이다희 -->
