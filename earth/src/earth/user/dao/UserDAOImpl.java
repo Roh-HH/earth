@@ -362,6 +362,60 @@ public class UserDAOImpl implements UserDAO {
 			map.put("badgenum", badgenum);
 			
 			sqlSession.update("user.equipBadge", map);
-		}			
+		}
+	
+	// 출석체크 : 김하영 이다희	
+		
+		@Override
+		public int insertCheck(String id, String date) throws SQLException{
+			HashMap map= new HashMap();
+			map.put("id", id);
+			map.put("date", date);
+
+			int data = sqlSession.insert("user.insertCheck", map);
+			if(data ==1) {
+				sqlSession.update("user.updateCheck", map);
+				System.out.println("출석체크 성공" + data + "일때 포인트 업데이트 성공!");
+			}
+
+			return data;
+		}
+		//출첵 개수 카운트 
+		@Override
+		public int getAttendListCount(String id) throws SQLException {
+
+			int count = sqlSession.selectOne("user.getAttendListCount", id);
+			System.out.println("===="+id);
+
+			return count;
+		}
+		
+		//출첵 리스트 가져오기 
+		@Override
+		public ArrayList<String> getAttendList(String id) throws SQLException {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+
+			map.put("id", id);
+
+			List<AttendDTO> attend = sqlSession.selectList("user.getAttendList", map);
+			System.out.println("========"+ attend.size());
+			ArrayList<String> attendList = new ArrayList<String>();
+
+			for (int i=0; i<attend.size(); i++ ) {
+
+				attendList.add( attend.get(i).getStartDate());
+				System.out.println("아이디"+attend.get(i).getId());
+				System.out.println("날짜"+attend.get(i).getStartDate());
+				System.out.println("===================================");
+			}
+
+			System.out.println(attendList.toString());
+			System.out.println("========"+ attendList.size());
+
+			return attendList;
+		}
+
+	
+	
 
 }
