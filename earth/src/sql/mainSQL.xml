@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="main">
+
+	<!-- 쪽지 보내기 -->
+	<insert id="sendMessage" parameterType="messageDTO">
+		insert into message values(MESSAGE_SEQ.nextval, #{id}, #{receiver}, #{ctt}, 0, 0, sysdate, 0)
+	</insert>
+	
+	
+	<!-- 보관함 종류별 쪽지 수 -->
+	<select id="messageCountReceive" resultType="int" parameterType="string">
+		select count(*) from message where receiver = #{value} and deletereceiver = 0 and remind = 0
+	</select>
+	<select id="messageCountSearchReceive" parameterType="hashmap" resultType="int">
+		select count(*) from message where receiver = #{id} and deletereceiver = 0 and remind = 0 and ${sel} like '%'||#{search}||'%' 
+	</select>
+	<select id="messageCountSend" resultType="int" parameterType="string">
+		select count(*) from message where id = #{value} and deletewriter = 0
+	</select>
+	<select id="messageCountSearchSend" parameterType="hashmap" resultType="int">
+		select count(*) from message where id = #{id} and deletewriter = 0 and ${sel} like '%'||#{search}||'%' 
+	</select>
+	<select id="messageCountRemind" resultType="int" parameterType="string">
+		select count(*) from message where receiver = #{value} and deletereceiver = 0 and remind = 1
+	</select>
+	<select id="messageCountSearchRemind" parameterType="hashmap" resultType="int">
+		select count(*) from message where receiver = #{id} and deletereceiver = 0 and remind = 1 and ${sel} like '%'||#{search}||'%' 
+	</select>
+
+	<!-- 보관함 종류별 쪽지 목록 가져오기 -->
+	<select id="getReceiveMessages" resultType="messageDTO" parameterType="hashmap">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 0 and remind = 0 order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getReceiveMessagesSearch" resultType="messageDTO" parameterType="hashmap">	
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 0 and remind = 0 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getSendMessages" resultType="messageDTO" parameterType="hashmap">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where id = #{id} and deletewriter = 0 order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getSendMessagesSearch" resultType="messageDTO" parameterType="hashmap">	
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where id = #{id} and deletewriter = 0 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getRemindMessages" resultType="messageDTO" parameterType="hashmap">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 0 and remind = 1 order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getRemindMessagesSearch" resultType="messageDTO" parameterType="hashmap">	
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 0 and remind = 1 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
+	<!-- 쪽지 조회 -->
+	<select id="getMessage" resultType="messageDTO" parameterType="int">
+		select id, receiver, ctt from message where messagenum = #{value}
+	</select>
+	
+	
+	<!-- 쪽지 보관함 등록 및 해체 -->
+	<update id="regRemind" parameterType="int">
+		update message set remind = 1 where messagenum = #{value}
+	</update>
+	<update id="delRemind" parameterType="int">
+		update message set remind = 0 where messagenum = #{value}
+	</update>
+	
+	<!-- 쪽지 삭제(데이터 미표시 처리) -->
+	<update id="deleteReceiveMessage" parameterType="int">
+		update message set deletereceiver = 1 where messagenum = #{value}
+	</update>
+	<update id="deleteSendMessage" parameterType="int">
+		update message set deletewriter = 1 where messagenum = #{value}
+	</update>
+	
+	<!-- 쪽지 삭제 Quartz : 매일 오전 04시 자동 실행 -->
+	<delete id="">
+		delete from message where deletereceiver = 1 and deletewriter = 1
+	</delete>
+	
+	
+	
+	
+	
+	<!-- 메인에서 이달의챌린지 1개만 받아올게요. 김하영  -->
+	<select id="getMainArticles" parameterType="hashMap" resultType="monthDTO">	
+		select *from(select *from challenge order by reg DESC)where ROWNUM = 1
+	</select>
+	
+	<!--  메인 환경일기 TOP 3 가져오기 김하영 .  -->
+	<select id="getDiaryArticles" parameterType="hashMap" resultType="diaryDTO">	
+		<![CDATA[
+		select B.*, id nickname, id badgeimg from (select A.*, rownum r 
+		from (select * from diary order by recommend desc) A) B where r >= 1 and r <= 3
+		]]>
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>
