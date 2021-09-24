@@ -26,15 +26,30 @@
 	</bean>	
 	
 	<!--  자동주입 설정 <context:component-scan> + @Repository -->
-	<context:component-scan base-package="earth.user.controller"/>
-	<context:component-scan base-package="earth.user.dao" />
-	<context:component-scan base-package="earth.user.service" />
+	<context:component-scan base-package="earth.user.controller"/>	
+	<context:component-scan base-package="earth.user.dao"/>
+	<context:component-scan base-package="earth.user.service"/>
+
+	<context:component-scan base-package="earth.admin.controller"/>	
+	<context:component-scan base-package="earth.admin.dao"/>
+	<context:component-scan base-package="earth.admin.service"/>
 	
-	<context:component-scan base-package="earth.board.controller"/>
+	<context:component-scan base-package="earth.board.controller"/>		
 	<context:component-scan base-package="earth.board.dao"/>
 	<context:component-scan base-package="earth.board.service"/>
+	<context:component-scan base-package="earth.board.upload"/>
+	<context:component-scan base-package="earth.board.task"/>
 	
-	<context:component-scan base-package="earth.main.controller" />
+	<context:component-scan base-package="earth.main.controller"/>	
+	<context:component-scan base-package="earth.main.dao"/>
+	<context:component-scan base-package="earth.main.service"/>
+	
+	<context:component-scan base-package="earth.badge.controller"/>	
+	<context:component-scan base-package="earth.badge.dao"/>
+	<context:component-scan base-package="earth.badge.service"/>
+	
+	
+	<context:component-scan base-package="earth.news.controller"/>
 
 	
 </beans>
