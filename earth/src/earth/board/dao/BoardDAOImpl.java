@@ -299,6 +299,13 @@ public class BoardDAOImpl implements BoardDAO {
 		@Override
 		public int insertDiary(DiaryDTO dto) throws SQLException {
 			int result = sqlSession.insert("board.insertDiary", dto);
+			
+			String id = dto.getId();
+			if(result == 1) {	 
+				sqlSession.update("user.updateBoardPoint", id);
+				System.out.println("result 1 일때, 글쓰기 boardcount에서 포인트 5 넣어주기 - boardcount = 0일때만 포인트 업  ");
+			}
+			
 			return result;
 		}
 		
@@ -758,16 +765,21 @@ public class BoardDAOImpl implements BoardDAO {
 		@Override
 		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException {
 			
-			HashMap<String, Object> map = new HashMap<String, Object>();
+			HashMap map = new HashMap();
 			map.put("boardnum", boardnum);
 			map.put("ctt", ctt);
 			map.put("writer", writer);
 			map.put("receiver", receiver);
 			
-			sqlSession.insert("board.insertDiaryReply", map);
+			int result = sqlSession.insert("board.insertDiaryReply", map);
 			sqlSession.update("board.minusReadCountDairy", boardnum);
+			if(result == 1) {
+				// result 가 성공적으로 들어갔을때, 포인트 넣어주기 sql 에서 count = 0 일때만 포인트 적립하게 조건걸기 
+				sqlSession.update("user.updateReplyPoint", map);
+				System.out.println("result 1 일때, 환경일기 댓글에서 포인트 5 넣어주기 - commnetcount = 0일때만 포인트 업  ");
+			}
+			
 		}
-		
 		// 환경일기 댓글 가져오기 - 이다희
 		@Override
 		public List<DiaryDTO> getDiaryReplyList(int startRow, int endRow, int boardnum) throws SQLException {
@@ -794,13 +806,23 @@ public class BoardDAOImpl implements BoardDAO {
 		// 이달의 챌린지 댓글 업로드 - 이다희
 		@Override
 		public void insertChReply(int boardnum, String ctt, String writer) throws SQLException {
-
+			 
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("boardnum", boardnum);
 			map.put("ctt", ctt);
 			map.put("writer", writer);
 			
-			sqlSession.insert("board.insertChReply", map);
+			//sqlSession.insert("board.insertChReply", map);
+			
+			int result = sqlSession.insert("board.insertChReply", map);
+			System.out.println(" 댓글 인서트 result =====> " + result);
+			
+			if(result == 1) {
+				// result 가 성공적으로 들어갔을때, 포인트 넣어주기 sql 에서 count = 0 일때만 포인트 적립하게 조건걸기 
+				sqlSession.update("user.updateReplyPoint", map);
+				System.out.println("result 1 일때, 챌린지 댓글에서 포인트 5 넣어주기 - commnetcount = 0일때만 포인트 업  ");
+			}
+			
 		}
 		
 		// 이달의 챌린지 댓글 가져오기 - 이다희
