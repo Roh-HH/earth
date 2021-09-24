@@ -22,12 +22,36 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		function chkUser() {
+			obj = document.getElementsByName("info");	
+			
+			var cnt = 0;
+			for(var i = 0; i < obj.length; i++) {
+                if (obj[i].checked) {
+                    cnt++;
+                }
+            }
+			if(cnt == 0){
+				alert("선택된 회원 정보가 없습니다.");
+				return;
+			}else{
+				var frm = document.frmUserInfo		
+				var url ="adminUserDelete.et";
+				window.open('','userdelete','width=500,height=300,location=no,status=no,scrollbars=yes');
+				
+				frmUserInfo.action = url;
+				frmUserInfo.target = 'userdelete'
+				frmUserInfo.submit();
+			}			
+		}
+	</script>
+	
+	
 </head>
 <body>
 
-     <!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
-    
 	<section class="category-page area-padding">
     
 		<!--------------------------------------------------------------------------------------- #masthead 
@@ -97,30 +121,19 @@
 				            <table align="center">
 				            <tr>
 				            	<td align="center"><%--체크박스용--%></td>
-				            	<td align="center">분류</td>
-				            	<td align="center">닉네임</td> 
 				           	 	<td align="center">ID</td>
 				           	 	<td align="center">제목</td>
 				       		</tr>
-				      		<c:forEach var="Board" items="${BoardList}" varStatus="status">
+				      		<c:forEach var="notice" items="${noticeList}" varStatus="status">
 								<tr align="center">
-									<td><input type="checkbox" name="info" value="${Board.ID}"/>
-									<td>
-										<c:if test="${Board.code == 2}">자유게시판</c:if>
-										<c:if test="${Board.code == 3}">환경일기</c:if>
-									</td>
-									<td>${Board.nickname}</td>
-									<td>${Board.ID}</td>
-									<td><c:if test="${Board.code == 3}">
-									<a href="/earth/board/diaryContent.et?boardnum=${Board.boardnum}">
-									${Board.subject}</a></c:if>
-										<c:if test="${Board.code == 2}">
-										<a href="/earth/board/freeContent.et?boardnum=${Board.boardnum}">
-									${Board.subject}</a></c:if>
-										</td>
+									<td><input type="checkbox" name="info" value="${notice.boardnum}"/>
+									<td>${notice.id}</td>
+									<td>${notice.subject}</td>
+									<td>${notice.reg}
 								</tr>
 							</c:forEach>
 				            </table>
+				            
 				            
 				            <%-- 페이지번호 조정, 12345/678910 5마다 세트로 묶음 --%>
 								<c:set var="pageBlock" value="3" />
@@ -136,31 +149,31 @@
 								<%-- 검색O 페이지번호 --%>
 								<c:if test="${sel != null && search != null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminBoard.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminNotice.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a href="/earth/adminmypage/adminBoard.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminNotice.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminBoard.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminNotice.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
 									</c:if>
 								</c:if>
 								
 								<%-- 검색X 페이지번호   --%> 
 								<c:if test="${sel == null || search == null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminBoard.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminNotice.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 										<c:if test="${pagenum == i}">
 										<h3 style="colorgray">${i}</h3>
 										</c:if>
 										<c:if test="${pagenum != i}">
-										<a href="/earth/adminmypage/adminBoard.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminNotice.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
 										</c:if>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminBoard.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminNotice.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
 									</c:if>
 								</c:if>
 							</c:if> 
@@ -171,25 +184,21 @@
 							
 							
 							<br /> 
-							<c:if test="${sel != null && search != null}">
-								<button onclick="window.location='/earth/adminmypage/adminBoard.et'">초기화</button> <br />
-							</c:if>
 							 <%-- 작성자/내용 검색 --%>
-		            	<div class="text-align:right;">
-							<form style="float:right;height:60px;" class="woocommerce-ordering" method="get" action="/earth/adminmypage/adminBoard.et" >
-							
-								<select name="sel">
-									<option value="subject">제목</option>
-									<option value="writer">작성자</option>
+							<form action="/earth/adminmypage/adminNotice.et" >								
+								<select style="boder:none;" name="sel">
+     								<option value="id">아이디 </option>
+									<option value="ctt">내용</option>
 								</select>
-							
-								<input class="form-control" type="text" placeholder="아이디" name="search" value="" title="search"
-									style="border-top:none; border-left:none; border-right:none;width:150px;height:50px;"/>
+								<input type="text" placeholder="검색" name="search" value="" title="search"
+									style="border-top:none; border-left:none; border-right:none;width:130px;height:30px; font-size:11px;"/>
+								<input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px; margin-right:100px;">
+								
+								<input type="button" value="삭제" onclick="chkUser()" style=" margin-left:100px"/> 
+								<c:if test="${sel != null && search != null}">
+									<button onclick="window.location='/earth/adminmypage/adminNotice.et?'">초기화</button> <br />
+								</c:if>
 							</form>
-						</div>
-									
-							
-							
                     </div>
                 </div>
 			</div>
