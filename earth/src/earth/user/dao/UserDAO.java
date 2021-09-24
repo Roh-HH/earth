@@ -104,8 +104,27 @@ public interface UserDAO {
 		public int getMyReportCount(String id) throws SQLException;
 		// 마이페이지 : 신고내역 목록 가져오기
 		public List<ReportDTO> getMyReportList(int startRow, int endRow, String id) throws SQLException;
-	
-	//출석체크 : 이다희 김하영
+
+	// 작성자 : 김예찬	
+	// 마이페이지 : 나의 에코백
+
+		// 나의 뱃지 총 개수 - 김예찬
+		public int getMyBadgeCount(String id) throws SQLException;
+		
+		// 나의 뱃지 보유목록 가져오기 - 김예찬
+		public List<BadgeDTO> getMyBadgeArticles(int startRow, int endRow, String id) throws SQLException;
+		
+		// 내 적용중 뱃지 가져오기 - 김예찬
+		public BadgeDTO getMyBadge(String id) throws SQLException;
+		
+		// 착용중인 뱃지 해제하기 (1- Default) - 김예찬
+		public void releaseBadge(String id) throws SQLException;
+		
+		// 뱃지 장착하기 - 김예찬
+		public void equipBadge(String id, int badgenum) throws SQLException;	
+			
+	// 작성자 : 이다희 김하영
+	// 마이페이지 : 출석체크
 	
 		//출석 인서트
 		public int insertCheck(String id, String date) throws SQLException;
@@ -114,7 +133,5 @@ public interface UserDAO {
 		//출석 : 출석현황 리스트 가져오기
 		public ArrayList<String> getAttendList(String id) throws SQLException;
 
-	
-	
 
 }
