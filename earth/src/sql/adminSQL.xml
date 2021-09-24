@@ -4,4 +4,169 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="admin">
 	
+	<select id="getUserCount" resultType="int">
+		select count(*) from users
+	</select>
+	
+	<select id="getUser" parameterType="hashmap" resultType="UserDTO">
+		<![CDATA[
+		select a.* from 
+			(select rownum r, a.* from 
+				(select * from users order by reg desc) a
+			)a where r >= ${startRow} and r <= ${endRow}
+		]]>
+	</select>
+	
+	<select id="getSearchUserCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		select count(*) from users where ${sel} like '%'||#{search}||'%'
+	]]>
+	</select>
+	
+	
+	<select id="getSearchUser" parameterType="hashmap" resultType="UserDTO">
+	<![CDATA[
+		select a.* from (select a.*, rownum r from 
+			(select * from users where ${sel} like '%'|| #{search} || '%')
+			a order by reg desc)
+		a where r >= ${startRow} and r <= ${endRow}
+	]]>
+	</select>
+	
+	<select id="getBoardCount" resultType="int">
+	<![CDATA[
+		select count(*) from (select rownum r, A.* from 
+		(select * from(select A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
+		union select A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)order by reg desc) A)
+	]]>
+	</select>
+	
+	<select id="getBoard" parameterType="hashmap" resultType="AdminBoardDTO">
+	<![CDATA[
+		select * from (select rownum r, A.* from 
+		(select * from(select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
+		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)order by reg desc) A) where r >= ${startRow} and r <= ${endRow}
+	]]>
+	</select>
+	
+	<select id="getSearchBoardCount" parameterType="hashmap" resultType="int">
+	<![CDATA[
+		select count(*) from (select rownum r, A.* from 
+		(select * from(select A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
+		union select A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where ${sel} like '%'||#{search}||'%' order by reg desc) A)
+	]]>
+	</select>
+	
+	<select id="getSearchBoard" parameterType="hashmap" resultType="AdminBoardDTO">
+	<![CDATA[
+		select * from (select rownum r, A.* from 
+		(select * from(select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
+		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where A.${sel} like '%'||#{search}||'%' order by reg desc) A) where r >= ${startRow} and r <= ${endRow}
+	]]>
+	</select>
+	
+	<delete id="deleteUser" parameterType="String" >
+		delete from Users where id = ${id}
+	</delete>
+	
+	<select id="getCommentCount" resultType="int">
+		<![CDATA[
+			select count(*) from (select code, commen, regcomm from diarycomment
+			union all
+			select code, commen, regcomm from challengecomment
+			union all
+			select code, ctt, reg from freecomment order by regcomm desc)
+		]]>
+	</select>
+	
+	<select id="getComment" resultType="AdminCommentDTO">
+		<![CDATA[
+			select * from (select rownum r, A.* from (
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from diarycomment A, users B where A.writer = B.id
+			union all
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from challengecomment A, users B where A.writer = B.id
+			union all
+			select A.commentnum, A.code, A.writer, B.nickname, A.ctt, A.reg from freecomment A, users B where A.writer = B.id order by regcomm desc) A) 
+			where r >= ${startRow} and r <= ${endRow}
+		]]>
+	</select>
+	
+	<select id="getSearchCommentCount" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			select count(*) from (select code, commen, regcomm from diarycomment where ${sel} like '%'||#{search}||'%'
+			union all
+			select code, commen, regcomm from challengecomment where ${sel} like '%'||#{search}||'%'
+			union all
+			select code, ctt, reg from freecomment where ${sel} like '%'||#{search}||'%' order by regcomm desc)
+		]]>
+		
+	</select>
+	
+	<select id="getSearchComment" parameterType="hashmap" resultType="AdminCommentDTO">
+		<![CDATA[
+		select * from (select rownum r, A.* from (
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from diarycomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%'
+			union all
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from challengecomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%'
+			union all
+			select A.commentnum, A.code, A.writer, B.nickname, A.ctt, A.reg from freecomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%' order by regcomm desc) A) 
+			where r >= ${startRow} and r <= ${endRow}
+		
+		]]>
+	</select>
+	
+	<select id="getQuestionCount" resultType="int">	
+			select count(*) from question
+	</select>
+	
+	<select id="getQuestion" resultType="AdminQuestionDTO">
+	<![CDATA[
+		select * from (select rownum r, A.* from (
+		select A.*, B.nickname from question A, users B where A.id = B.id order by A.reg desc) A) 
+		where r >= ${startRow} and r <= ${endRow}
+	]]>
+	</select>
+	
+	<select id="getSearchQuestionCount" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			select count(*) from question where ${sel} like '%'||#{search}||'%'
+		]]>
+		
+	</select>
+	
+	<select id="getSearchQuestion" parameterType="hashmap" resultType="AdminQuestionDTO">
+		<![CDATA[
+		select * from (select rownum r, A.* from (
+			select A.*, B.nickname from question A, users B where A.id = B.id and A.${sel} like '%'||#{search}||'%' order by A.reg desc) A) 
+		where r >= ${startRow} and r <= ${endRow}
+		]]>
+	</select>
+	
+	
+	<select id="getNoticeCount" resultType="int">	
+			select count(*) from notice
+	</select>
+	
+	<select id="getNotice" resultType="NoticeDTO">
+	<![CDATA[
+		select * from(select rownum r, A.* from(select * from notice) A) where r >= ${startRow} and r <= ${endRow}
+	]]>
+	</select>
+	
+	<select id="getSearchNoticeCount" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			select count(*) from notice where ${sel} like '%'||#{search}||'%'
+		]]>
+		
+	</select>
+	
+	<select id="getSearchNotice" parameterType="hashmap" resultType="NoticeDTO">
+		<![CDATA[
+			select * from(select rownum r, A.* from(select * from notice where ${sel} like '%'||#{search}||'%') A) where r >= ${startRow} and r <= ${endRow}
+		]]>
+	</select>
+	
+	
+	
+	
 </mapper>
