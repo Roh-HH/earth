@@ -200,6 +200,38 @@ public class AdminController {
 		
 	}
 	
+	@RequestMapping("adminNotice.et")
+	public String adminNotice(String pageNum, String sel, String search, Model model) throws SQLException{
+	
+		
+		Map<String, Object> result = null;
+		
+		if(pageNum == null){ 
+			pageNum = "1";
+		}
+		
+		if(sel == null || search == null) {
+			result = adminService.getNoticeList(pageNum);
+		}else {
+			result = adminService.getNoticeSearch(pageNum, sel, search);
+		}
+		
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("noticeList", result.get("noticeList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		model.addAttribute("sel", sel);
+		model.addAttribute("search", search);
+		
+		return "adminmypage/adminNotice";
+		
+	}
+	
+	
 }
 	
 	
