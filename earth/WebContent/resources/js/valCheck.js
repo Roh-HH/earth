@@ -1,0 +1,42 @@
+//공백확인 함수
+function checkExistData(value, dataName) {
+    if (value == "") {
+        alert(dataName + " 입력해주세요!");
+        return false;
+    }
+    return true;
+}
+
+function checkName(name) {
+	if (!checkExistData(name, "이름을"))
+	    return false;
+	var nameRegExp = /^[가-힣]{1,10}$/;
+		if (!nameRegExp.test(name)) {
+		    alert("이름은 영어,숫자 및 특수문자 사용이 불가합니다.");
+		    return false;
+		}
+		return true; //확인이 완료되었을 때
+}
+
+function checkEmail(email) {
+    if (!checkExistData(email, "이메일을"))
+        return false;
+    var emailRegExp = /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
+    if (!emailRegExp.test(email)) {
+        alert("이메일 형식이 올바르지 않습니다.");
+        return false;
+    }
+    return true; //확인이 완료되었을 때
+}
+
+/*function checkPhone(user_phone) {
+    if (!checkExistData(user_phone, "전화번호를"))
+        return false;
+
+    var phoneRegExp = /01[016789]-[^0][0-9]{2,3}-[0-9]{3,4}/;
+    if (!phoneRegExp.test(user_phone)) {
+        alert("전화번호는 숫자만 가능합니다!");
+        return false;
+    }
+    return true; //확인이 완료되었을 때
+}*/

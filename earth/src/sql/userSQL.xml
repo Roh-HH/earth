@@ -2,6 +2,176 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="member">
+<mapper namespace="user">
+
+	<!-- 회원가입 : 입력받은 정보만 DB에 insert 시키기 -->
+	<insert id="insertUser" parameterType="userDTO">
+		insert into users(id,pw,name,nickname,phone,email,reg,badge) values(#{id},#{pw},#{name},#{nickname},#{phone},#{email},sysdate,1)
+	</insert>
+	<!-- 회원가입 : 회원가입시 포인트 DB에 회원정보  insert 시키기 -->
+	<insert id="insertPoint" parameterType="userDTO">
+		insert into point(id) values(#{id})
+	</insert>
 	
+	<!-- 회원가입 아이디 중복확인 / 로그인 / 회원정보수정처리 / 회원탈퇴 활용  -->
+	<select id="idPwCheck" parameterType="userDTO" resultType="int">
+		select count(*) from users where id = #{id}
+		<if test="pw != null">and pw=#{pw}</if>
+	</select>
+	
+	<!-- 닉네임 중복여부 확인   -->
+	<select id="nickCheck" parameterType="userDTO" resultType="int">
+		select count(*) from users where nickname = #{nickname}
+	</select>
+	
+	<!-- 암호화 된 PW 가져오기 -->
+	<select id="getPw" resultType="string">
+		select pw from users where id = #{id}
+	</select>
+	
+	<!-- 한명의 회원 정보만 가져오기 : 회원정보 수정 활용 -->
+	<select id="selectUserOne" parameterType="string" resultType="userDTO">
+		select * from users where id = #{value}
+	</select>	
+	
+	<!-- 회원정보수정 : 기존 회원정보 수정처리(업데이트) 하기 -->
+	<select id="updateUser" parameterType="userDTO">
+		update users set name=#{name},nickname=#{nickname},phone=#{phone},email=#{email} where id = #{id}
+	</select>
+	
+	<!-- 회원정보수정 : 비밀번호 변경하기 --> 
+	<update id="modifyPw">
+	 	update users set pw = #{pw} where id = #{id}  
+	</update>
+	
+	<!-- 회원탈퇴처리 : 회원 전체정보 삭제 -->
+	<delete id="deleteUser" parameterType="userDTO">
+		delete from users where id = #{id}
+	</delete>
+	
+	<!-- 마이페이지 : 회원 한명의 경고내역 가져오기	 -->
+	<select id="selectUserWarn" parameterType="string" resultType="warningDTO">
+		select * from warning where id = #{value}
+	</select>
+	
+	<!-- 마이페이지 : 나의 실천(오늘의 실천 게시판) 게시글 개수 가져오기 -->
+	<select id="countAllToday" parameterType="string" resultType="int">
+		select count(*) from today where id = #{id}
+	</select>
+	<!-- 마이페이지 : 나의 실천(오늘의 실천) 게시글 목록 가져오기 -->
+	<select id="getMyToday" parameterType="hashmap" resultType="todayDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from today order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+		]]>	
+	</select>
+	<!-- 마이페이지 : 나의 실천(오늘의 실천) 게시글 삭제 -->
+	<delete id="deleteMyToday" parameterType="todayDTO">
+		delete from today where boardnum=#{boardnum} and id=#{id}
+	</delete>
+	
+	<!-- 마이페이지 : 내 게시글(자유게시판) 개수 가져오기 -->
+	<select id="countAllFree" parameterType="string" resultType="int">
+		select count(*) from free where id = #{id}	
+	</select>
+	<!-- 마이페이지 : 내 게시글(자유게시판) 목록 가져오기 -->
+	<select id="getMyFree" parameterType="hashmap" resultType="freeDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from free order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+		]]>		
+	</select>
+	
+	<!-- 마이페이지 : 나의 환경일기 게시글 개수 가져오기 -->
+	<select id="countAllDiary" parameterType="string" resultType="int">
+		select count(*) from diary where id = #{id}	
+	</select>			
+	<!-- 마이페이지 : 나의 환경일기 게시글 목록 가져오기 -->	
+	<select id="getMyDiary" parameterType="hashmap" resultType="diaryDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from diary order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+		]]>		
+	</select>
+	<!-- 마이페이지 - 나의 환경일기 : 검색 된 환경일기 개수 가져오기  -->	
+	<select id="countDiarySearch" parameterType="hashmap" resultType="int">
+		select count(*) from diary where ${sel} like '%'||#{search}||'%' and id = #{id}
+	</select>	
+	<!-- 마이페이지 - 나의 환경일기 : 검색 된 환경일기 목록 가져오기  -->
+	<select id="getMyDiarySearch" parameterType="hashmap" resultType="diaryDTO">
+		<![CDATA[ 
+			select B.* from (select A.*, rownum r from (select * from diary where ${sel} like '%'||#{search}||'%' order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end} 
+		]]>	
+	</select>	
+	
+	<!-- 마이페이지 : 내가 작성한 댓글 개수 가져오기 -->
+	<select id="countComment" parameterType="string" resultType="int">
+		<![CDATA[
+			select count(*) from (select rownum r, A.* from (select commen from diarycomment where writer=#{id} union all select commen from challengecomment where writer=#{id} union all select ctt from freecomment where writer=#{id}) A)
+		]]>
+	</select>	
+	<!-- 마이페이지 : 내가 작성한 댓글 목록 가져오기 -->
+	<select id="getMyComment" parameterType="hashmap" resultType="commentDTO">
+		<![CDATA[
+			select * from (select rownum r, A.* from (select code, commen, regcomm, commentnum, boardnum from diarycomment where writer=#{id} union all select code, commen, regcomm, commentnum, boardnum from challengecomment where writer=#{id} union all select code, ctt, reg, commentnum, freenum from freecomment where writer=#{id} order by regcomm desc) A) where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<!-- 마이페이지 : 내가 작성한 댓글 검색 된 개수 가져오기  -->
+	<select id="countCommentSearch" parameterType="hashmap" resultType="int">
+		<![CDATA[
+			select count(*) from (select rownum r, A.* from (select * from (select commen from diarycomment where writer=#{id} union all select commen from challengecomment where writer=#{id} union all select ctt from freecomment where writer=#{id})where ${sel} like '%'||#{search}||'%') A)
+		]]>	
+	</select>			
+	<!-- 마이페이지 : 내가 작성한 댓글 검색 된 목록 가져오기 -->
+	<select id="getMyCommentSearch" parameterType="hashmap" resultType="commentDTO">
+		<![CDATA[ 
+			select * from (select rownum r, A.* from (select * from (select code, commen, regcomm, commentnum, boardnum from diarycomment where writer=#{id} union all select code, commen, regcomm, commentnum, boardnum from challengecomment where writer=#{id} union all select code, ctt, reg, commentnum, freenum from freecomment where writer=#{id})where ${sel} like '%'||#{search}||'%' order by regcomm desc) A) where r >= #{start} and r <= #{end}		
+		]]>	
+	</select>		
+	
+	<!-- 마이페이지 : 1:1문의글 개수 가져오기 -->
+	<select id="countQnA" parameterType="string" resultType="int">
+		select count(*) from question where id = #{id}	
+	</select>		
+	<!-- 마이페이지 : 1:1문의글 검색 된 게시글 개수 가져오기 -->	
+	<select id="countQnASearch" parameterType="hashmap" resultType="int">
+		select count(*) from question where ${sel} like '%'||#{search}||'%' and id = #{id}
+	</select>	
+	<!-- 마이페이지 : 1:1문의글 목록 가져오기 -->
+	<select id="getMyQnA" parameterType="hashmap" resultType="questionDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from question order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+		]]>	
+	</select>
+	<!-- 마이페이지 : 1:1문의글 검색 된 목록 가져오기 -->
+	<select id="getMyQnASearch" parameterType="hashmap" resultType="questionDTO">
+		<![CDATA[ 
+			select B.* from (select A.*, rownum r from (select * from question where ${sel} like '%'||#{search}||'%' order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end} 
+		]]>	
+	</select>
+	<!-- 마이페이지 : 1:1문의글 등록하기 -->
+	<insert id="addQnA" parameterType="questionDTO">
+		insert into question(questionnum,id,reg,ctt,subject) values(question_seq.nextval,#{id},sysdate,#{ctt},#{subject})	
+	</insert>
+	<!-- 마이페이지 : 1:1문의글 한개 조회 -->
+	<select id="getMyQnAOne" parameterType="int" resultType="questionDTO">
+		select * from question where questionnum = #{questionnum}
+	</select>
+	<!-- 마이페이지  : 기존 1:1문의글 수정처리(업데이트) 하기 -->
+	<select id="updateMyQnA" parameterType="questionDTO">
+		update question set ctt=#{ctt},subject=#{subject} where questionnum = #{questionnum}
+	</select>	
+	<!-- 마이페이지 : 1:1 문의글 삭제하기 -->	
+	<select id="deleteMyQnA" parameterType="questionDTO">
+		delete from question where questionnum=#{questionnum} and id=#{id}
+	</select>
+	
+	<!-- 마이페이지 : 신고내역 개수 가져오기 -->
+	<select id="countReport" parameterType="string" resultType="int">
+		select count(*) from report where id = #{id}	
+	</select>				
+	<!-- 마이페이지 : 신고내역 목록 가져오기 -->
+	<select id="getMyReport" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+		]]>	
+	</select>	
+		
 </mapper>
