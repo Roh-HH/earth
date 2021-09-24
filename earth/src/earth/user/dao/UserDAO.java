@@ -104,5 +104,17 @@ public interface UserDAO {
 		public int getMyReportCount(String id) throws SQLException;
 		// 마이페이지 : 신고내역 목록 가져오기
 		public List<ReportDTO> getMyReportList(int startRow, int endRow, String id) throws SQLException;
+	
+	//출석체크 : 이다희 김하영
+	
+		//출석 인서트
+		public int insertCheck(String id, String date) throws SQLException;
+		// 출석 : 출석현황 개수 가져오기 
+		public int getAttendListCount(String id)throws SQLException;
+		//출석 : 출석현황 리스트 가져오기
+		public ArrayList<String> getAttendList(String id) throws SQLException;
+
+	
+	
 
 }

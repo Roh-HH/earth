@@ -86,4 +86,15 @@ public interface UserService {
 	// 마이페이지 - 신고내역
 		public Map<String, Object> getMyReportList(String pageNum) throws SQLException;
 	
+	
+	
+	// 출석하기- 이다희 김하영 
+	
+		//출석 인서트 
+		public int insertCheck(String id, String date) throws SQLException;
+		//출석현황 불러오기
+		public ArrayList<String> getAttendList (String id) throws SQLException;
+	
+	
+	
 }
