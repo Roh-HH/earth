@@ -22,10 +22,30 @@ public class MonthDTO {
 	private Timestamp actable;
 	private String enddate;
 	
-	//private Timestamp enddate; // 챌린지 종료 시간 추가 
- 
 	private Integer ck; // 가상컬럼 리스트 페이지에서 마감 시간 보여주기 위함 - 인원 마감 
 	private Integer dateck; // 가상컬럼 리스트 페이지에서 마감 시간 보여주기 위함  - 시간 마감 
+	
+	//댓글관련 
+	private Integer commentnum;
+	private Timestamp regcomm;
+	private String writer;
+	private String commen;
+	//댓글 리스트 불러올때 sql 에 추가되는 컬럼 
+	private String nickname;
+	private String badgeimg;
+ 	
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	
 	public Integer getDateck() {
 		return dateck;
@@ -33,12 +53,6 @@ public class MonthDTO {
 	public void setDateck(Integer dateck) {
 		this.dateck = dateck;
 	}
-	//댓글관련 
-	private Integer commentnum;
-	private Timestamp regcomm;
-	private String writer;
-	private String commen;
-
 	
 	public String getEnddate() {
 		return enddate;

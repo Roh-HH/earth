@@ -18,6 +18,16 @@ public class DiaryDTO {
 	private Integer code;
 	private Integer recommend;
 	
+	
+	// 뱃지 이미지 추가 
+	private String badgeimg;
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
+	
 	//좋아요 
 	private String recid;
 	 
@@ -30,7 +40,15 @@ public class DiaryDTO {
 	private String writer;
 	private String commen;
 	
+	private String nickname;
  
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
 	public Integer getCommentnum() {
 		return commentnum;
 	}
