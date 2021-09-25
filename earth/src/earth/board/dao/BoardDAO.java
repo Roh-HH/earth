@@ -95,8 +95,8 @@ public interface BoardDAO {
 			public int insertChJoin(int boardnum, String id) throws SQLException;
 			// 이달의 챌린지 게시글 목록 가져오기 - 이다희 
 			public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException;
-			// 이달의 챌린지 상단메뉴 최신글 가져오기 (추가)
-			public MonthDTO getChallenge() throws SQLException;
+			 // 이달의 챌린지 상단메뉴 최신글 가져오기 (추가)
+	        public int getChallenge() throws SQLException;
 			// 이달의 챌린지 글 1개 가져오기 - 이다희
 			public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
 			// 이달의 챌린지 조인 아이디 체크 - 이다희

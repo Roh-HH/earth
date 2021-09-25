@@ -476,12 +476,12 @@ public class BoardServiceImpl implements BoardService {
 			return result;
 		}
 	
-		//이달의 챌린지 최신글 가져오기 
-		@Override
-		public MonthDTO getChallenge() throws SQLException {
-			MonthDTO article = boardDAO.getChallenge();
-			return article;
-		}
+		 //이달의 챌린지 최신글 가져오기
+        @Override
+        public int getChallenge() throws SQLException {
+           int boardnum = boardDAO.getChallenge();
+            return boardnum;
+        }
 
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희

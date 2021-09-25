@@ -91,7 +91,7 @@ public interface BoardService {
 		// 이달의 챌린지 참여하기 - 이다희
 		public int insertChJoin(int boardnum, String id) throws SQLException;
 		// 이달의 챌린지 최신글 1개 가져오기 (추가)
-		public MonthDTO getChallenge() throws SQLException;
+        public int getChallenge() throws SQLException;
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
 		// 이달의 챌린지 조인 아이디 체크 - 이다희

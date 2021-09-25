@@ -890,63 +890,12 @@ public class BoardController {
             return "board/challengeList";
         }
 
-        // 상단메뉴에서 보여지는 최신글 이달의 챌린지 컨텐츠 
+        // 상단메뉴에서 보여지는 최신 챌린지 가져오기  
         @RequestMapping("monthlyChallenge.et")
         public String monthlyChallenge(Model model, HttpSession session) throws SQLException {
-            System.out.println("이달의 챌린지 요청");
-
-            //참여자 확인을 위해 세션아이디 필요
-            String id = (String)session.getAttribute("sid");
-            System.out.println("monthly challenge id " + id);
-
             //챌린지글 컨텐츠 가져오기
-            MonthDTO article = boardService.getChallenge(); 
-            int boardnum = article.getBoardnum();
-
-            //게시글용 
-            article.setId(boardService.getNickname(article.getId()));
-
-            String pageN = "1";
-
-            //댓글 가져오기
-            Map<String, Object> map = null;
-            map = boardService.getChReplyList(boardnum, pageN);
-
-            //댓글 아이디 닉네임으로 변경 
-             if (map.get("replyList") != null) {
-                @SuppressWarnings("unchecked")
-                List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
-                for(int i=0; i<replyList.size(); i++) {			
-                    replyList.get(i).setWriter(boardService.getNicknamereply(replyList.get(i).getWriter()));
-                }
-            }
-            //참여자확인 
-            int joinidCheck = boardService.joinidCheck(boardnum, id);
-            System.out.println("join id check monthlychallege" + joinidCheck);
-            //마감데이트 확인 
-            int dateCheck = boardService.dateCheck(boardnum);
-            System.out.println("dateCheck" + dateCheck);
-            String pageNum = "1";
-            //컨텐츠용 
-            model.addAttribute("article", article);	
-            model.addAttribute("pageNum", pageNum);
-            //보드넘 보내주기 
-            model.addAttribute("boardnum", boardnum);
-            //댓글용 
-            model.addAttribute("pageSize", map.get("pageSize"));
-            model.addAttribute("pageN", map.get("pageN"));
-            model.addAttribute("currentPage", map.get("currentPage"));
-            model.addAttribute("startRow", map.get("startRow"));
-            model.addAttribute("endRow", map.get("endRow"));
-            model.addAttribute("replyList", map.get("replyList"));
-            model.addAttribute("count", map.get("count"));
-            model.addAttribute("number", map.get("number"));
-            //참여자확인 
-            model.addAttribute("joinidCheck", joinidCheck);
-            //마감데이트 확인
-            model.addAttribute("dateCheck", dateCheck);
-
-            return "redirect:/board/challengeContent.et";	 
+        	int boardnum = boardService.getChallenge(); 
+            return "redirect:/board/challengeContent.et?boardnum=" + boardnum + "&pageNum=1";	 
 
             }
     

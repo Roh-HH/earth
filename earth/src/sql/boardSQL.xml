@@ -189,8 +189,8 @@
 					from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
 				]]>
 			</select>
-			<select id="getChallenge" resultType="monthDTO">
-		        select * from (select * from challenge order by reg desc) where rownum = 1
+			<select id="getChallenge" resultType="int">
+		        select boardnum from (select * from challenge order by reg desc) where rownum = 1
 	        </select>
 			<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
 			 	<![CDATA[
