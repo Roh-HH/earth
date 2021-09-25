@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="badge">
+	
+	<select id="countAll" resultType="int">
+		select count(*) from badge
+	</select>
+	
+	<select id="getBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from badge order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
+	<select id="getPopulBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from badge order by sellnum desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
+	<select id="getPriceBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from badge order by badgeprice desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	
+	<select id="getBadge" parameterType="int" resultType="badgeDTO">
+		select * from badge where badgenum = #{value}
+	</select>
+	
+	<insert id="buyBadge" >
+		insert into mybag values (mybadge_seq.nextval, #{badgenum}, #{id})
+	</insert>
+	
+	<insert id="addBadge" >
+		insert into badge values (badge_seq.nextval, #{badgename}, #{badgeprice}, #{badgeimg},0,sysdate)
+	</insert>
+	
+	<select id="getPoint" parameterType="String" resultType="int">
+		select point from point where id = #{uid}
+	</select>
+	
+</mapper>
