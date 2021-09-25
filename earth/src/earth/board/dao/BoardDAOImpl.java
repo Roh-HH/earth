@@ -44,10 +44,10 @@ public class BoardDAOImpl implements BoardDAO {
         }
         //search 아이디 가져오기 
         @Override
-        public String getBaordid(String search) throws SQLException {	
-            String baordid = sqlSession.selectOne("board.getBaordid", search);
-            System.out.println("baordid " + baordid);	
-            return baordid;
+        public String getBoardid(String search) throws SQLException {	
+            String boardid = sqlSession.selectOne("board.getBoardid", search);
+            System.out.println("boardid " + boardid);	
+            return boardid;
         }
         
         // 뱃지이미지 추가 =================== 이다희
@@ -442,12 +442,13 @@ public class BoardDAOImpl implements BoardDAO {
 			List<MonthDTO> boardList = sqlSession.selectList("board.getChallengeArticles", map);		
 			return boardList;
 		}
-        //최신글 하나 가져오기 (추가)
-        @Override
-	    public MonthDTO getChallenge() throws SQLException {
-            MonthDTO article = sqlSession.selectOne("board.getChallenge");
-            return article;
-        }
+	
+		//최신글 하나 가져오기 (추가)
+		@Override
+			public MonthDTO getChallenge() throws SQLException {
+			MonthDTO article = sqlSession.selectOne("board.getChallenge");
+			return article;
+		}
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		@Override
@@ -757,6 +758,13 @@ public class BoardDAOImpl implements BoardDAO {
 		public int getCommentCount(int boardnum, int code) throws SQLException {
 			int count = sqlSession.selectOne("board.countCommentFree", boardnum);
 			return count;
+		}
+	
+		// 자유게시판 댓글 하나 가져오기 - 노현호
+		@Override
+		public FreeCommentDTO getFreeComment(int commentnum) throws SQLException {
+			FreeCommentDTO dto = sqlSession.selectOne("board.getFreeCommentOne", commentnum);
+			return dto;
 		}
 	
 	

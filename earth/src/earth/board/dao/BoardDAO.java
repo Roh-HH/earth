@@ -29,19 +29,19 @@ public interface BoardDAO {
 			// 게시글 삭제 처리 (게시판 통합) - 노현호
 			public int deleteArticle(int boardnum, int code) throws SQLException;
     
-            // =============== 닉네임 관련 추가  - 이다희
-            // 댓글 닉네임 가져오기 
-            public String getNicknamereply(String writer) throws SQLException;
-            // 컨텐츠 닉네임 가져오기 
-	        public String getNickname(String id) throws SQLException;
-            // search id 가져오기 
-            public String getBaordid(String search) throws SQLException;
-            
-            // =============== 뱃지이미지 관련 추가  - 이다희
-            //뱃지 이미지 가져오기 (게시글 리스트)
-            public String getBadgeimg(String id) throws SQLException;	
-            //뱃지 이미지 가져오기 (댓글)
-            public String getBadgeimgreply(String writer) throws SQLException;
+			// =============== 닉네임 관련 추가  - 이다희
+			// 댓글 닉네임 가져오기 
+			public String getNicknamereply(String writer) throws SQLException;
+			// 컨텐츠 닉네임 가져오기 
+			public String getNickname(String id) throws SQLException;
+			// search id 가져오기 
+			public String getBoardid(String search) throws SQLException;
+
+			// =============== 뱃지이미지 관련 추가  - 이다희
+			//뱃지 이미지 가져오기 (게시글 리스트)
+			public String getBadgeimg(String id) throws SQLException;	
+			//뱃지 이미지 가져오기 (댓글)
+			public String getBadgeimgreply(String writer) throws SQLException;
                 
 
 		// 1. 공지사항
@@ -95,8 +95,8 @@ public interface BoardDAO {
 			public int insertChJoin(int boardnum, String id) throws SQLException;
 			// 이달의 챌린지 게시글 목록 가져오기 - 이다희 
 			public List<MonthDTO> getChallengeArticles(int startRow, int endRow, int code) throws SQLException;
-            // 이달의 챌린지 상단메뉴 최신글 가져오기 (추가)
-	        public MonthDTO getChallenge() throws SQLException;
+			// 이달의 챌린지 상단메뉴 최신글 가져오기 (추가)
+			public MonthDTO getChallenge() throws SQLException;
 			// 이달의 챌린지 글 1개 가져오기 - 이다희
 			public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
 			// 이달의 챌린지 조인 아이디 체크 - 이다희
@@ -171,6 +171,8 @@ public interface BoardDAO {
 			public List<FreeCommentDTO> getCommentListFree(int startRow, int endRow, int boardnum, int code) throws SQLException;
 			// 자유게시판 댓글 갯수 가져오기 - 노현호
 			public int getCommentCount(int boardnum, int code) throws SQLException;
+			// 자유게시판 댓글 하나 불러오기 - 노현호
+			public FreeCommentDTO getFreeComment(int commentnum) throws SQLException;
 			
 		// 10. 환경일기 댓글
 			// 환경일기 댓글 업로드 - 이다희

@@ -330,6 +330,9 @@
 			<select id="countCommentFree" resultType="int">
 				select count(*) from freecomment where freenum = #{value}
 			</select>
+			<select id="getFreeCommentOne" parameterType="int" resultType="freecommentDTO">
+				select * from freecomment where commentnum = #{value}
+			</select>
 		
 		<!-- 환경일기 댓글 -->
 		
