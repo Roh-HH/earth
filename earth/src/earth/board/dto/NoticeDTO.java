@@ -2,6 +2,8 @@ package earth.board.dto;
 
 import java.sql.Timestamp;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class NoticeDTO {
 	// 작성자 : 노현호
 	// 공지사항(notice) 데이터 처리용 DTO
@@ -14,6 +16,7 @@ public class NoticeDTO {
 	private Timestamp reg;
 	private Integer readcount;
 	private Integer code;
+	private MultipartFile uploadFile;
 	
 	public Integer getBoardnum() {
 		return boardnum;
@@ -69,4 +72,11 @@ public class NoticeDTO {
 	public void setCode(Integer code) {
 		this.code = code;
 	}
+	public MultipartFile getUploadFile() {
+		return uploadFile;
+	}
+	public void setUploadFile(MultipartFile uploadFile) {
+		this.uploadFile = uploadFile;
+	}
+	
 }

@@ -3,46 +3,522 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="board">
+	<!-- SQL문 정렬 순서 : CRUD순 1차 정렬 + 공용 및 게시판 번호순 2차 정렬 -->
+     
+    <!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
+            <select id="getNicknamereply" parameterType="string" resultType="string">
+                   select nickname from users where id=#{writer}
+            </select>
 
-	<select id="countAllNotice" resultType="int">
-		select count(*) from notice
-	</select>
-	<select id="countAllFree" resultType="int">
-		select count(*) from free
-	</select>
-	<select id="countAllDiary" resultType="int">
-		select count(*) from diary
-	</select>
-	<select id="countAllChallenge" resultType="int">
-		select count(*) from challenge
-	</select>
-	<select id="countAllToday" resultType="int">
-		select count(*) from today
-	</select>
-	<select id="countAllShop" resultType="int">
-		select count(*) from shop
-	</select>
-	<select id="countAllEvent" resultType="int">
-		select count(*) from event
-	</select>
-	<select id="countAllTip" resultType="int">
-		select count(*) from tip
-	</select>
+            <select id="getNickname" parameterType="string" resultType="string">
+                select nickname from users where id=#{id}
+            </select>
+            <select id="getBaordid" parameterType="string" resultType="string">
+                select id from users where nickname=#{search}
+            </select>
+    <!-- 공용 뱃지 이미지 불러오기  -->
+            <select id="getBadgeimg" parameterType="string" resultType="string">
+                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{id}
+            </select>
+                <select id="getBadgeimgreply" parameterType="string" resultType="string">
+                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{writer}
+            </select>
 	
-	<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>
 	
-	<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
-		]]>
-	</select>
+	<!-- Create(insert) -->
+		<!-- 공지사항 -->
+			<insert id="insertNotice" parameterType="noticeDTO">
+				insert into notice values(notice_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+			</insert>
+	
+		<!-- 자유게시판 -->
+			<insert id="insertFree" parameterType="freeDTO">
+				insert into free values(free_seq.nextval, #{subject}, #{categ}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+			</insert>
+			
+		<!-- 환경일기 -->
+			<insert id="insertDiary" parameterType="diaryDTO">
+				insert into diary values(diary_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, 3, 0)
+			</insert>
+			<insert id="likeup" parameterType="hashmap">
+			 	insert into diary_recommend values(#{boardnum}, #{recid})
+			</insert>
+		
+		<!-- 이달의 챌린지 -->
+			<insert id="insertChallenge" parameterType="monthDTO">
+			 	insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}, #{enddate}) 
+			</insert>
+			<insert id="insertChJoin" parameterType="hashmap">
+			 	insert into challenge_join values(#{boardnum}, #{id})
+			</insert>
+		
+		<!-- 오늘의 실천 -->
+			<insert id="upload" parameterType="todayDTO">
+				insert into today values(today_seq.nextval, #{id}, #{ctt}, sysdate, #{code}, #{condition}) 
+			</insert>
+			
+		<!-- 상점소개 -->
+			<insert id="insertShop" parameterType="shopDTO">
+				insert into shop values(shop_seq.nextval, #{subject}, #{id}, #{pw}, #{img}, #{hyperlink}, sysdate, #{readcount}, #{code})
+			</insert>
+		
+		<!-- 행사 -->
+			<insert id="insertEvent" parameterType="eventDTO">
+				insert into event values(event_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code}, #{sch}, #{schend})
+			</insert>
+		
+		<!-- 꿀팁 -->
+			<insert id="insertTip" parameterType="tipDTO">
+				insert into tip values(tip_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+			</insert>
+		
+		<!-- 자유게시판 댓글 -->
+			<insert id="uploadFreeComment" parameterType="freecommentDTO">
+				insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt})
+			</insert>
+		
+        <!-- 환경일기 댓글 -->
+			<insert id="insertDiaryReply" parameterType="hashmap">
+				insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt}, 10)
+			</insert>
+		
+		<!-- 이달의 챌린지 댓글 -->
+			<insert id="insertChReply" parameterType="hashmap">
+			 	insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt}, 11)
+			</insert>
+		
+	
+	<!-- Read(select) -->
+		<!-- 공지사항 -->
+			<select id="countAllNotice" resultType="int">
+				select count(*) from notice
+			</select>
+			<select id="getPwNotice" resultType="string">
+				select pw from notice where boardnum = #{value}
+			</select>
+			<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getNoticeArticle" parameterType="int" resultType="noticeDTO">
+					select * from notice where boardnum = #{value}
+			</select>
+			<select id="getCttNotice" resultType="string">
+				select ctt from notice where boardnum = #{value}
+			</select>
 
-	<insert id="upload" parameterType="todayDTO">
-		insert into today values(today_seq.nextval, #{id}, #{ctt}, sysdate, #{code}, #{condition}) 
-	</insert>
+		<!-- 자유게시판 -->
+			<select id="countAllFree" resultType="int">
+				select count(*) from free
+			</select>
+			<select id="getPwFree" resultType="string">
+				select pw from free where boardnum = #{value}
+			</select>
+			<select id="getFreeArticles" parameterType="hashmap" resultType="freeDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from free order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getFreeArticle" parameterType="int" resultType="freeDTO">
+					select * from free where boardnum = #{value}
+			</select>
+			<select id="getBrackets" resultType="string">
+				select name from brackets
+			</select>
+			<select id="getBracketsDTO" resultType="bracketsDTO">
+				select * from brackets
+			</select>
+			<select id="getCttFree" resultType="string">
+				select ctt from free where boardnum = #{value}
+			</select>
+
+		<!-- 환경일기 -->
+			<select id="countAllDiary" resultType="int">
+				select count(*) from diary
+			</select>
+			<select id="getPwDiary" resultType="string">
+				select pw from diary where boardnum = #{value}
+			</select>
+			<select id="getCttDiary" resultType="string">
+				select ctt from diary where boardnum = #{value}
+			</select>
+			<select id="getImgDiary" resultType="string">
+				select img from diary where boardnum = #{value}
+			</select>
+			<select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">
+					select * from diary where boardnum = #{value}
+			</select>
+			<select id="countDiarySearch" parameterType="hashmap" resultType="int">
+				select count(*) from diary where ${sel} like '%'||#{search}||'%' 
+			</select>
+		
+			<select id="getSearchDiaryArticles" parameterType="hashmap" resultType="diaryDTO">	
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diary where ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="recidCheck" parameterType="hashmap" resultType="int">
+				select count(*) from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+			</select>
+			<select id="getDiaryReplyListCount" parameterType="int" resultType="int">
+				select count(*) from diarycomment where boardnum = #{value}
+			</select>
+			<select id="getDiaryReplyList" parameterType="hashmap" resultType="diaryDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				]]>
+			</select>
+		
+		<!-- 이달의 챌린지 -->
+			<select id="countAllChallenge" resultType="int">
+				select count(*) from challenge
+			</select>
+			<select id="getPwChallenge" resultType="string">
+				select pw from challenge where boardnum = #{value}
+			</select>
+			<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
+				<![CDATA[
+					select B.*, case when b.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
+					DECODE(B.joincount, B.maxcount, 1, 0) ck from (select A.*, rownum r 
+					from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getChallenge" resultType="monthDTO">
+		        select * from (select * from challenge order by reg desc) where rownum = 1
+	        </select>
+			<select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
+			 	<![CDATA[
+			 		select A.*, case when A.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck from (select * from challenge)A where boardnum=${value}
+				]]>
+			</select>
+			<select id="getChReplyListCount" parameterType="int" resultType="int">
+				select count(*) from challengecomment where boardnum = #{value}
+			</select>
+			<select id="getChReplyList" parameterType="hashmap" resultType="monthDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				]]>
+			</select>
+			<select id="idCheck" parameterType="hashmap" resultType="int">
+				select count(*) from challenge_join where boardnum = #{boardnum} and id=#{id}
+			</select>
+			<select id="dateCheck" parameterType="int" resultType="int">
+				select count(*) from challenge where enddate > to_char(sysdate, 'YYYY/MM/DD') and boardnum = #{value}
+			</select>
+		
+		<!-- 오늘의 실천 -->
+			<select id="countAllToday" resultType="int">
+				select count(*) from today where to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
+			</select>
+			<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
+				]]>
+			</select>
+		
+		<!-- 상점소개 -->
+			<select id="countAllShop" resultType="int">
+				select count(*) from shop
+			</select>
+			<select id="getPwShop" resultType="string">
+				select pw from shop where boardnum = #{value}
+			</select>
+			<select id="getImgShop" resultType="string">
+				select img from shop where boardnum = #{value}
+			</select>
+			<select id="getShopArticles" parameterType="hashmap" resultType="shopDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from shop order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getShopArticle" parameterType="int" resultType="shopDTO">
+				select * from shop where boardnum=${value}
+			</select>
+			<select id="getShopSearch" parameterType="hashmap" resultType="shopDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from shop where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="shopCount" parameterType="hashmap" resultType="int">
+				select count(*) from shop where ${sel} like '%'||#{search}||'%'
+			</select>
+		
+		<!-- 행사 -->
+			<select id="countAllEvent" resultType="int">
+				select count(*) from event
+			</select>
+			<select id="getPwEvent" resultType="string">
+				select pw from event where boardnum = #{value}
+			</select>
+			<select id="getCttEvent" resultType="string">
+				select ctt from event where boardnum = #{value}
+			</select>
+			<select id="getImgEvent" resultType="string">
+				select img from event where boardnum = #{value}
+			</select>
+			<select id="getEventArticles" parameterType="hashmap" resultType="eventDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from event order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getEventArticle" parameterType="int" resultType="eventDTO">
+				select * from event where boardnum=${value}
+			</select>
+			<select id="getEventSearch" parameterType="hashmap" resultType="eventDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from event where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="eventCount" parameterType="hashmap" resultType="int">
+				select count(*) from event where ${sel} like '%'||#{search}||'%'
+			</select>
+		
+		<!-- 꿀팁 -->
+			<select id="countAllTip" resultType="int">
+				select count(*) from tip
+			</select>
+			<select id="getPwTip" resultType="string">
+				select pw from tip where boardnum = #{value}
+			</select>
+			<select id="getCttTip" resultType="string">
+				select ctt from tip where boardnum = #{value}
+			</select>
+			<select id="getImgTip" resultType="string">
+				select img from tip where boardnum = #{value}
+			</select>
+			<select id="getTipArticles" parameterType="hashmap" resultType="tipDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from tip order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getTipArticle" parameterType="int" resultType="tipDTO">
+			 	select * from tip where boardnum = #{value}
+			</select>
+			<select id="getTipSearch" parameterType="hashmap" resultType="tipDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from tip where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc ) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="tipCount" parameterType="hashmap" resultType="int">
+				select count(*) from tip where ${sel} like '%'||#{search}||'%'
+			</select>
+		
+		<!-- 자유게시판 댓글 -->
+			<select id="getFreeComment" parameterType="hashmap" resultType="freecommentDTO">
+				<![CDATA[
+					select B.* from (select A.*, rownum r from (select * from freecomment where freenum = #{boardnum} order by ref desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getRefCountFree" parameterType="int" resultType="string">
+				select count(ref) from freecomment where freenum = #{value}
+			</select>
+			<select id="countCommentFree" resultType="int">
+				select count(*) from freecomment where freenum = #{value}
+			</select>
+			<select id="getFreeCommentOne" parameterType="int" resultType="freecommentDTO">
+				select * from freecomment where commentnum = #{value}
+			</select>
+		
+		<!-- 환경일기 댓글 -->
+		
+		
+		<!-- 이달의 챌린지 댓글 -->
+		
+		
 	
+	
+	
+	<!-- Update -->
+		<!-- 공지사항 -->
+			<update id="addReadCountNotice" parameterType="int">
+				<![CDATA[
+					update notice set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateNoticeArticle" parameterType="noticeDTO">
+				update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}
+			</update>
+
+		<!-- 자유게시판 -->
+			<update id="addReadCountFree" parameterType="int">
+				<![CDATA[
+					update free set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="subReadCountFree" parameterType="int">
+				<![CDATA[
+					update free set readcount=readcount-1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateFreeArticle" parameterType="freeDTO">
+				update free set subject = #{subject}, ctt = #{ctt}, categ = #{categ} where boardnum = #{boardnum}
+			</update>
+
+		<!-- 환경일기 -->
+			<update id="addReadCountDairy" parameterType="int">
+				<![CDATA[
+					update diary set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateDiaryArticle" parameterType="diaryDTO" >
+				update diary set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}  
+			</update>
+			<update id="updateDiaryArticleImg" parameterType="diaryDTO" >
+				update diary set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} 
+			</update>
+			<update id="likeadd" parameterType="int">
+		  		update diary set recommend = recommend+1 where boardnum = #{value}
+		  	</update>
+		  	<update id="likedown" parameterType="int">
+		  		update diary set recommend = recommend-1 where boardnum = #{value}
+		  	</update>
+		  	<update id="minusReadCountDairy" parameterType="int">
+				<![CDATA[
+					update diary set readcount=readcount-2 where boardnum = #{value}
+				]]>
+			</update>
+		
+		<!-- 이달의 챌린지 -->
+			<update id="updateChallengeArticle" parameterType="monthDTO">
+				update challenge set subject = #{subject}, ctt = #{ctt}, maxcount = #{maxcount}, enddate = #{enddate} where boardnum = #{boardnum}
+			</update>
+			<update id="updateChallengeArticleImg" parameterType="monthDTO">
+				update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount},  enddate = #{enddate} where boardnum = #{boardnum}
+			</update>
+			<update id="joinCountUp" parameterType="int">
+		  		update challenge set joincount = joincount+1 where boardnum = #{value}
+		  	</update>
+		
+		<!-- 오늘의 실천 -->
+		
+		
+		<!-- 상점소개 -->
+			<update id="addReadCountShop" parameterType="int">
+				<![CDATA[
+					update shop set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateShopArticle" parameterType="shopDTO"> 	
+				update shop set subject = #{subject}, hyperlink = #{hyperlink} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateShopArticleImg" parameterType="shopDTO">
+				update shop set subject = #{subject}, hyperlink = #{hyperlink}, img = #{img} where boardnum = #{boardnum}
+			</update>
+		
+		<!-- 행사 -->
+			<update id="addReadCountEvent" parameterType="int">
+				<![CDATA[
+					update event set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateEventArticle" parameterType="eventDTO">
+				update event set subject = #{subject}, sch = #{sch},  schend = #{schend}, ctt = #{ctt} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateEventArticleImg" parameterType="eventDTO">
+				update event set subject = #{subject}, sch = #{sch}, schend = #{schend}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+			</update>
+		
+		<!-- 꿀팁 -->
+			<update id="addReadCountTip" parameterType="int">
+				<![CDATA[
+					update tip set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateTipArticle" parameterType="tipDTO">
+				update tip set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateTipArticleImg" parameterType="tipDTO">
+				update tip set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+			</update>
+		
+		<!-- 자유게시판 댓글 -->
+		
+		
+		<!-- 환경일기 댓글 -->
+		
+		
+		<!-- 이달의 챌린지 댓글 -->
+		
+		
+	<!-- Delete -->
+		<!-- 공지사항 -->
+			<delete id="deleteArticleNotice" parameterType="int">
+				delete from notice where boardnum = #{value}
+			</delete>
+
+		<!-- 자유게시판 -->
+			<delete id="deleteArticleFree" parameterType="int">
+				delete from free where boardnum = #{value}
+			</delete>
+
+		<!-- 환경일기 -->
+			<delete id="deleteArticleDiary" parameterType="int">
+				delete from diary where boardnum = #{value}
+			</delete>
+			<delete id="likeCancel" parameterType="hashmap">
+				delete from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+			</delete>
+		
+		<!-- 이달의 챌린지 -->
+			<delete id="deleteArticleChallenge" parameterType="int">
+				delete from challenge where boardnum = #{value}
+			</delete>
+		
+		<!-- 오늘의 실천 -->
+			<delete id="deleteArticleToday" parameterType="int">
+				delete from today where boardnum = #{value}
+			</delete>
+		
+		<!-- 상점소개 -->
+			<delete id="deleteArticleShop" parameterType="int">
+				delete from shop where boardnum = #{value}
+			</delete>
+		
+		<!-- 행사 -->
+			<delete id="deleteArticleEvent" parameterType="int">
+				delete from event where boardnum = #{value}
+			</delete>
+		
+		<!-- 꿀팁 -->
+			<delete id="deleteArticleTip" parameterType="int">
+				delete from tip where boardnum = #{value}
+			</delete>
+		
+		<!-- 자유게시판 댓글 -->
+			<delete id="deleteArticleFreeComment" parameterType="int">
+				delete from freecomment where commentnum = #{value}
+			</delete>
+		
+		<!-- 환경일기 댓글 -->
+			<delete id="deleteArticleDiaryComment" parameterType="int">
+				delete from diarycomment where commentnum = #{value}
+			</delete>
+			<delete id="replydeletediary" parameterType="int">
+				delete from diarycomment where commentnum = #{commentnum}
+			</delete>
+		
+		<!-- 이달의 챌린지 댓글 -->
+			<delete id="deleteArticleChallengeComment" parameterType="int">
+				delete from challengecomment where commentnum = #{value}
+			</delete>
+			<delete id="replydeletechallenge" parameterType="int">
+				delete from challengecomment where commentnum = #{commentnum}
+			</delete>
+		
+			
 </mapper>
