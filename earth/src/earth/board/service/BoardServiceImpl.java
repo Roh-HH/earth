@@ -626,6 +626,13 @@ public class BoardServiceImpl implements BoardService {
 			int result = boardDAO.uploadFreeComment(dto);
 			return result;
 		}
+	
+		// 자유게시판 댓글 하나 가져오기 - 노현호
+		@Override
+		public FreeCommentDTO getFreeComment(int commentnum) throws SQLException {
+			FreeCommentDTO dto = boardDAO.getFreeComment(commentnum);
+			return dto;
+		}
 		
 	
 	// 10. 환경일기 댓글
