@@ -47,39 +47,39 @@ public class BoardController {
 	
 	// 메서드 정렬 순서 : CRUD순 1차 정렬, 게시판 코드순 2차 정렬
 	// 로그인파트 연결 등 추후 수정이 필요한 메서드 * 표시
+	
+	// 어뜨-어뜨 페이지 요청 - 김하영
+	@GetMapping("about.et")
+	public String earth() {
+		return "board/about";
+	}
 
 	// Create(insert)
 		// 0. 통합기능 - 노현호
 			// 독립된 코드 없음
 	
 		// 1. 공지사항 - 노현호
-			// *공지사항 게시글 등록 페이지 요청
+			// 공지사항 게시글 등록 페이지 요청
 			@RequestMapping("noticeWriteForm.et")
 			public String noticeWriteForm(HttpServletRequest request, Model model, HttpSession session) throws SQLException{
 				System.out.println("noticeWriteForm.et");
-				
-				/*
-		 		//admin이 아니면 접근 불가능하게 해야되어요(추후 활성화 필요)
 				
 				if(!session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
-				*/
 				
-				// model.addAttribute("id", session.getAttribute("sid"));										// sid세션 개발 후 활성화 필요
-				model.addAttribute("id", "admin");
-				
+				model.addAttribute("id", session.getAttribute("sid"));
+								
 				return "board/noticeWriteForm";
 			}
 				
-			// *공지사항 게시글 등록 처리 요청
+			// 공지사항 게시글 등록 처리 요청
 			@RequestMapping("noticeWritePro.et")
 			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
 				System.out.println("noticeWritePro.et");
 				
-				// dto.setId((String)session.getAttribute("sid"));												// sid세션 개발 후 활성화 필요
-				dto.setId("admin");																				// sid세션 개발 후 삭제 필요
+				dto.setId((String)session.getAttribute("sid"));
 				dto.setCode(1);
 				dto.setReadcount(0);
 				String hashedPassword = BCrypt.hashpw(dto.getPw(), BCrypt.gensalt());
@@ -98,7 +98,7 @@ public class BoardController {
 
 			
 		// 2. 자유게시판 - 노현호
-			// *자유게시판 게시글 등록 페이지
+			// 자유게시판 게시글 등록 페이지
 			@RequestMapping("freeWriteForm.et")
 			public String freeWriteForm(HttpServletRequest request, Model model, HttpSession session) throws SQLException{
 				System.out.println("freeWriteForm.et");
@@ -107,20 +107,18 @@ public class BoardController {
 				List<BracketsDTO> Brackets = boardService.getBrackets();
 				model.addAttribute("Brackets", Brackets);
 				
-				// model.addAttribute("id", session.getAttribute("sid"));										// sid세션 개발 후 활성화 필요
-				model.addAttribute("id", "javatest");
+				model.addAttribute("id", session.getAttribute("sid"));
 				
 				return "board/freeWriteForm";
 			}
 				
-			// *자유게시판 게시글 등록 처리
+			// 자유게시판 게시글 등록 처리
 			@RequestMapping("freeWritePro.et")
 			public String freeWritePro(FreeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
 				System.out.println("freeWritePro.et");
 				
-				// dto.setId((String)session.getAttribute("sid"));												// sid세션 개발 후 활성화 필요
+				dto.setId((String)session.getAttribute("sid"));
 				model.addAttribute("id", "javatest");
-				dto.setId("javatest");																			// sid세션 개발 후 삭제 필요
 				dto.setCode(2);
 				dto.setReadcount(0);
 				String hashedPassword = BCrypt.hashpw(dto.getPw(), BCrypt.gensalt());
@@ -345,14 +343,12 @@ public class BoardController {
 			
 			
 		// 5. 오늘의 실천 - 노현호
-			// *오늘의 실천 게시글 등록+처리
+			// 오늘의 실천 게시글 등록+처리
 			@RequestMapping("uploadTodayChallenge.et")
 			public String uploadTodayChallenge(TodayDTO dto) throws SQLException{
 				System.out.println("uploadTodayChallenge.et");
 				
-				// 비로그인상태일 시 처리 필요함
-				// dto.setId((String)session.getAttribute("sid"));													// sid세션 개발 후 활성화 필요
-				dto.setId("javatest");																				// sid세션 개발 후 삭제 필요
+				dto.setId((String)session.getAttribute("sid"));
 				dto.setCode(5);
 				
 				int result = boardService.upload(dto);
@@ -367,7 +363,7 @@ public class BoardController {
 			
 			
 		// 6. 상점소개 - 김하영
-			// *상점소개 게시글 등록 페이지
+			// 상점소개 게시글 등록 페이지
 			@RequestMapping("writeShopForm.et")
 			public String writeShopForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeShopForm.et");			
@@ -384,8 +380,7 @@ public class BoardController {
 				model.addAttribute("ref", ref);
 				model.addAttribute("re_step", re_step);
 				model.addAttribute("re_level", re_level);
-				model.addAttribute("id", "admin");//테스트용id 보내주기(추후에는 session으로 처리하면 되니까 삭제하기)
-				//model.addAttribute("id", session.getAttribute("sid"));
+				model.addAttribute("id", session.getAttribute("sid"));
 	
 				return "board/writeShopForm";
 			}
@@ -456,14 +451,13 @@ public class BoardController {
 			
 			
 		// 7. 행사 - 김하영
-			// *행사 게시글 등록 페이지
+			// 행사 게시글 등록 페이지
 			@RequestMapping("writeEventForm.et")
 			public String writeEventForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeEventForm.et");			
 
 				int num=0, ref=1, re_step=0, re_level=0;
 				if(request.getParameter("num") != null) {
-					
 					num=Integer.parseInt(request.getParameter("num"));
 					ref=Integer.parseInt(request.getParameter("ref"));
 					re_step=Integer.parseInt(request.getParameter("re_step"));
@@ -475,19 +469,17 @@ public class BoardController {
 				model.addAttribute("ref", ref);
 				model.addAttribute("re_step", re_step);
 				model.addAttribute("re_level", re_level);
-				model.addAttribute("id", "admin"); //테스트용id 보내주기(추후에는 session으로 처리하면 되니까 삭제하기)
-				//model.addAttribute("id", session.getAttribute("sid"));
+				model.addAttribute("id", session.getAttribute("sid"));
 
 				return "board/writeEventForm";
 			}
 			
-			// *행사 게시글 등록 처리 
+			// 행사 게시글 등록 처리 
 			@RequestMapping("writeEventPro.et")
 			public String writeEventPro(EventDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException{
 				System.out.println("writeEventPro.et");
 				
-				// dto.setId((String)session.getAttribute("sid"));												// sid세션 개발 후 활성화 필요
-				dto.setId("admin");																				// sid세션 개발 후 삭제 필요
+				dto.setId((String)session.getAttribute("sid"));
 				dto.setCode(7);
 				dto.setReadcount(0);
 				
@@ -547,7 +539,7 @@ public class BoardController {
 			
 			
 		// 8. 꿀팁 - 김하영
-			// *꿀팁 게시글 등록 페이지
+			// 꿀팁 게시글 등록 페이지
 			@RequestMapping("writeTipForm.et")
 			public String writeTipForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeTipForm.et");			
@@ -564,8 +556,7 @@ public class BoardController {
 				model.addAttribute("ref", ref);
 				model.addAttribute("re_step", re_step);
 				model.addAttribute("re_level", re_level);
-				model.addAttribute("id", "admin");//테스트용id 보내주기( 추후에는 session으로 처리하면 되니까 삭제하기
-				//model.addAttribute("id", session.getAttribute("sid"));
+				model.addAttribute("id", session.getAttribute("sid"));
 
 				return "board/writeTipForm";
 			}
@@ -575,8 +566,7 @@ public class BoardController {
 			public String writeTipPro(TipDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException{
 			System.out.println("writeTipPro.et");
 				
-				// dto.setId((String)session.getAttribute("sid"));												// sid세션 개발 후 활성화 필요
-				dto.setId("admin");																				// sid세션 개발 후 삭제 필요
+				dto.setId((String)session.getAttribute("sid"));
 				dto.setCode(8);
 				dto.setReadcount(0);
 				
@@ -636,13 +626,12 @@ public class BoardController {
 			
 			
 		// 9. 자유게시판 댓글 - 노현호
-			// *자유게시판 댓글 등록 + 처리
+			// 자유게시판 댓글 등록 + 처리
 			@RequestMapping("uploadFreeComment.et")
 			public String uploadFreeComment(String pageNum, int boardnum, FreeCommentDTO dto) throws SQLException{
 				System.out.println("uploadFreeComment.et");
 				
-				// dto.setWriter((String)session.getAttribute("sid"));										// sid세션 개발 후 활성화 필요
-				dto.setWriter("javatest");																	// sid세션 개발 후 삭제 필요
+				dto.setWriter((String)session.getAttribute("sid"));
 				dto.setFreenum(boardnum);
 				if(dto.getRef()==null || dto.getRef()==0)
 					dto.setRef(1);
@@ -696,10 +685,6 @@ public class BoardController {
 				model.addAttribute("count", result.get("count"));
 				model.addAttribute("number", result.get("number"));
 				
-				// 로그인 연결 후 수정해야되는 부분
-				String id = "javatest";
-				session.setAttribute("sid", id);
-				
 				return "board/noticeList";
 			}
 			
@@ -717,7 +702,7 @@ public class BoardController {
 			
 				
 		// 2. 자유게시판 - 노현호
-			// *자유게시판 목록 요청
+			// 자유게시판 목록 요청
 			@RequestMapping("freeList.et")
 			public String freeList(String pageNum, Model model, HttpSession session) throws SQLException{
 				System.out.println("freeList.et");
@@ -736,21 +721,13 @@ public class BoardController {
 				model.addAttribute("count", result.get("count"));
 				model.addAttribute("number", result.get("number"));
 				
-				// 로그인 연결 후 수정해야되는 부분
-				String id = "javatest";
-				session.setAttribute("sid", id);
-				
 				return "board/freeList";
 			}
 			
-			// *자유게시판 게시글 조회(+댓글조회)
+			// 자유게시판 게시글 조회(+댓글조회)
 			@RequestMapping("freeContent.et")
 			public String freeContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, int commentPageNum, Model model, HttpSession session) throws SQLException {
 				System.out.println("freeContent.et");
-				
-				// 로그인 연결 후 수정해야하는 부분
-				String id = "javatest";
-				session.setAttribute("sid", id);
 				
 				int code = 9;
 				
@@ -782,57 +759,56 @@ public class BoardController {
 			
 		// 3. 환경일기 - 이다희
 			//환경일기 목록 요청
-            @RequestMapping("diaryList.et")
-            public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
-                System.out.println("diaryList요청");
+			@RequestMapping("diaryList.et")
+			public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
+				System.out.println("diaryList요청");
 
-                int code = 3;
-                Map<String, Object> result = null;
-                //전체 게시글 검색 안한 전체 글 보여주기 
-                if(sel == null || search == null) {															
-                    result = boardService.getArticleList(pageNum,code);
-                //검색 했을때 
-                }else {
-                    // 닉네임이넘어올때 
-                    System.out.println("nickname ========>sel " + sel);
+				int code = 3;
+				Map<String, Object> result = null;
+				//전체 게시글 검색 안한 전체 글 보여주기 
+				if(sel == null || search == null) {														
+					result = boardService.getArticleList(pageNum,code);
+					//검색 했을때 
+				}else {
+					// 닉네임이넘어올때 
+					System.out.println("nickname ========>sel " + sel);
 
-                    if(sel.equals("nickname")) {	
-                            search = boardService.getBaordid(search);				
-                            System.out.println("search ========> " + search);
-                            //search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
-                            if(search == null) {
-                                search = "null";
-                            }
-                            sel = "id";
-                            System.out.println("sel ========>" + sel);
-                        }
+					if(sel.equals("nickname")) {	
+						search = boardService.getBaordid(search);				
+						System.out.println("search ========> " + search);
+						//search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
+						if(search == null) {
+							search = "null";
+						}
+						sel = "id";
+						System.out.println("sel ========>" + sel);
+					}
+					result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
+				}
 
-                    result = boardService.getDiaryArticleSearch(pageNum, sel, search, code);
-                }
+				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
+				if (result.get("articleList") != null) {
+					List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+					}
+				}
 
-                // 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
-                if (result.get("articleList") != null) {
-                    List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
-                    for(int i=0; i<articleList.size(); i++) {
-                        articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
-                        articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
-                    }
-                }
+				// view 에 전달할 데이터 보내기
+				model.addAttribute("pageSize", result.get("pageSize"));
+				model.addAttribute("pageNum", result.get("pageNum"));
+				model.addAttribute("currentPage", result.get("currentPage"));
+				model.addAttribute("startRow", result.get("startRow"));
+				model.addAttribute("endRow", result.get("endRow"));
+				model.addAttribute("articleList", result.get("articleList"));
+				model.addAttribute("count", result.get("count"));
+				model.addAttribute("number", result.get("number"));
+				model.addAttribute("sel", sel);
+				model.addAttribute("search", search);
 
-                // view 에 전달할 데이터 보내기
-                model.addAttribute("pageSize", result.get("pageSize"));
-                model.addAttribute("pageNum", result.get("pageNum"));
-                model.addAttribute("currentPage", result.get("currentPage"));
-                model.addAttribute("startRow", result.get("startRow"));
-                model.addAttribute("endRow", result.get("endRow"));
-                model.addAttribute("articleList", result.get("articleList"));
-                model.addAttribute("count", result.get("count"));
-                model.addAttribute("number", result.get("number"));
-                model.addAttribute("sel", sel);
-                model.addAttribute("search", search);
-
-                return "board/diaryList";
-            }
+				return "board/diaryList";
+			}
  	
 		// 환경일기 게시글 내용 조회
         @RequestMapping("diaryContent.et")
@@ -1033,7 +1009,7 @@ public class BoardController {
 			
 			
 		// 5. 오늘의 실천 - 노현호
-			// *오늘의 실천 목록 요청
+			// 오늘의 실천 목록 요청
 			@RequestMapping("dailyChallenge.et")
 			public String dailyChallenge(String pageNum, Model model, HttpSession session) throws SQLException{
 				System.out.println("dailyChallenge.et");
@@ -1051,10 +1027,6 @@ public class BoardController {
 				model.addAttribute("articleList", result.get("articleList"));
 				model.addAttribute("count", result.get("count"));
 				model.addAttribute("number", result.get("number"));
-				
-				// 로그인 연결 후 수정해야되는 부분
-				String id = "javatest";
-				session.setAttribute("sid", id);
 				
 				return "board/dailyChallenge";
 			}
@@ -1107,7 +1079,7 @@ public class BoardController {
 		// 7. 행사 - 김하영
 			// 행사일정 목록 요청 
 			@RequestMapping("event.et") 
-			public String event(String pageNum,String sel, String search, Model model, HttpSession session) throws SQLException {
+			public String event(String pageNum, String sel, String search, Model model, HttpSession session) throws SQLException {
 				System.out.println("event(List).et");
 				
 				// notice 테이블에서 전체 게시글 가져오기
@@ -1118,7 +1090,6 @@ public class BoardController {
 				if(sel == null || search == null) {
 					result = boardService.getArticleList(pageNum, code);
 				}else { // 검색 게시글 sel search != null
-					
 					if(sel.equals("nickname")) {
 						search = boardService.getBaordid(search);
 						System.out.println("search=====>" + search);
@@ -1262,19 +1233,15 @@ public class BoardController {
 			
 			
 		// 1. 공지사항 - 노현호
-			// *공지사항 게시글 수정
+			// 공지사항 게시글 수정
 			@RequestMapping("noticeModifyForm.et")
 			public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model) throws SQLException {
 				System.out.println("noticeModifyForm.et");
-				
-				/*
-		 		//admin이 아니면 접근 불가능하게 해야되어요(추후 활성화 필요)
 				
 				if(!session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 수정에 접근함");
 					return "main/main.et";
 				}
-				*/
 				
 				NoticeDTO article = boardService.getNoticeArticle(boardnum);
 				System.out.println(article.getBoardnum());
@@ -1528,7 +1495,7 @@ public class BoardController {
 				return "board/shopModifyForm";
 			}
 			
-			// *상점소개 수정 처리
+			// 상점소개 수정 처리
 			@RequestMapping("shopModifyPro.et")
 			public String shopModifyPro(ShopDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
 					System.out.println("shopModifyPro.et");
@@ -1570,7 +1537,6 @@ public class BoardController {
 						// 이미지를 새로 올린 경우
 						int result = boardService.updateShopArticleImg(dto);
 						model.addAttribute("result", result);
-						
 						return "board/shopModifyPro";
 					}
 			}
@@ -1588,7 +1554,7 @@ public class BoardController {
 				return "board/eventModifyForm";
 			}
 			
-			// *행사일정 수정 처리
+			// 행사일정 수정 처리
 			@RequestMapping("eventModifyPro.et")
 			public String eventModifyPro(EventDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
 					System.out.println("eventModifyPro.et");
@@ -1649,7 +1615,7 @@ public class BoardController {
 				return "board/tipModifyForm";
 			}
 			
-			// *꿀팁 수정 처리
+			// 꿀팁 수정 처리
 			@RequestMapping("tipModifyPro.et")
 			public String tipModifyPro(TipDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
 					System.out.println("tipModifyPro.et");
