@@ -760,6 +760,13 @@ public class BoardDAOImpl implements BoardDAO {
 			return count;
 		}
 	
+		// 자유게시판 댓글 하나 가져오기 - 노현호
+		@Override
+		public FreeCommentDTO getFreeComment(int commentnum) throws SQLException {
+			FreeCommentDTO dto = sqlSession.selectOne("board.getFreeCommentOne", commentnum);
+			return dto;
+		}
+	
 	
 	// 10. 환경일기 댓글
 		// 환경일기 댓글 업로드 - 이다희
