@@ -39,8 +39,8 @@ public class BoardServiceImpl implements BoardService {
         }
 
         @Override
-        public String getBaordid(String search) throws SQLException {
-            String boardid = boardDAO.getBaordid(search);
+        public String getBoardid(String search) throws SQLException {
+            String boardid = boardDAO.getBoardid(search);
             return boardid;
         }
 
@@ -475,12 +475,13 @@ public class BoardServiceImpl implements BoardService {
 			int result = boardDAO.insertChJoin(boardnum, id);
 			return result;
 		}
-        //이달의 챌린지 최신글 가져오기 
-        @Override
-        public MonthDTO getChallenge() throws SQLException {
-            MonthDTO article = boardDAO.getChallenge();
-            return article;
-        }
+	
+		//이달의 챌린지 최신글 가져오기 
+		@Override
+		public MonthDTO getChallenge() throws SQLException {
+			MonthDTO article = boardDAO.getChallenge();
+			return article;
+		}
 
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
