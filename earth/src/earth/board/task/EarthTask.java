@@ -14,17 +14,14 @@ public class EarthTask {
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession = null;
-	
-	//@Scheduled(cron = "0 15 0 * * *") 
-	//매달 1일 00시에 실행
-	//@Scheduled(cron = "0 0 0 1 * *")
-	public void test() throws SQLException {
-	
-		System.out.println("Quartz 실행  - 등록  ");
-		//System.out.println("Quartz 실행  - 0 05 14  등록  ");
-		
-		MonthDTO dto = new MonthDTO();
  
+	//매달 1일 00시에 이달의 챌린지 등록 
+	//@Scheduled(cron = "0 0 0 1 * *")
+	public void monthlyChInsert() throws SQLException {
+	
+		System.out.println("Quartz 실행 , 이달의 챌린지 등록 / 매달 1일 00시에 실행  ");
+		 
+		MonthDTO dto = new MonthDTO();
 		dto.setSubject("[테스트] 9/18 쿼츠 등록 24시 15분 ");
 		dto.setId("admin");
 		dto.setPw("1111");
@@ -39,15 +36,23 @@ public class EarthTask {
 		
 	}
 	
+	//매일 00시에 포인트 0 으로 업데이트
+	//@Scheduled(cron = "0 0 0 * * *") 
+	public void pointupdate() throws SQLException {
+		System.out.println("=======> Quartz 실행, 매일 00시에 포인트 카운트 3개 0으로 업데이트 ");
+		sqlSession.update("user.updatePoint");
+	}
+	
+	
 	//@Scheduled(cron = "59 28 14 * * *") 
 	//@Scheduled(cron = "0 03 16 * * *")
 	//@Scheduled(cron = "0 9 16 * * *")
 	//@Scheduled(cron = "0 35 10 * * *")
-	//@Scheduled(cron = "0 0 0 * * *")
-	public void pointupdate() throws SQLException {
-		System.out.println("Quartz 실행  - 매일 24시에 카운트 3개 - 0 으로 업데이트   ");
-		sqlSession.update("user.updatePoint");
-		
+	//@Scheduled(cron = "0 50 23 * * *") 
+	public void test () {
+		System.out.println("=======> Quartz 실행 테스트 용  ");
+		 
 	}
+	
 
 }
