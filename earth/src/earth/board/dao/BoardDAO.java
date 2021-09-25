@@ -171,6 +171,8 @@ public interface BoardDAO {
 			public List<FreeCommentDTO> getCommentListFree(int startRow, int endRow, int boardnum, int code) throws SQLException;
 			// 자유게시판 댓글 갯수 가져오기 - 노현호
 			public int getCommentCount(int boardnum, int code) throws SQLException;
+			// 자유게시판 댓글 하나 불러오기 - 노현호
+			public FreeCommentDTO getFreeComment(int commentnum) throws SQLException;
 			
 		// 10. 환경일기 댓글
 			// 환경일기 댓글 업로드 - 이다희
