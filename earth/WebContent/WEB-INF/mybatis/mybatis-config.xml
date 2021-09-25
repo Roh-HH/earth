@@ -10,6 +10,7 @@
 	
 	<!-- typeAliases 자주 쓰는 클래스 별칭 지정 -->
 	<typeAliases>
+
 		<typeAlias alias="bracketsDTO" type="earth.board.dto.BracketsDTO"/>
 		<typeAlias alias="diaryDTO" type="earth.board.dto.DiaryDTO"/>
 		<typeAlias alias="eventDTO" type="earth.board.dto.EventDTO"/>
@@ -30,15 +31,23 @@
 		<typeAlias alias="warningDTO" type="earth.user.dto.WarningDTO"/>
 		
 		<typeAlias alias="badgeDTO" type="earth.badge.dto.BadgeDTO"/>	
-		
+    
+    <typeAlias alias="adminBoardDTO" type="earth.admin.dto.AdminBoardDTO"/>
+		<typeAlias alias="adminCommentDTO" type="earth.admin.dto.AdminCommentDTO"/>
+		<typeAlias alias="userDTO" type="earth.user.dto.UserDTO"/>
+		<typeAlias alias="questionDTO" type="earth.user.dto.QuestionDTO"/>
+		<typeAlias alias="attendDTO" type="earth.user.dto.AttendDTO"/>
+		<typeAlias alias="adminQuestionDTO" type="earth.admin.dto.AdminQuestionDTO"/>
+		<typeAlias alias="noticeDTO" type="earth.admin.dto.NoticeDTO"/>
+
 	</typeAliases>
 	
  	<!-- mapper의 위치 설정 -->
  	<mappers>
  		<mapper resource="/sql/adminSQL.xml"/>
- 		<mapper resource="/sql/boardSQL.xml"/>
  		<mapper resource="/sql/userSQL.xml"/>
  		<mapper resource="/sql/mainSQL.xml"/>
 		<mapper resource="/sql/badgeSQL.xml"/>
  	</mappers>
+ 	
 </configuration>
