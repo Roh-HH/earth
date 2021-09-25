@@ -140,6 +140,8 @@ public interface BoardService {
 	// 9. 자유게시판 댓글
 		// 자유게시판 댓글 업로드 - 노현호
 		public int uploadFreeComment(FreeCommentDTO dto) throws SQLException;
+		// 자유게시판 댓글 하나 불러오기 - 노현호
+		public FreeCommentDTO getFreeComment(int commentnum) throws SQLException;
 	
 	// 10. 환경일기 댓글
 		// 환경일기 댓글 업로드 - 이다희
