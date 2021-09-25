@@ -774,7 +774,7 @@ public class BoardController {
 					System.out.println("nickname ========>sel " + sel);
 
 					if(sel.equals("nickname")) {	
-						search = boardService.getBaordid(search);				
+						search = boardService.getBoardid(search);				
 						System.out.println("search ========> " + search);
 						//search 가 없을때 "null" 문자열을 넣어 카운트가 0이 되게 만들어줌 
 						if(search == null) {
@@ -1040,7 +1040,7 @@ public class BoardController {
 					result = boardService.getArticleList(pageNum, code);
 				}else { // 검색 게시글 sel search != null
 					if(sel.equals("nickname")) {
-						search = boardService.getBaordid(search);
+						search = boardService.getBoardid(search);
 						System.out.println("search=====>" + search);
 						if(search == null) {
 							search = "null";
@@ -1081,7 +1081,7 @@ public class BoardController {
 				EventDTO article = boardService.getEventArticle(boardnum);
 				model.addAttribute("article", article);
 				
-				article.setNickname(boardService.getNicknamectt(article.getId()));
+				article.setNickname(boardService.getNickname(article.getId()));
 				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	
 				
 				String path = request.getRealPath("save");
@@ -1110,7 +1110,7 @@ public class BoardController {
 					result = boardService.getArticleList(pageNum, code);
 				}else { // 검색 게시글 sel search != null
 					if(sel.equals("nickname")) {
-						search = boardService.getBaordid(search);
+						search = boardService.getBoardid(search);
 						System.out.println("search=====>" + search);
 						if(search == null) {
 							search = "null";
@@ -1154,7 +1154,7 @@ public class BoardController {
 				System.out.println(article.getBoardnum());
 
 				//닉네임이랑 뱃지이미지 추가. 
-				article.setNickname(boardService.getNicknamectt(article.getId()));
+				article.setNickname(boardService.getNickname(article.getId()));
 				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	
 
 				model.addAttribute("article", article);
