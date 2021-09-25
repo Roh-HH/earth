@@ -43,7 +43,7 @@ margin-right:4px;
 				</h3>
 				    <h1 class="entry-title"> 환경일기  </h1>
 				    <hr>
-				    <p> 실천과 변명, 반성을 써보며 동기부여합시다 !  </p>
+				    <p> 실천과 변명, 반성을 써보며 동기부여해보세요 ! </p>
 					<form action="/earth/board/diaryList.et" >
 	         		<div class="input-group" style="width:300px; float:right;">
 	         			<select name="sel" style="height:30px;">
