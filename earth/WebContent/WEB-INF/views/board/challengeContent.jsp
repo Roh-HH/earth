@@ -204,8 +204,8 @@ article.dateck == 1 : 데이트 마감 안됨
 			<p> 챌린지 진행중 	</p>
 		</c:if>
 		<c:if test="${article.maxcount == article.joincount}">
-			<p>  챌린지 성공 ! 	</p>
-			<p> 챌린지 날짜가 마감되었습니다. </p>
+			<p> 챌린지 성공 ! 	</p>
+			<p> 챌린지가 마감되었습니다! </p>
 		</c:if>
 	</c:if>
 </c:if>
