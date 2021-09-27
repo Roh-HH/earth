@@ -27,5 +27,13 @@ public interface AdminService {
 	
 	public Map<String, Object> getNoticeSearch(String pageNum, String sel, String search) throws SQLException;
 	
+	public int insertReport(ReportDTO report) throws SQLException;
 	
+	public ReportDTO getReport(int reportnum) throws SQLException;
+	
+	public Map<String, Object> getReportList(String pageNum, String process) throws SQLException;
+	
+	public Map<String, Object> getReportSearch(String pageNum, String process, String sel, String search) throws SQLException;
+	
+	public int processReport(String id, int reportnum, int punish) throws SQLException;
 }
