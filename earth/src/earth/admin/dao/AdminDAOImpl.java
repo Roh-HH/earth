@@ -12,6 +12,7 @@ import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
 import earth.admin.dto.NoticeDTO;
+import earth.user.dto.ReportDTO;
 import earth.user.dto.UserDTO;
 
 @Repository
@@ -262,6 +263,73 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	}
 
+	// 신고
+	@Override
+	public int insertReport(ReportDTO report) throws SQLException {
+		int result = sqlSession.insert("admin.insertReport", report);
+		return result;
+	}
 	
+	@Override
+	public ReportDTO getReport(int reportnum) throws SQLException {
+		ReportDTO report = sqlSession.selectOne("admin.getReport", reportnum);
+		return report;
+	}
+	
+	@Override
+	public int getReportCount(String process) throws SQLException {
+		int result = sqlSession.selectOne("admin.getReportCount", process);
+		return result;
+	}
+	
+	@Override
+	public List<ReportDTO> getReport(String process, int startRow, int endRow) throws SQLException {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("process", process);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+	
+		List<ReportDTO> reportList = sqlSession.selectList("admin.getReportList", map);
+		return reportList;
+	}
+	
+	@Override
+	public int getSearchReportCount(String process, String sel, String search) throws SQLException {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("process", process);
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		int result = sqlSession.selectOne("admin.getSearchReportCount", map);
+		return result;
+	}
+	
+	@Override
+	public List<ReportDTO> getReportSearch(String process, int startRow, int endRow, String sel, String search) throws SQLException {
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("process", process);
+		map.put("startRow", startRow);
+		map.put("endRow", endRow);
+		map.put("sel", sel);
+		map.put("search", search);
+		
+		List<ReportDTO> reportList = sqlSession.selectList("admin.getReportSearch", map);
+		return reportList;
+	}
+	
+	@Override
+	public int processReport(String id, int reportnum, int punish) throws SQLException {		
+		switch(punish) {
+		case 1:
+			sqlSession.update("admin.processOne", id);
+			break;
+		case 2:
+			sqlSession.update("admin.processTwo", id);
+			break;
+		}
+		
+		int result = sqlSession.update("admin.processUpdate", reportnum);
+		return result;
+	}
 	
 }

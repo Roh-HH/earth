@@ -7,6 +7,7 @@ import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
 import earth.admin.dto.NoticeDTO;
+import earth.user.dto.ReportDTO;
 import earth.user.dto.UserDTO;
 
 public interface AdminDAO {
@@ -57,4 +58,17 @@ public interface AdminDAO {
 	
 	public List<NoticeDTO> getSearchNotice(int startRow, int endRow, String sel, String search) throws SQLException;
 	
+	public int insertReport(ReportDTO report) throws SQLException;
+	
+	public ReportDTO getReport(int reportnum) throws SQLException;
+	
+	public int getReportCount(String process) throws SQLException;
+	
+	public List<ReportDTO> getReport(String process, int startRow, int endRow) throws SQLException;
+		
+	public int getSearchReportCount(String process, String sel, String search) throws SQLException;
+	
+	public List<ReportDTO> getReportSearch(String process, int startRow, int endRow, String sel, String search) throws SQLException;
+	
+	public int processReport(String id, int reportnum, int punish) throws SQLException;
 }
