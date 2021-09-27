@@ -71,13 +71,20 @@
 		var popOption = "width=500, height=340, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
+	
+	$(document).ready(function(){
+		var hash = $.trim( window.location.hash );
+		if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
+	});
 </script>
 <body>
+	<%-- 앵커태그(위치이동/지우지말것) --%>
+	<a href="#list"></a>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
 	<section class="category-page area-padding">
         <div class="container">   	
-    		<h3 class="page-title">커뮤니티</h3>
+    		<h3 class="page-title" id="list">커뮤니티</h3>
 			<h1 class="entry-title">오늘의 실천 </h1>
 			<%-- 글이 하나도 없을때 --%>
 			<c:if test="${count == 0}">
@@ -128,112 +135,89 @@
 											</c:if>
 											<br/>
 										</p>
-									<p class="comment" style=" width:800px;">${article.ctt}</p>
-									<div class="d-flex justify-content-between">
-										<div class="d-flex align-items-center">
-											<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${article.nickname}</a>
-											<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>
-											
-											<%-- 신고 : 본인 외 표시 --%>
-											<c:if test="${sessionScope.sid != comment.writer && sesseionScope.sid != null}">					
-												<button onclick="reportComment(${article.boardnum}, '${article.id}'); return false;"
-													style="background-color:#ffffff;color:#111; border:none;">신고</button>
-											</c:if>
-											<%-- 삭제 : 접속 아이디(${sessionScope.sid})와 게시글 작성자(${article.id})가 일치하는  경우 또는 관리자인 경우 삭제버튼 표시(${article.boardnum} 파라미터로 보내기) --%>
-											<c:if test="${sessionScope.sid == article.id || sessionScope.sid == 'admin'}">
-												<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=5&uri=/earth/board/dailyChallenge.et&pageNum=${pageNum}'"
-												style="background-color:#ffffff;color:#111; border:none;">삭제</button>
-											</c:if>
+										<p class="comment" style=" width:800px;">${article.ctt}</p>
+										<div class="d-flex justify-content-between">
+											<div class="d-flex align-items-center">
+												<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${article.nickname}</a>
+												<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>
+												
+												<%-- 신고 : 본인 외 표시 --%>
+												<c:if test="${sessionScope.sid != comment.writer && sesseionScope.sid != null}">					
+													<button onclick="reportComment(${article.boardnum}, '${article.id}'); return false;"
+														style="background-color:#ffffff;color:#111; border:none;">신고</button>
+												</c:if>
+												<%-- 삭제 : 접속 아이디(${sessionScope.sid})와 게시글 작성자(${article.id})가 일치하는  경우 또는 관리자인 경우 삭제버튼 표시(${article.boardnum} 파라미터로 보내기) --%>
+												<c:if test="${sessionScope.sid == article.id || sessionScope.sid == 'admin'}">
+													<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=5&uri=/earth/board/dailyChallenge.et&pageNum=${pageNum}'"
+													style="background-color:#ffffff;color:#111; border:none;">삭제</button>
+												</c:if>
+											</div>
 										</div>
 									</div>
+								</div>
 							</div>
-							</div>
-							</div>
-							<hr>
 						</c:forEach>
 					</c:if>
 				</div>
 			</div>
-			
 			<br /><br />
-			
-			<%-- 페이지 번호 --%>
+			<%-- 페이지 번호 세팅 --%>
 			<div align="center">
 				<nav class="pagination">
-				<c:if test="${count > 0}">
-				<c:set var="pageBlock" value="3" />
-				<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
-				<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
-				<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
-				<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
-				<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
-				<c:if test="${endPage > pageCount}">
-					<c:set var="endPage" value="${pageCount}" /> 
-				</c:if>
-				
-				<%-- 검색했을때 페이지번호들 --%>
-				<c:if test="${sel != null && search != null}">
+					<c:if test="${count > 0}">
+					<c:set var="pageBlock" value="3" />
+					<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+					<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+					<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+					<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+					<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+					<c:if test="${endPage > pageCount}">
+						<c:set var="endPage" value="${pageCount}" /> 
+					</c:if>
+					
+					<%-- 페이지번호 --%>
 					<c:if test="${startPage > pageBlock}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
+						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage-pageBlock}#list" class="pageNums">Back</a>
 					</c:if>
 					<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
+						<a href="/earth/board/dailyChallenge.et?pageNum=${i}#list" class="pageNums">${i}</a>
 					</c:forEach>
 					<c:if test="${endPage < pageCount}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
+						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage+pageBlock}#list" class="pageNums">Next</a>
 					</c:if>
-				</c:if>
-				
-				<%-- 검색 안했을때 페이지번호들   --%> 
-				<c:if test="${sel == null || search == null}">
-					<c:if test="${startPage > pageBlock}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
-					</c:if>
-					<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${i}" class="pageNums">${i}</a>
-					</c:forEach>
-					<c:if test="${endPage < pageCount}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
-					</c:if>
-				</c:if>
-				
-			</c:if> <%-- end:count > 0 --%>
-			</nav>
+					</c:if> <%-- end:count > 0 --%>
+				</nav>
 			</div>
-
-			<br /> <br /> <br />
-			
+			<br /> <br />
 			<div class="single-element-widget">
 				<h4 class="mb-30 title_color">오늘의 실천 작성하기 </h4>
-			
-				<form name="f" action="/earth/board/uploadTodayChallenge.et" method="post" onsubmit="return sendIt();"
-				  class="form-contact comment_form" action="#" id="commentForm">
+				<form name="f" action="/earth/board/uploadTodayChallenge.et#list" method="post" onsubmit="return sendIt();"
+			 	class="form-contact comment_form" action="#" id="commentForm">
                		<div class="row">
                    		<div class="col-12" >
-								<input type="radio" name="condition" value="1"/> 텀블러 들고다니기<br/>
-								<input type="radio" name="condition" value="2"/> 샴푸 대신 샴푸바 / 손세정제 대신 비누<br/>				
-								<input type="radio" name="condition" value="3"/> 일회용 빨대 사용하지말기<br/>
-								<input type="radio" name="condition" value="4"/> 배달음식 그릇에 테이크아웃 해오기<br/>
-								<input type="radio" name="condition" value="5"/> 장바구니 들고다니기<br/>
-								<input type="radio" name="condition" value="6"/> 배달음식 시킬떄 일회용품 거절하기<br/>
-								<input type="radio" name="condition" value="7"/> 손수건 챙기기<br/>
-								<input type="radio" name="condition" value="8"/> 페트병에 라벨 제거하고 분리수거하기<br/>
-								<input type="radio" name="condition" value="9"/> 스탠, 유리제품 사용하기<br/>
-								<input type="radio" name="condition" value="10"/> 이면지 사용하기<br/>
-							</div>
-							</div>
-						<div class="comment-form">
-                            <input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
-							<br/>
-							<input type="submit" value="공유하기" 
-                   		style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right;"/>
+							<input type="radio" name="condition" value="1"/> 텀블러 들고다니기<br/>
+							<input type="radio" name="condition" value="2"/> 샴푸 대신 샴푸바 / 손세정제 대신 비누<br/>				
+							<input type="radio" name="condition" value="3"/> 일회용 빨대 사용하지말기<br/>
+							<input type="radio" name="condition" value="4"/> 배달음식 그릇에 테이크아웃 해오기<br/>
+							<input type="radio" name="condition" value="5"/> 장바구니 들고다니기<br/>
+							<input type="radio" name="condition" value="6"/> 배달음식 시킬떄 일회용품 거절하기<br/>
+							<input type="radio" name="condition" value="7"/> 손수건 챙기기<br/>
+							<input type="radio" name="condition" value="8"/> 페트병에 라벨 제거하고 분리수거하기<br/>
+							<input type="radio" name="condition" value="9"/> 스탠, 유리제품 사용하기<br/>
+							<input type="radio" name="condition" value="10"/> 이면지 사용하기<br/>
 						</div>
+					</div>
+					<div class="comment-form">
+                           <input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
+						<br/>
+						<input type="submit" value="공유하기" 
+                  			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right;"/>
+					</div>
 				</form>
 			</div>
 			<br /> <br /> <br /> <br />
-				
-			</div>
-			<!-- #container -->
+		</div>
+		<!-- #container -->
 	</section>
 	<%@ include file = "../include/footer.jsp" %>
 <!-- #page -->
