@@ -1,6 +1,7 @@
 package earth.user.controller;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -55,40 +56,40 @@ public class UserController {
 		}
 		
 		// 회원가입 : ajox 아이디 중복 확인
-	   @RequestMapping("ajaxIdAvail.et")
-	   public ResponseEntity<String> ajaxIdAvail(UserDTO dto) throws SQLException { //@ResponseBody 사용 X , ResponseEntity<String> 으로 리턴받기 (한글깨짐 방지)
-		   System.out.println("controller id : " + dto.getId());
-		   int result = userService.idCheck(dto);									// ID 확인. 중복 = 1 , 중복X = 0
-		   
-		   String data = "";
-		   if(result == 1) {
-			   data = "이미 사용중인 아이디입니다.";
-		   }else {
-			   data = "사용가능한 아이디입니다.";
-		   }  
-		   HttpHeaders respHeaders = new HttpHeaders();								// 헤더 객체 만들어서,
-		   respHeaders.add("Content-Type", "text/html;charset=utf-8"); 				// 헤더 정보 추가 (charset=utf-8로 한글깨짐 방지하여 결과물 응답해주기)
-		   
-		   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
-	   }	
-		
-		// 회원가입 : ajox 닉네임 중복 확인 (+.마이페이지 : 내 프로필 보기 : 닉네임 수정 활용)
-	   @RequestMapping("ajaxNicknameAvail.et")
-	   public ResponseEntity<String> ajaxNicknameAvail(UserDTO dto) throws SQLException {
-		   System.out.println("controller Nickname : " + dto.getNickname());	   
-		   int result = userService.nickCheck(dto);									// 닉네임 확인. 중복 = 1 , 중복X = 0
-		   
-		   String data = "";
-		   if(result == 1) {
-			   data = "이미 사용중인 닉네임입니다.";
-		   }else {
-			   data = "사용가능한 닉네임입니다."; 
-		   }  
-		   HttpHeaders respHeaders = new HttpHeaders();
-		   respHeaders.add("Content-Type", "text/html;charset=utf-8");	
-		   
-		   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);   
-	   }
+		   @RequestMapping("ajaxIdAvail.et")
+		   public ResponseEntity<String> ajaxIdAvail(UserDTO dto) throws SQLException { //@ResponseBody 사용 X , ResponseEntity<String> 으로 리턴받기 (한글깨짐 방지)
+			   System.out.println("controller id : " + dto.getId());
+			   int result = userService.idCheck(dto);									// ID 확인. 중복 = 1 , 중복X = 0
+
+			   String data = "";
+			   if(result == 1) {
+				   data = "이미 사용중인 아이디입니다.";
+			   }else if(result != 1 && !dto.getId().equals("")){
+				   data = "사용가능한 아이디입니다.";
+			   }  
+			   HttpHeaders respHeaders = new HttpHeaders();								// 헤더 객체 만들어서,
+			   respHeaders.add("Content-Type", "text/html;charset=utf-8"); 				// 헤더 정보 추가 (charset=utf-8로 한글깨짐 방지하여 결과물 응답해주기)
+
+			   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
+		   }	
+
+			// 회원가입 : ajox 닉네임 중복 확인 (+.마이페이지 : 내 프로필 보기 : 닉네임 수정 활용)
+		   @RequestMapping("ajaxNicknameAvail.et")
+		   public ResponseEntity<String> ajaxNicknameAvail(UserDTO dto) throws SQLException {
+			   System.out.println("controller Nickname : " + dto.getNickname());	   
+			   int result = userService.nickCheck(dto);									// 닉네임 확인. 중복 = 1 , 중복X = 0
+
+			   String data = "";
+			   if(result == 1) {
+				   data = "이미 사용중인 닉네임입니다.";
+			   }else if(result != 1 && !dto.getNickname().equals("")){
+				   data = "사용가능한 닉네임입니다."; 
+			   }  
+			   HttpHeaders respHeaders = new HttpHeaders();
+			   respHeaders.add("Content-Type", "text/html;charset=utf-8");	
+
+			   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);   
+		   }
 	   
 	// 로그인, 로그아웃  
 
@@ -100,11 +101,18 @@ public class UserController {
 		
 		@RequestMapping("loginPro.et")
 		public String loginPro(UserDTO dto, Model model, HttpSession session) throws SQLException {
-			int result = userService.idPwCheck(dto);				// 로그인 처리 위해 ID와 PW 일치여부 확인 (세션 아이디 추가)
-			model.addAttribute("result", result);
+			int idCheck = userService.idCheck(dto);					// ID 확인. 존재 = 1 , 존재X = 0
+			if(idCheck != 1) {										// ID가 존재하지 않는 경우 : 회원가입 내역이 없는 경우
+				model.addAttribute("loginResult", -1);
+			}
+			
+			if(idCheck == 1) {										// ID가 존재하는 경우 : 회원가입 내역이 존재하는 경우
+				int result = userService.idPwCheck(dto);			// 로그인 처리 위해 ID와 PW 일치여부 확인 (세션 아이디 추가)
+				model.addAttribute("loginResult", result);			
+			}
 			System.out.println("로그인 처리 후 sessionId : " + session.getAttribute("sid"));
 			
-			return "user/loginPro";		
+			return "user/userTotalPro";
 		}
 		
 		// 로그아웃 처리
@@ -115,19 +123,13 @@ public class UserController {
 			
 			return "redirect:/main/main.et";	// main 페이지 컨트롤러로 다시 요청하는 것 <c:redirect url="/member/main.do" /> 와 같은 처리. jsp를 거치지 않고 main 페이지 요청
 		}
-		
-		// 아이디 찾기 폼 페이지, 로직 처리 요청
-		@RequestMapping("idFind.et")
-		public String idFind() {
-			return "user/idFind";
-		}
 
 
 	//******** 사용자 마이페이지 ********
 		
 	   // 마이페이지 : 사용자 마이페이지의 메인 View X, 경고내역 확인 할 수 있는 페이지
 		@RequestMapping("mypage.et")
-	    public String mypage(Model model) throws SQLException {
+	    public String etmypage(Model model) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
 			
@@ -145,7 +147,7 @@ public class UserController {
 		
 		// 마이페이지 - 내프로필보기 : 회원정보 수정 폼 페이지 요청 : 회원정보 하나 가져오는 메서드 활용해 DB에서 회원정보 가져오기
 		@RequestMapping("userModifyForm.et")
-		public String userModifyForm(Model model, HttpSession session) throws SQLException {
+		public String etuserModifyForm(Model model, HttpSession session) throws SQLException {
 			UserDTO user = userService.getUser(); 									// (*id 값 컨트롤러에서 안넘겨주는 방법 : id 매개변수 안넘김(로직 처리 할 때 세션 아이디 추가))
 			model.addAttribute("user", user);
 			
@@ -170,7 +172,7 @@ public class UserController {
 		
 		// 마이페이지 - 내프로필보기 : 비밀번호 수정 폼/ 처리 요청
 		@RequestMapping("userPwModifyForm.et")
-		public String userPwModifyForm(Model model) throws SQLException {
+		public String etuserPwModifyForm(Model model) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
 			
@@ -186,22 +188,21 @@ public class UserController {
 			if(result == 1) {
 				String newHashedPw = BCrypt.hashpw(newpw, BCrypt.gensalt());			// 비밀번호 변경 : 회원이 새로 입력한 패스워드 암호화 하여 변수에 저장하기
 				dto.setPw(newHashedPw);													// 암호화 된 패스워드 PW 컬럼에 세팅하기
-				userService.modifyPw(dto);
-				userService.removeSession("sid");										// 기존 로그인 상태의 세션 삭제 : 로그아웃 세션삭제 메서드 활용
+				userService.modifyPw(dto);												// 로그아웃 처리. 세션삭제
 			}
-			model.addAttribute("result", result);
+			model.addAttribute("pwResult", result);
 			
 			// 입력 비밀번호와 새비밀번호 같으면 result = -1 리턴하기
 			if(pw.equals(newpw)) {
-				model.addAttribute("result", -1);
+				model.addAttribute("pwResult", -1);
 			}
 			
-			return "user/userPwModifyPro";
+			return "user/userTotalPro";
 		}	
 			
 		// 마이페이지 - 내프로필보기 : 회원탈퇴 폼 페이지 요청 : 별도 비지니스로직 처리 할게 없으므로 바로 view 페이지 띄어주기
 		@RequestMapping("userDeleteForm.et")
-		public String userDeleteForm(Model model) throws SQLException{
+		public String etuserDeleteForm(Model model) throws SQLException{
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
 			
@@ -221,16 +222,16 @@ public class UserController {
 				userService.removeSession("sid");										// 기존 로그인 상태의 세션 삭제 : 로그아웃 세션삭제 메서드 활용
 			}
 			// 입력 비밀번호와(현재 사용중인 비밀번호) 암호화되서 저장 된 비밀번호가 같지않은 경우 result = 0 리턴
-			model.addAttribute("result", result);
+			model.addAttribute("deleteResult", result);
 			
-			return "user/userDeletePro";
+			return "user/userTotalPro";
 		}
 
 	// 마이페이지 : 나의 실천
 		
 		// 마이페이지 - 나의 실천 : 오늘의 실천 게시판
 		@RequestMapping("myToday.et")
-		public String myToday(String pageNum, Model model, HttpSession session) throws SQLException {
+		public String etmyToday(String pageNum, Model model, HttpSession session) throws SQLException {
 			System.out.println("******myToday 실행******");
 			
 			// 해당 ID가 작성한 오늘의 실천 게시판 내 게시글만 가져오기 (today 테이블. code == 5)
@@ -262,7 +263,7 @@ public class UserController {
 		
 		// 마이페이지 - 나의 실천 : 글 삭제 폼 요청 (오늘의 실천 게시판은 오늘 날짜 기준으로만 올라와서 BoardController 통합 삭제 메서드 사용X)
 		@RequestMapping("myTodayDeleteForm.et")
-		public String myTodayDeleteForm(@ModelAttribute("boardnum") int boardnum, @ModelAttribute("id") String id, Model model) {
+		public String etmyTodayDeleteForm(@ModelAttribute("boardnum") int boardnum, @ModelAttribute("id") String id, Model model) {
 	
 			// view 에 전달할 데이터 보내기		
 			model.addAttribute("boardnum", boardnum);
@@ -282,7 +283,7 @@ public class UserController {
 		
 		// 마이페이지 - 나의 환경일기 : 환경일기 해당 ID가 작성한 게시글 목록 전부 가져오기
 		@RequestMapping("myDiary.et")
-		public String myDiary(String pageNum, HttpSession session, Model model, String sel, String search) throws SQLException {
+		public String etmyDiary(String pageNum, HttpSession session, Model model, String sel, String search) throws SQLException {
 			System.out.println("******myDiary 실행******");
 			
 			// 해당 id가 작성한 환경일기 게시판 내 게시글만 가져오기(diary 테이블. code == 3)
@@ -325,7 +326,7 @@ public class UserController {
 	
 		// 마이페이지 - 내 게시글 보기 : 자유게시판 해당 id가 작성한 게시글 목록 전부 가져오기
 		@RequestMapping("myBoard.et")
-		public String myBoard(String pageNum, HttpSession session, Model model) throws SQLException{
+		public String etmyBoard(String pageNum, HttpSession session, Model model) throws SQLException{
 			System.out.println("******myBoard 실행******");
 		
 			// 해당 ID가 작성한 자유게시판 내 게시글만 가져오기 (free 테이블. code == 2)
@@ -360,7 +361,7 @@ public class UserController {
 		
 		// 마이페이지 - 내가 작성한 댓글 : 자유게시판/환경일기/이달의챌린지(게시글을 댓글 형태로 등록하는 게시판) 세 게시판의 내가 작성한 댓글 가져오기
 		@RequestMapping("myComment.et")
-		public String myComment(HttpSession session, Model model, String pageNum, String sel, String search) throws SQLException{
+		public String etmyComment(HttpSession session, Model model, String pageNum, String sel, String search) throws SQLException{
 			System.out.println("******myComment 실행******");
 			
 			String id = (String)session.getAttribute("sid");
@@ -401,7 +402,7 @@ public class UserController {
 	
 		// 마이페이지 - 1:1 문의 : 1:1문의 내에서 내가 작성한 문의글만 가져오기
 		@RequestMapping("myOnetoOne.et")
-		public String myOnetoOne(Model model, String pageNum, String sel, String search) throws SQLException {
+		public String etmyOnetoOne(Model model, String pageNum, String sel, String search) throws SQLException {
 			Map<String, Object> result = userService.getMyQnAList(pageNum);
 			
 			// 검색 기능 사용X : 전체 게시글 가져오기
@@ -436,7 +437,7 @@ public class UserController {
 		
 		// 마이페이지 - 1:1 문의글 작성 폼
 		@RequestMapping("myQnAWriteForm.et")
-		public String myQnAWriteForm(Model model) throws SQLException {
+		public String etmyQnAWriteForm(Model model) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);
 			
@@ -448,14 +449,14 @@ public class UserController {
 		}		
 		// 마이페이지 - 1:1 문의글 등록 처리
 		@RequestMapping("myQnAWritePro.et")
-		public String myQnAWritePro(QuestionDTO dto) throws SQLException {
+		public String etmyQnAWritePro(QuestionDTO dto) throws SQLException {
 			userService.addQnA(dto);
 			return "redirect:/user/myOnetoOne.et";	// 1:1 문의글 등록 후 1:1문의 페이지로 이동
 		}
 		
 		// 마이페이지 - 1:1 문의글 수정 폼
 		@RequestMapping("myQnAModifyForm.et")
-		public String myQnAModifyForm(Model model, HttpSession session, @RequestParam("questionnum") int questionnum) throws SQLException {
+		public String etmyQnAModifyForm(Model model, HttpSession session, @RequestParam("questionnum") int questionnum) throws SQLException {
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);	
 			
@@ -477,7 +478,7 @@ public class UserController {
 		
 		// 마이페이지 - 1:1 문의글 삭제 폼
 		@RequestMapping("myQnADeleteForm.et")
-		public String myQnADeleteForm(@ModelAttribute("questionnum") int questionnum, @ModelAttribute("id") String id, Model model) throws SQLException {		
+		public String etmyQnADeleteForm(@ModelAttribute("questionnum") int questionnum, @ModelAttribute("id") String id, Model model) throws SQLException {		
 			model.addAttribute("questionnum", questionnum);
 			model.addAttribute("id", id);
 			
@@ -491,12 +492,27 @@ public class UserController {
 			
 			return "user/myOnetoOne";
 		}
+		// 마이페이지 - 1:1문의글 답변확인 폼
+		@RequestMapping("myQnAReplyCheck.et")
+		public String myQnAReplyCheck(Model model, HttpSession session, @RequestParam("questionnum") int questionnum) throws SQLException {
+			UserDTO user = userService.getUser();
+			model.addAttribute("user", user);	
+			
+			QuestionDTO question = userService.getMyQnAOne(questionnum);	// 1:1 문의글 고유번호로 문의글 한개의 정보 가져오기
+			model.addAttribute("question", question);
+			
+			// 내 적용된 뱃지 가져오기
+			BadgeDTO mybadge = userService.getMyBadge(user.getId());
+			model.addAttribute("mybadge", mybadge.getBadgeimg());
+			
+			return "user/myQnAReplyCheck";
+		}
 
 	// 마이페이지 : 신고내역
 		
 		// 마이페이지 - 신고내역 : 해당 사용자가 다른 사용자를 신고한 내역
 		@RequestMapping("myReport.et")
-		public String myReport(Model model, String pageNum) throws SQLException {
+		public String etmyReport(Model model, String pageNum) throws SQLException {
 			Map<String, Object> result = userService.getMyReportList(pageNum);
 			
 			// 세션 아이디로 해당 사용자 정보 가져오기
@@ -525,7 +541,7 @@ public class UserController {
 
 		// mybag - 김예찬
 		@RequestMapping("myBag.et")	
-		public String myBag(String pageNum,HttpSession session, Model model) throws SQLException{
+		public String etmyBag(String pageNum,HttpSession session, Model model) throws SQLException{
 			System.out.println("나의 에코백 요청");
 			
 			// 세션에서 유저 아이디 불러오기 
@@ -586,18 +602,18 @@ public class UserController {
 		
 	// 작성자 : 이다희 김하영	
 	// 마이페이지 : 출석체크
-
+	
 		//출석체크 페이지 불러오기
 		@RequestMapping("myCheck.et")
-		public String myCheck(String date, Model model) throws SQLException {
+		public String etmyCheck(String date, Model model) throws SQLException {
 			System.out.println("출석체크 페이지 요청 ");
 
 			UserDTO user = userService.getUser();
 			model.addAttribute("user", user);	
-
+			
 			// 내 적용된 뱃지 가져오기
 			BadgeDTO mybadge = userService.getMyBadge(user.getId());
-			model.addAttribute("mybadge", mybadge.getBadgeimg());						
+			model.addAttribute("mybadge", mybadge.getBadgeimg());			
 
 			return "user/myCheck";
 		}
@@ -643,7 +659,6 @@ public class UserController {
 			respHeaders.add("Content-Type", "test/html;charset=UTF-8");
 
 			return new ResponseEntity<ArrayList<String>>(attendList, respHeaders, HttpStatus.OK);
-
 		}
 		
 }
