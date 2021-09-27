@@ -477,11 +477,11 @@ public class BoardServiceImpl implements BoardService {
 		}
 	
 		 //이달의 챌린지 최신글 가져오기
-        @Override
-        public int getChallenge() throws SQLException {
-           int boardnum = boardDAO.getChallenge();
-            return boardnum;
-        }
+		@Override
+		public int getChallenge() throws SQLException {
+			int boardnum = boardDAO.getChallenge();
+			return boardnum;
+		}
 
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
@@ -526,6 +526,13 @@ public class BoardServiceImpl implements BoardService {
 		public int upload(TodayDTO dto) throws SQLException {
 			int result = boardDAO.upload(dto);
 			return result;
+		}
+	
+		// 오늘의 실천 글 1개 가져오기 - 노현호
+		@Override
+		public TodayDTO getTodayArticle(int boardnum) throws SQLException {
+			TodayDTO article = boardDAO.getTodayArticle(boardnum);
+			return article;
 		}
 	
 		
