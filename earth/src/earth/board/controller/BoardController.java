@@ -76,7 +76,7 @@ public class BoardController {
 				
 			// 공지사항 게시글 등록 처리 요청
 			@RequestMapping("noticeWritePro.et")
-			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
+			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model, HttpSession session) throws SQLException, IOException {
 				System.out.println("noticeWritePro.et");
 				
 				dto.setId((String)session.getAttribute("sid"));
@@ -345,7 +345,7 @@ public class BoardController {
 		// 5. 오늘의 실천 - 노현호
 			// 오늘의 실천 게시글 등록+처리
 			@RequestMapping("uploadTodayChallenge.et")
-			public String uploadTodayChallenge(TodayDTO dto) throws SQLException{
+			public String uploadTodayChallenge(TodayDTO dto, HttpSession session) throws SQLException{
 				System.out.println("uploadTodayChallenge.et");
 				
 				dto.setId((String)session.getAttribute("sid"));
@@ -628,7 +628,7 @@ public class BoardController {
 		// 9. 자유게시판 댓글 - 노현호
 			// 자유게시판 댓글 등록 + 처리
 			@RequestMapping("uploadFreeComment.et")
-			public String uploadFreeComment(String pageNum, int boardnum, FreeCommentDTO dto) throws SQLException{
+			public String uploadFreeComment(String pageNum, int boardnum, FreeCommentDTO dto, HttpSession session) throws SQLException{
 				System.out.println("uploadFreeComment.et");
 				
 				dto.setWriter((String)session.getAttribute("sid"));
@@ -1224,7 +1224,7 @@ public class BoardController {
 		// 1. 공지사항 - 노현호
 			// 공지사항 게시글 수정
 			@RequestMapping("noticeModifyForm.et")
-			public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model) throws SQLException {
+			public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model, HttpSession session) throws SQLException {
 				System.out.println("noticeModifyForm.et");
 				
 				if(!session.getAttribute("sid").equals("admin")) {
