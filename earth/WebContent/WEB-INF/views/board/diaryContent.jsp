@@ -242,8 +242,8 @@ margin-right:4px;
 		                                     <c:if test="${sessionScope.sid != null}">
 		                                     	 <c:if test="${sessionScope.sid == replyList.writer or sessionScope.sid == 'admin'}">
 		                                            <input type="hidden" name="commentnum" id="commentnum" value="${replyList.commentnum}">
-		                                          	<a onclick="replydelete(); return false;" class="btn-reply text-uppercase"
-		                                          		style="cursor:default;">삭제</a>
+		                                          	<button onclick="replydelete(); return false;" class="btn-reply text-uppercase"
+		                                          		style="background-color:#ffffff; color:#111; float:right; border:none; cursor:default;">삭제</button>
 												</c:if>
 												<c:if test="${sessionScope.sid != replyList.writer and sessionScope.sid != 'admin'}">
 		                                          	  <button onclick="reportComment(${replyList.commentnum}, '${replyList.writer}'); return false;"

@@ -33,32 +33,29 @@
 		}
 	</style>
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.7.1/gsap.min.js"></script>
-	<script type="text/javascript">
-		window.onload = function() {
-			var dis = document.getElementsByClassName("display");
-
-			gsap.to("progress", {
-				duration: 2,
-				// value: 'random(0, 100)',
-				value: function(i, v) {
-					var arrValue = [];
-					for(var i = 0; i < dis.length; i++) {
-						// arrValue.push((this._targets[i]).getAttribute("data-limit"));
-						// console.log(i);
-						return v.getAttribute("data-limit"); 
-					} 
-				},
-				onUpdate:function() {
-					//값이 바뀔때마다 실행
-					console.log(this._targets[0].value);
-					dis[0].innerText = '참여도' + Math.floor(this._targets[0].value) + '%';
-					//dis[0].innerText = Math.floor(100-(this._targets[0].value)) + '%';
-				}
-			});
-		}
-		
-	</script>
-	
+		<script type="text/javascript">
+			window.onload = function() {
+				var dis = document.getElementsByClassName("display");
+				gsap.to("progress", {
+					duration: 2,
+					// value: 'random(0, 100)',
+					value: function(i, v) {
+						var arrValue = [];
+						for(var i = 0; i < dis.length; i++) {
+							// arrValue.push((this._targets[i]).getAttribute("data-limit"));
+							// console.log(i);
+							return v.getAttribute("data-limit"); 
+						} 
+					},
+					onUpdate:function() {
+						//값이 바뀔때마다 실행
+						console.log(this._targets[0].value);
+						dis[0].innerText = '참여도' + Math.floor(this._targets[0].value) + '%';
+						//dis[0].innerText = Math.floor(100-(this._targets[0].value)) + '%';
+					}
+				});
+			}
+		</script>
 	<script>
 		function popupOpen(){
 			var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=3&uri=/earth/board/challengeList.et&pageNum=${pageNum}";
@@ -241,10 +238,7 @@ article.dateck == 1 : 데이트 마감 안됨
 			}); //ajax
 	}
 	</script>
-	
 <br /> <br />
-
-
 <!-- 코멘트 리스트   -->
 
 	<script>
@@ -267,10 +261,6 @@ article.dateck == 1 : 데이트 마감 안됨
 		
 				//alert("댓글 성공");
 				location.reload();
-				
-			 
-				 
-
 				},
 				 
 			}); //ajax
@@ -307,8 +297,8 @@ article.dateck == 1 : 데이트 마감 안됨
 		                                       <c:if test="${sessionScope.sid != null}">
 			                                      	<c:if test="${sessionScope.sid == replyList.writer or sessionScope.sid == 'admin'}">
 			                                             <input type="hidden" name="commentnum" id="commentnum" value="${replyList.commentnum}">
-			                                          	 <a onclick="replydelete(); return false;" class="btn-reply text-uppercase"
-			                                          		style="cursor:default;">삭제</a>
+			                                             <button onclick="replydelete(); return false;" class="btn-reply text-uppercase"
+		                                          		style="background-color:#ffffff; color:#111; float:right; border:none; cursor:default;">삭제</button>
 													</c:if>
 													<c:if test="${sessionScope.sid != replyList.writer and sessionScope.sid != 'admin'}">
 			                                          	  <button onclick="reportComment(${replyList.commentnum}, '${replyList.writer}'); return false;"
@@ -380,18 +370,12 @@ article.dateck == 1 : 데이트 마감 안됨
 				<p> 챌린지에 참여하시고 댓글을 올려주세요</p>
 			</c:if>
 	</c:if>	
- 		
 		<br>
-		<%-- <c:if test="${sessionScope.sid == 'admin'}">
-			<button onclick="window.location='/earth/board/challengeWriteForm.et'" class="main_btn">챌린지 추가</button>
-		</c:if> --%>
 <%-- 앵커태그(위치이동/지우지말것) --%>
 <a href="#comment"></a>
 
-
 	 <div align="center">
 		<nav class="pagination">
-	
 		<c:if test="${count > 0}">
 			<c:set var="pageBlock" value="5" />
 			<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
