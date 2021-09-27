@@ -20,6 +20,11 @@ public class EventDTO {
 	private String schend;
 	private String nickname;
 	private String badgeimg;
+	private Integer prevnum;
+	private Integer nextnum;
+	private String prevsub;
+	private String nextsub;
+	
 	
 	public String getNickname() {
 		return nickname;
@@ -106,5 +111,30 @@ public class EventDTO {
 	public void setSchend(String schend) {
 		this.schend = schend;
 	}
+	public Integer getPrevnum() {
+		return prevnum;
+	}
+	public void setPrevnum(Integer prevnum) {
+		this.prevnum = prevnum;
+	}
+	public Integer getNextnum() {
+		return nextnum;
+	}
+	public void setNextnum(Integer nextnum) {
+		this.nextnum = nextnum;
+	}
+	public String getPrevsub() {
+		return prevsub;
+	}
+	public void setPrevsub(String prevsub) {
+		this.prevsub = prevsub;
+	}
+	public String getNextsub() {
+		return nextsub;
+	}
+	public void setNextsub(String nextsub) {
+		this.nextsub = nextsub;
+	}
+	
 	
 }
