@@ -40,14 +40,16 @@ public class EarthTask {
 		sqlSession.update("user.updatePoint");
 	}
 	
-	//@Scheduled(cron = "59 28 14 * * *") 
-	//@Scheduled(cron = "0 03 16 * * *")
-	//@Scheduled(cron = "0 9 16 * * *")
-	//@Scheduled(cron = "0 35 10 * * *")
-	//@Scheduled(cron = "0 0 0 * * *") 
-	public void test () {
-		System.out.println("=======> Quartz 실행 테스트 000 12시에 실행 !!! 성공 !!  ");
-		 
+	@Scheduled(cron = "0 0 4 * * * ")
+	public void deleteMessage() throws SQLException {
+		// 매일 오전 04시 수신자/발신자 모두 삭제처리한 쪽지 데이터 영구 제거
+		sqlSession.delete("main.deleteMessage");
+	}
+
+	@Scheduled(cron = "0 0 * * * * ")
+	public void updateReportCount() throws SQLException {
+		// 매 시 정각 reportcount 3회인 유저들 warncount 1 증가  
+		sqlSession.update("admin.updateReportCount");
 	}
 	
 }
