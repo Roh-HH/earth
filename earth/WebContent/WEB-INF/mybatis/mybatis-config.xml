@@ -39,7 +39,6 @@
 		<typeAlias alias="adminBoardDTO" type="earth.admin.dto.AdminBoardDTO"/>
 		<typeAlias alias="adminCommentDTO" type="earth.admin.dto.AdminCommentDTO"/>
 		<typeAlias alias="adminQuestionDTO" type="earth.admin.dto.AdminQuestionDTO"/>
-		<typeAlias alias="noticeDTO" type="earth.admin.dto.NoticeDTO"/>
 		
 		<!-- main -->
 		<typeAlias alias="messageDTO" type="earth.main.dto.MessageDTO"/>
