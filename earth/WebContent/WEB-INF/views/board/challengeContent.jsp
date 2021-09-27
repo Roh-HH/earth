@@ -40,7 +40,7 @@
 					duration: 2,
 					// value: 'random(0, 100)',
 					value: function(i, v) {
-						var arrValue = [];
+							var arrValue = [];
 						for(var i = 0; i < dis.length; i++) {
 							// arrValue.push((this._targets[i]).getAttribute("data-limit"));
 							// console.log(i);
@@ -50,7 +50,7 @@
 					onUpdate:function() {
 						//값이 바뀔때마다 실행
 						console.log(this._targets[0].value);
-						dis[0].innerText = '참여도' + Math.floor(this._targets[0].value) + '%';
+						dis[0].innerText = '참여도 ' + Math.floor(this._targets[0].value) + '%';
 						//dis[0].innerText = Math.floor(100-(this._targets[0].value)) + '%';
 					}
 				});
@@ -119,11 +119,6 @@ margin-right:4px;
 			 등록일:  <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH:mm"/> 
 			</td>
 		</tr>
-		<%-- <tr>
-			<td style ="text-align: right;">
-			등록일 : <fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/> 		 
-			</td>
-		</tr> --%>
 	<c:if test="${article.img != null}">
 		<tr>	
 			 <td colspan="2" height="100" style ="text-align: center;"> <img src="${pageContext.request.contextPath}/save/${article.img}" style="max-width: 80%;" /> </td>
@@ -146,7 +141,7 @@ margin-right:4px;
 <fmt:parseNumber var="joinpercent" value="${joincount/maxcount*100}"/>
 <fmt:parseNumber var="rest" value="${100-joinpercent}"/>
 	<progress value="0" max="100" data-limit="${joinpercent}" > </progress>
- 	 <div class="display" style="color: black;" >  </div>
+ 	 <div class="display" style="color: black; font-size:17px;" >  </div>
  	 		 
 </div>
 
