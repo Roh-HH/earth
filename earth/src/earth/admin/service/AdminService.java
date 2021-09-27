@@ -3,6 +3,8 @@ package earth.admin.service;
 import java.sql.SQLException;
 import java.util.Map;
 
+import earth.user.dto.ReportDTO;
+
 public interface AdminService {
 
 	public Map<String, Object> getUserList(String pageNum) throws SQLException;
