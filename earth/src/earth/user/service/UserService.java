@@ -1,6 +1,7 @@
 package earth.user.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 
 import earth.badge.dto.BadgeDTO;
@@ -33,6 +34,7 @@ public interface UserService {
 		
 		// 비밀번호 일치 여부 확인 : 암호화 된 비밀번호 확인 
 		public int checkPw(UserDTO dto) throws SQLException;
+		
 
 	// 마이페이지 : 사용자 마이페이지의 메인 View X, 경고내역 확인 할 수 있는 페이지
 		
@@ -101,15 +103,13 @@ public interface UserService {
 
 		// 뱃지 장착하기
 		public void equipBadge(String id,int badgenum) throws SQLException;
-			
-	// 작성자 : 이다희 김하영
-	// 마이페이지 출석하기
-	
+		
+	// 출석하기- 이다희 김하영 
+		
 		//출석 인서트 
 		public int insertCheck(String id, String date) throws SQLException;
 		//출석현황 불러오기
 		public ArrayList<String> getAttendList (String id) throws SQLException;
-	
-	
-	
+			
+		
 }
