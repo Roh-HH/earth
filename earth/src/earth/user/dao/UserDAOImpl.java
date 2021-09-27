@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 import earth.board.dto.DiaryDTO;
 import earth.board.dto.FreeDTO;
 import earth.board.dto.TodayDTO;
+import earth.badge.dto.BadgeDTO;
+import earth.user.dto.AttendDTO;
 import earth.user.dto.CommentDTO;
 import earth.user.dto.QuestionDTO;
 import earth.user.dto.ReportDTO;
@@ -34,6 +36,12 @@ public class UserDAOImpl implements UserDAO {
 			sqlSession.insert("user.insertUser", dto);
 			sqlSession.insert("user.insertPoint", dto);
 		}
+		// 아이디 중복여부 확인
+		@Override
+		public int idCheck(UserDTO dto) throws SQLException {
+			int result = sqlSession.selectOne("user.idCheck", dto);
+			return result;
+		}
 		// 닉네임 중복여부 확인
 		@Override
 		public int nickCheck(UserDTO dto) throws SQLException {
@@ -54,6 +62,7 @@ public class UserDAOImpl implements UserDAO {
 			String hashedPassword = sqlSession.selectOne("user.getPw",id);
 			return hashedPassword;
 		}
+
 		
 	// 마이페이지 : 마이페이지, 내 프로필 보기
 
@@ -310,7 +319,7 @@ public class UserDAOImpl implements UserDAO {
 			List<ReportDTO> myReportList = sqlSession.selectList("user.getMyReport", map);
 			return myReportList;
 		}
-
+		
 	// 작성자 : 김예찬	
 	// 마이페이지 : 나의 에코백	
 		
@@ -362,8 +371,9 @@ public class UserDAOImpl implements UserDAO {
 			map.put("badgenum", badgenum);
 			
 			sqlSession.update("user.equipBadge", map);
-		}
-	
+		}		
+
+	// 작성자 : 이다희 김하영
 	// 출석체크 : 김하영 이다희	
 		
 		@Override
@@ -403,7 +413,7 @@ public class UserDAOImpl implements UserDAO {
 
 			for (int i=0; i<attend.size(); i++ ) {
 
-				attendList.add( attend.get(i).getStartDate());
+				attendList.add( attend.get(i).getStartDate()); 
 				System.out.println("아이디"+attend.get(i).getId());
 				System.out.println("날짜"+attend.get(i).getStartDate());
 				System.out.println("===================================");
@@ -415,7 +425,5 @@ public class UserDAOImpl implements UserDAO {
 			return attendList;
 		}
 
-	
-	
-
+		
 }
