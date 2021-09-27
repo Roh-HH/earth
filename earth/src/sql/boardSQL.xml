@@ -4,172 +4,316 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="board">
 
- 
- 
-    <!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
-            <select id="getNicknamereply" parameterType="string" resultType="string">
-                   select nickname from users where id=#{writer}
-            </select>
-            <select id="getNickname" parameterType="string" resultType="string">
-                select nickname from users where id=#{id}
-            </select>
-            <select id="getBoardid" parameterType="string" resultType="string">
-                select id from users where nickname=#{search}
-            </select>
-    <!-- 공용 뱃지 이미지 불러오기  -->
-            <select id="getBadgeimg" parameterType="string" resultType="string">
-                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{id}
-            </select>
-            <select id="getBadgeimgreply" parameterType="string" resultType="string">
-                   select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{writer}
-            </select>
+	<!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
+		<select id="getNicknamereply" parameterType="string" resultType="string">
+			select nickname from users where id=#{writer}
+		</select>
+		<select id="getNickname" parameterType="string" resultType="string">
+			select nickname from users where id=#{id}
+		</select>
+		<select id="getBoardid" parameterType="string" resultType="string">
+			select id from users where nickname=#{search}
+		</select>
 	
 	
-	<!-- 이달의 챌린지 (4) 이다희  -->
-	<select id="countAllChallenge" resultType="int">
-		select count(*) from challenge
-	</select>
-	<insert id="insertChallenge" parameterType="monthDTO">
-	 	insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}, #{enddate}) 
-	</insert>
-	<select id="getChallenge" resultType="int">
-		 select boardnum from (select * from challenge order by reg desc) where rownum = 1
-	</select>
-	<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
-		<![CDATA[
-			select B.*, case when b.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
-			DECODE(B.joincount, B.maxcount, 1, 0) ck from (select A.*, rownum r 
-			from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>
-	 <select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
-	 	<![CDATA[
-	 	select A.*, case when A.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck 
-	 	from (select * from challenge)A where boardnum=${value}
-		]]>
-	 </select> 
-	<update id="updateChallengeArticle" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt}, maxcount = #{maxcount}, enddate = #{enddate} where boardnum = #{boardnum}
-	</update>
-	<update id="updateChallengeArticleImg" parameterType="monthDTO">
-		update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount},  enddate = #{enddate} where boardnum = #{boardnum}
-	</update>
-	 
-	 <insert id="insertChReply" parameterType="hashmap">
-	 	insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt}, 11)
-	</insert>
+	<!-- 공용 뱃지 이미지 불러오기  -->
+		<select id="getBadgeimg" parameterType="string" resultType="string">
+			select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{id}
+		</select>
+			<select id="getBadgeimgreply" parameterType="string" resultType="string">
+			select b.badgeimg from badge b, users u where b.badgenum = u.badge and u.id = #{writer}
+		</select>
 	
-	<insert id="insertChJoin" parameterType="hashmap">
-	 	insert into challenge_join values(#{boardnum}, #{id})
-	</insert>
-	 <update id="joinCountUp" parameterType="int">
-  		update challenge set joincount = joincount+1 where boardnum = #{value}
-  	</update>
+	
+	<!-- 공통 글/댓글 개수 가져오기 -->
+		<select id="getBoardCount" parameterType="string" resultType="int">
+			select boardcount from point where id = #{value}
+		</select>
+		<select id="getCommentCount" parameterType="string" resultType="int">
+			select commentcount from point where id = #{value}
+		</select>
+	
+	<!-- 공지사항 (1) 노현호 -->
+		<insert id="insertNotice" parameterType="noticeDTO">
+			insert into notice values(notice_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+		</insert>
 
-  	<select id="getChReplyListCount" parameterType="int" resultType="int">
-		select count(*) from challengecomment where boardnum = #{value}
-	</select>
+		<select id="countAllNotice" resultType="int">
+			select count(*) from notice
+		</select>
+		<select id="getPwNotice" resultType="string">
+			select pw from notice where boardnum = #{value}
+		</select>
+		<select id="getNoticeArticles" parameterType="hashmap" resultType="noticeDTO">		
+			<![CDATA[
+				select B.* from (select A.*, rownum r from (select * from notice order by reg desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>
+		<select id="getNoticeArticle" parameterType="int" resultType="noticeDTO">
+				select * from notice where boardnum = #{value}
+		</select>
+		<select id="getCttNotice" resultType="string">
+			select ctt from notice where boardnum = #{value}
+		</select>
+
+		<update id="addReadCountNotice" parameterType="int">
+			<![CDATA[
+				update notice set readcount=readcount+1 where boardnum = #{value}
+			]]>
+		</update>
+		<update id="updateNoticeArticle" parameterType="noticeDTO">
+			update notice set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}
+		</update>
+
+		<delete id="deleteArticleNotice" parameterType="int">
+			delete from notice where boardnum = #{value}
+		</delete>
+
 	
-	<select id="getChReplyList" parameterType="hashmap" resultType="monthDTO">		
-		<![CDATA[
-			select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
-		]]>
-	</select>
-	<select id="idCheck" parameterType="hashmap" resultType="int">
-		select count(*) from challenge_join where boardnum = #{boardnum} and id=#{id}
-	</select>
-	
-	<delete id="replydeletechallenge" parameterType="int">
-		delete from challengecomment where commentnum = #{commentnum}
-	</delete>
-	
-	<delete id="replydeletediary" parameterType="int">
-		delete from diarycomment where commentnum = #{commentnum}
-	</delete>
-	
-	<select id="dateCheck" parameterType="int" resultType="int">
-		select count(*) from challenge where enddate > to_char(sysdate, 'YYYY/MM/DD') and boardnum = #{value}
-	</select>
-	
+	<!-- 자유게시판 (2) 노현호 -->
+		<insert id="insertFree" parameterType="freeDTO">
+			insert into free values(free_seq.nextval, #{subject}, #{categ}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+		</insert>
+
+		<select id="countAllFree" resultType="int">
+			select count(*) from free
+		</select>
+		<select id="getPwFree" resultType="string">
+			select pw from free where boardnum = #{value}
+		</select>
+		<select id="getFreeArticles" parameterType="hashmap" resultType="freeDTO">		
+			<![CDATA[
+				select B.* from (select A.*, rownum r from (select * from free order by reg desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>
+		<select id="getFreeArticle" parameterType="int" resultType="freeDTO">
+				select * from free where boardnum = #{value}
+		</select>
+		<select id="getBrackets" resultType="string">
+			select name from brackets
+		</select>
+		<select id="getBracketsDTO" resultType="bracketsDTO">
+			select * from brackets
+		</select>
+		<select id="getCttFree" resultType="string">
+			select ctt from free where boardnum = #{value}
+		</select>
+
+		<update id="addReadCountFree" parameterType="int">
+			<![CDATA[
+				update free set readcount=readcount+1 where boardnum = #{value}
+			]]>
+		</update>
+		<update id="subReadCountFree" parameterType="int">
+			<![CDATA[
+				update free set readcount=readcount-1 where boardnum = #{value}
+			]]>
+		</update>
+		<update id="updateFreeArticle" parameterType="freeDTO">
+			update free set subject = #{subject}, ctt = #{ctt}, categ = #{categ} where boardnum = #{boardnum}
+		</update>
+
+		<delete id="deleteArticleFree" parameterType="int">
+			delete from free where boardnum = #{value}
+		</delete>
 	
 	
 	<!-- 환경일기 (3) 이다희   -->
-	<select id="countAllDiary" resultType="int">
-		select count(*) from diary
-	</select>
-	<insert id="insertDiary" parameterType="diaryDTO">
-		insert into diary values(diary_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, 3, 0)
-	</insert>
-	<select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
-		<![CDATA[
-			select B.*, id nickname, id badgeimg from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>
-	<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">
-			select * from diary where boardnum = #{value}
-	</select>
-	<update id="addReadCountDairy" parameterType="int">
-		<![CDATA[
-			update diary set readcount=readcount+1 where boardnum = #{value}
-		]]>
-	</update>
-	<select id="countDiarySearch" parameterType="hashmap" resultType="int">
-		select count(*) from diary where ${sel} like '%'||#{search}||'%' 
-	</select>
+		<select id="countAllDiary" resultType="int">
+			select count(*) from diary
+		</select>
+		<insert id="insertDiary" parameterType="diaryDTO">
+			insert into diary values(diary_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, 3, 0)
+		</insert>
+		<select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
+			<![CDATA[
+				select B.*, id nickname, id badgeimg from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>
+		<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">
+				select * from diary where boardnum = #{value}
+		</select>
+		<update id="addReadCountDairy" parameterType="int">
+			<![CDATA[
+				update diary set readcount=readcount+1 where boardnum = #{value}
+			]]>
+		</update>
+		<select id="countDiarySearch" parameterType="hashmap" resultType="int">
+			select count(*) from diary where ${sel} like '%'||#{search}||'%' 
+		</select>
 
-	<select id="getSearchDiaryArticles" parameterType="hashmap" resultType="diaryDTO">	
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from diary where ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
-		]]>
-	</select>	
-	<update id="updateDiaryArticle" parameterType="diaryDTO" >
-		update diary set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}  
-	</update>
-	<update id="updateDiaryArticleImg" parameterType="diaryDTO" >
-		update diary set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} 
-	</update>
-	 <select id="getPwDiary" resultType="string">
-		select pw from diary where boardnum = #{value}
-	</select>
+		<select id="getSearchDiaryArticles" parameterType="hashmap" resultType="diaryDTO">	
+			<![CDATA[
+				select B.* from (select A.*, rownum r from (select * from diary where ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>	
+		<update id="updateDiaryArticle" parameterType="diaryDTO" >
+			update diary set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum}  
+		</update>
+		<update id="updateDiaryArticleImg" parameterType="diaryDTO" >
+			update diary set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} 
+		</update>
+		 <select id="getPwDiary" resultType="string">
+			select pw from diary where boardnum = #{value}
+		</select>
+
+		<insert id="likeup" parameterType="hashmap">
+			insert into diary_recommend values(#{boardnum}, #{recid})
+		</insert>
+		 <update id="likeadd" parameterType="int">
+			update diary set recommend = recommend+1 where boardnum = #{value}
+		</update>
+		<select id="recidCheck" parameterType="hashmap" resultType="int">
+			select count(*) from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+		</select>
+
+		<delete id="likeCancel" parameterType="hashmap">
+			delete from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
+		</delete>
+		 <update id="likedown" parameterType="int">
+			update diary set recommend = recommend-1 where boardnum = #{value}
+		</update> 
+		<update id="minusReadCountDairy" parameterType="int">
+			<![CDATA[
+				update diary set readcount=readcount-2 where boardnum = #{value}
+			]]>
+		</update>
+		 <insert id="insertDiaryReply" parameterType="hashmap">
+			insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt}, 10)
+		</insert>
+		  <select id="getDiaryReplyListCount" parameterType="int" resultType="int">
+			select count(*) from diarycomment where boardnum = #{value}
+		</select>
+
+		<select id="getDiaryReplyList" parameterType="hashmap" resultType="diaryDTO">		
+			<![CDATA[
+				select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+			]]>
+		</select>
 	
-	<insert id="likeup" parameterType="hashmap">
-	 	insert into diary_recommend values(#{boardnum}, #{recid})
-	</insert>
-	 <update id="likeadd" parameterType="int">
-  		update diary set recommend = recommend+1 where boardnum = #{value}
-  	</update>
-  	<select id="recidCheck" parameterType="hashmap" resultType="int">
-		select count(*) from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
-	</select>
-	
-	<delete id="likeCancel" parameterType="hashmap">
-		delete from diary_recommend where boardnum = #{boardnum} and recid=#{recid}
-	</delete>
-	 <update id="likedown" parameterType="int">
-  		update diary set recommend = recommend-1 where boardnum = #{value}
-  	</update> 
-  	<update id="minusReadCountDairy" parameterType="int">
-		<![CDATA[
-			update diary set readcount=readcount-2 where boardnum = #{value}
-		]]>
-	</update>
- 	 <insert id="insertDiaryReply" parameterType="hashmap">
-	 	insert into diarycomment values(diarycom_seq.nextval, #{boardnum}, 0, 0, sysdate, #{receiver}, #{writer}, #{ctt}, 10)
-	</insert>
- 	  <select id="getDiaryReplyListCount" parameterType="int" resultType="int">
-		select count(*) from diarycomment where boardnum = #{value}
-	</select>
-	
-	<select id="getDiaryReplyList" parameterType="hashmap" resultType="diaryDTO">		
-		<![CDATA[
-			select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
-		]]>
-	</select>
 	 
-	
+	<!-- 이달의 챌린지 (4) 이다희  -->
+		<select id="countAllChallenge" resultType="int">
+			select count(*) from challenge
+		</select>
+		<insert id="insertChallenge" parameterType="monthDTO">
+			insert into challenge values(challenge_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, 0, #{maxcount}, 4, #{actable}, #{enddate}) 
+		</insert>
+		<select id="getChallenge" resultType="int">
+			 select boardnum from (select * from challenge order by reg desc) where rownum = 1
+		</select>
+		<select id="getChallengeArticles" parameterType="hashmap" resultType="monthDTO">		
+			<![CDATA[
+				select B.*, case when b.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck, 
+				DECODE(B.joincount, B.maxcount, 1, 0) ck from (select A.*, rownum r 
+				from (select * from challenge order by reg desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>
+		 <select id="getChallengeArticle" parameterType="int" resultType="monthDTO">
+			<![CDATA[
+			select A.*, case when A.enddate >= to_char(sysdate, 'YY/MM/DD') then '1' else '0' end as dateck 
+			from (select * from challenge)A where boardnum=${value}
+			]]>
+		 </select> 
+		<update id="updateChallengeArticle" parameterType="monthDTO">
+			update challenge set subject = #{subject}, ctt = #{ctt}, maxcount = #{maxcount}, enddate = #{enddate} where boardnum = #{boardnum}
+		</update>
+		<update id="updateChallengeArticleImg" parameterType="monthDTO">
+			update challenge set subject = #{subject}, ctt = #{ctt}, img = #{img}, maxcount = #{maxcount},  enddate = #{enddate} where boardnum = #{boardnum}
+		</update>
+
+		 <insert id="insertChReply" parameterType="hashmap">
+			insert into challengecomment values(challengecom_seq.nextval, #{boardnum}, sysdate, #{writer}, #{ctt}, 11)
+		</insert>
+
+		<insert id="insertChJoin" parameterType="hashmap">
+			insert into challenge_join values(#{boardnum}, #{id})
+		</insert>
+		 <update id="joinCountUp" parameterType="int">
+			update challenge set joincount = joincount+1 where boardnum = #{value}
+		</update>
+
+		<select id="getChReplyListCount" parameterType="int" resultType="int">
+			select count(*) from challengecomment where boardnum = #{value}
+		</select>
+
+		<select id="getChReplyList" parameterType="hashmap" resultType="monthDTO">		
+			<![CDATA[
+				select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+			]]>
+		</select>
+		<select id="idCheck" parameterType="hashmap" resultType="int">
+			select count(*) from challenge_join where boardnum = #{boardnum} and id=#{id}
+		</select>
+
+		<delete id="replydeletechallenge" parameterType="int">
+			delete from challengecomment where commentnum = #{commentnum}
+		</delete>
+
+		<delete id="replydeletediary" parameterType="int">
+			delete from diarycomment where commentnum = #{commentnum}
+		</delete>
+
+		<select id="dateCheck" parameterType="int" resultType="int">
+			select count(*) from challenge where enddate > to_char(sysdate, 'YYYY/MM/DD') and boardnum = #{value}
+		</select>
  
+	<!-- 오늘의 실천 (5) 노현호 -->
+		<insert id="upload" parameterType="todayDTO">
+			insert into today values(today_seq.nextval, #{id}, #{ctt}, sysdate, #{code}, #{condition}) 
+		</insert>
+
+		<select id="countAllToday" resultType="int">
+			select count(*) from today where to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
+		</select>
+		<select id="getTodayArticles" parameterType="hashmap" resultType="todayDTO">		
+			<![CDATA[
+				select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
+			]]>
+		</select>
+		<select id="getTodayArticle" parameterType="int" resultType="todayDTO">
+			select * from today where boardnum=${value}
+		</select>
+
+		<delete id="deleteArticleToday" parameterType="int">
+			delete from today where boardnum = #{value}
+		</delete>
 	
 	
-  
+	<!--  (6) 김하영 -->
 	
+	
+	
+	<!--  (7) 김하영 -->
+	
+	
+	
+	<!--  (8) 김하영 -->
+
+	
+	
+	<!-- 자유게시판 댓글 (9) 노현호 -->
+		<insert id="uploadFreeComment" parameterType="freecommentDTO">
+			insert into freecomment values(freecom_seq.nextval, #{freenum}, #{ref}, #{relevel}, sysdate, #{receiver}, #{writer}, #{ctt}, 9)
+		</insert>
+
+		<select id="getFreeComment" parameterType="hashmap" resultType="freecommentDTO">
+			<![CDATA[
+				select B.* from (select A.*, rownum r from (select * from freecomment where freenum = #{boardnum} order by ref desc) A) B where r >= #{start} and r <= #{end}
+			]]>
+		</select>
+		<select id="getRefCountFree" parameterType="int" resultType="string">
+			select count(ref) from freecomment where freenum = #{value}
+		</select>
+		<select id="countCommentFree" resultType="int">
+			select count(*) from freecomment where freenum = #{value}
+		</select>
+		<select id="getFreeCommentOne" parameterType="int" resultType="freecommentDTO">
+			select * from freecomment where commentnum = #{value}
+		</select>
+
+		<delete id="deleteArticleFreeComment" parameterType="int">
+			delete from freecomment where commentnum = #{value}
+		</delete>
+		
 </mapper>
