@@ -280,16 +280,174 @@
 		</delete>
 	
 	
-	<!--  (6) 김하영 -->
+		<!-- 상점소개  -->
+			<insert id="insertShop" parameterType="shopDTO">
+				insert into shop values(shop_seq.nextval, #{subject}, #{id}, #{pw}, #{img}, #{hyperlink}, sysdate, #{readcount}, #{code})
+			</insert>
+		
+			<select id="countAllShop" resultType="int">
+				select count(*) from shop
+			</select>
+			<select id="getPwShop" resultType="string">
+				select pw from shop where boardnum = #{value}
+			</select>
+			<select id="getImgShop" resultType="string">
+				select img from shop where boardnum = #{value}
+			</select>
+			<select id="getShopArticles" parameterType="hashmap" resultType="shopDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from shop order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getShopArticle" parameterType="int" resultType="shopDTO">
+				select * from shop where boardnum=${value}
+			</select>
+			<select id="getShopSearch" parameterType="hashmap" resultType="shopDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from shop where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="shopCount" parameterType="hashmap" resultType="int">
+				select count(*) from shop where ${sel} like '%'||#{search}||'%'
+			</select>
+			<update id="addReadCountShop" parameterType="int">
+				<![CDATA[
+					update shop set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateShopArticle" parameterType="shopDTO"> 	
+				update shop set subject = #{subject}, hyperlink = #{hyperlink} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateShopArticleImg" parameterType="shopDTO">
+				update shop set subject = #{subject}, hyperlink = #{hyperlink}, img = #{img} where boardnum = #{boardnum}
+			</update>
+			<delete id="deleteArticleShop" parameterType="int">
+				delete from shop where boardnum = #{value}
+			</delete>
+		
+		<!-- 행사 김하영 -->
+			<insert id="insertEvent" parameterType="eventDTO">
+				insert into event values(event_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code}, #{sch}, #{schend})
+			</insert>
+			<select id="countAllEvent" resultType="int">
+				select count(*) from event
+			</select>
+			<select id="getPwEvent" resultType="string">
+				select pw from event where boardnum = #{value}
+			</select>
+			<select id="getCttEvent" resultType="string">
+				select ctt from event where boardnum = #{value}
+			</select>
+			<select id="getImgEvent" resultType="string">
+				select img from event where boardnum = #{value}
+			</select>
+			<select id="getEventArticles" parameterType="hashmap" resultType="eventDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from event order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getEventArticle" parameterType="int" resultType="eventDTO">
+				select * from event where boardnum=${value}
+			</select>
+			<select id="getEventSearch" parameterType="hashmap" resultType="eventDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from event where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="eventCount" parameterType="hashmap" resultType="int">
+				select count(*) from event where ${sel} like '%'||#{search}||'%'
+			</select>
+			<select id="prevBoard" resultType="eventDTO">
+				<![CDATA[	
+					select * from (
+					SELECT boardnum, subject,
+					  	   LAG(subject,1) OVER(ORDER BY boardnum) as prevsub,
+					       LAG(boardnum,1) OVER (ORDER BY boardnum) as prevnum
+					  FROM event)
+					  where boardnum =#{boardnum}
+				]]>
+			</select>
+			<select id="nextBoard" resultType="eventDTO">
+				<![CDATA[	
+					select * from (	
+					SELECT boardnum, subject,
+					  	   LEAD(subject,1) OVER(ORDER BY boardnum) as nextsub,
+					       LEAD(boardnum,1) OVER (ORDER BY boardnum) as nextnum
+					  FROM event) 
+					  where boardnum =#{boardnum}
+				]]>
+			</select>
+			<update id="addReadCountEvent" parameterType="int">
+				<![CDATA[
+					update event set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateEventArticle" parameterType="eventDTO">
+				update event set subject = #{subject}, sch = #{sch},  schend = #{schend}, ctt = #{ctt} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateEventArticleImg" parameterType="eventDTO">
+				update event set subject = #{subject}, sch = #{sch}, schend = #{schend}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+			</update>
+			<delete id="deleteArticleEvent" parameterType="int">
+				delete from event where boardnum = #{value}
+			</delete>
+		
+		<!-- 꿀팁 김하영 -->
+			<insert id="insertTip" parameterType="tipDTO">
+				insert into tip values(tip_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, #{code})
+			</insert>
+			<select id="countAllTip" resultType="int">
+				select count(*) from tip
+			</select>
+			<select id="getPwTip" resultType="string">
+				select pw from tip where boardnum = #{value}
+			</select>
+			<select id="getCttTip" resultType="string">
+				select ctt from tip where boardnum = #{value}
+			</select>
+			<select id="getImgTip" resultType="string">
+				select img from tip where boardnum = #{value}
+			</select>
+			<select id="getTipArticles" parameterType="hashmap" resultType="tipDTO">		
+				<![CDATA[		
+					select B.* from (select A.*, rownum r from (select * from tip order by reg desc) A) B where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="getTipArticle" parameterType="int" resultType="tipDTO">
+			 	select * from tip where boardnum = #{value}
+			</select>
+			<select id="getTipSearch" parameterType="hashmap" resultType="tipDTO">
+				<![CDATA[
+					select B.*, r from 
+						(select A.*, rownum r from 
+							(select * from tip where ${sel} like '%'||#{search}||'%'  order by reg desc) A order by reg desc ) B
+						where r >= #{start} and r <= #{end}
+				]]>
+			</select>
+			<select id="tipCount" parameterType="hashmap" resultType="int">
+				select count(*) from tip where ${sel} like '%'||#{search}||'%'
+			</select>
+			<update id="addReadCountTip" parameterType="int">
+				<![CDATA[
+					update tip set readcount=readcount+1 where boardnum = #{value}
+				]]>
+			</update>
+			<update id="updateTipArticle" parameterType="tipDTO">
+				update tip set subject = #{subject}, ctt = #{ctt} where boardnum = #{boardnum} 
+			</update>
+			<update id="updateTipArticleImg" parameterType="tipDTO">
+				update tip set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum}
+			</update>
+			<delete id="deleteArticleTip" parameterType="int">
+				delete from tip where boardnum = #{value}
+			</delete>
 	
-	
-	
-	<!--  (7) 김하영 -->
-	
-	
-	
-	<!--  (8) 김하영 -->
-
 	
 	
 	<!-- 자유게시판 댓글 (9) 노현호 -->
