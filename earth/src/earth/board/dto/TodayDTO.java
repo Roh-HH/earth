@@ -11,7 +11,21 @@ public class TodayDTO {
 	private Timestamp reg;
 	private Integer code;
 	private Integer condition;
+	private String nickname;
+	private String badgeimg;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
 	public Integer getBoardnum() {
 		return boardnum;
 	}
