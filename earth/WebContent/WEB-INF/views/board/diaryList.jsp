@@ -162,7 +162,6 @@ margin-right:4px;
 						
 					</c:if> <%-- end:count > 0 --%>
 					</nav>
-				<%-- 		<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p> --%>
 				</div>
 					
 <%@ include file = "../include/footer.jsp" %>

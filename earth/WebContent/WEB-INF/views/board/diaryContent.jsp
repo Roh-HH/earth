@@ -327,28 +327,20 @@ margin-right:4px;
 			<c:if test="${endPage > pageCount}">
 				<c:set var="endPage" value="${pageCount}" /> 
 		</c:if> 
-		
 				<c:if test="${startPage > pageBlock}">
 					<a class="back page-numbers" href="/earth/board/diaryContent.et?pageN=${startPage-pageBlock}#comment" class="pageNums"> « </a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 					<a class="page-numbers" href="/earth/board/diaryContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">${i}</a>
 				</c:forEach>
-				
 				<c:if test="${endPage < pageCount}">
 					<a class="next page-numbers"href="/earth/board/diaryContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> »</a>
 				</c:if>
-	
 		</c:if>  
 		</nav> 
-	<%-- 	<p style="color:grey"> 현재페이지 : ${pageN} </p> --%> 
 	</div>
-	
-
-	<button onclick="window.location='/earth/board/diaryList.et'"
+	<button onclick="window.location='/earth/board/diaryList.et?pageNum=${pageNum}'"
 				style="background-color:#ffffff;color:#1E88E5; border:#1E88E5;float:center;">목록으로 </button>
-				
-	
 	</div>
 </section>
 <%@ include file = "../include/footer.jsp" %>
