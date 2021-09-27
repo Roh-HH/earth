@@ -72,6 +72,12 @@
 			window.open(popUrl,"",popOption);
 		}
 		
+		function msgSend(receiver){
+			var popUrl = "/earth/main/messageWriteForm.et?receiver=" + receiver;
+			var popOption = "width=500, height=340, resizable=no, scrollbars=no, status=no;";
+			window.open(popUrl,"",popOption);
+		}
+		
 		$(document).ready(function(){
 			var hash = $.trim( window.location.hash );
 			if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
@@ -293,12 +299,10 @@ article.dateck == 1 : 데이트 마감 안됨
 											  </p>
 		                                  <div class="d-flex justify-content-between">
 		                                      <div class="d-flex align-items-center">
-		                                          <h5>
-		                                             ${replyList.nickname}
-		                                          </h5>
-		                                          <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
+		                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
+		                                      		class="btn-reply text-uppercase" style="cursor:default;"> <h5> ${replyList.nickname}</h5> </a>
+		                                        	 <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
-		                                       
 		                                      <div class="reply-btn" style="width:150px;">
 		                                       <c:if test="${sessionScope.sid != null}">
 			                                      	<c:if test="${sessionScope.sid == replyList.writer or sessionScope.sid == 'admin'}">

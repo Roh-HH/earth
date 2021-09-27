@@ -44,19 +44,21 @@ margin-right:4px;
 		var popOption = "width=500, height=200, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
-	
 	function reportArticle(boardnum){
 		var popUrl = "/earth/adminmypage/reportForm.et?id=${article.id}&uri=dairy&boardnum=" + boardnum;
 		var popOption = "width=500, height=500, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
-	
 	function reportComment(commentnum, id){
 		var popUrl = "/earth/adminmypage/reportForm.et?id=" + id + "&uri=diaryComment&boardnum=" + commentnum;
 		var popOption = "width=500, height=500, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
-
+	function msgSend(receiver){
+		var popUrl = "/earth/main/messageWriteForm.et?receiver=" + receiver;
+		var popOption = "width=500, height=340, resizable=no, scrollbars=no, status=no;";
+		window.open(popUrl,"",popOption);
+	}
 	$(document).ready(function(){
 		var hash = $.trim( window.location.hash );
 		if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
@@ -86,7 +88,8 @@ margin-right:4px;
 		<tr>
 			<td width="200px"> 작성자 </td>
 			<td><img class="badgeImg" src="${pageContext.request.contextPath}/save/${badgeimg}" />
-			${nickname}</td>
+			<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${nickname}</a>
+			</td>
 		</tr>
 		<tr>
 			<td width="200px">  게시글 등록일자 </td>
@@ -230,11 +233,10 @@ margin-right:4px;
 												${replyList.commen}                                    
 											  </p>
 		                                  <div class="d-flex justify-content-between">
-		                                      <div class="d-flex align-items-center">
-		                                          <h5>
-		                                             ${replyList.nickname}
-		                                          </h5>
-		                                          <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
+		                                   <div class="d-flex align-items-center">
+		                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
+		                                      		class="btn-reply text-uppercase" style="cursor:default;"> <h5> ${replyList.nickname}</h5> </a>
+		                                        	 <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
 		                                      <div class="reply-btn" style="width:150px;">
 		                                     <c:if test="${sessionScope.sid != null}">
