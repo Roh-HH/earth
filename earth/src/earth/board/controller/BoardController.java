@@ -788,7 +788,9 @@ public class BoardController {
 			@RequestMapping("diaryList.et")
 			public String diaryList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException{
 				System.out.println("diaryList요청");
-
+				
+				String recid = (String)session.getAttribute("sid");
+				
 				int code = 3;
 				Map<String, Object> result = null;
 				//전체 게시글 검색 안한 전체 글 보여주기 
@@ -818,6 +820,8 @@ public class BoardController {
 					for(int i=0; i<articleList.size(); i++) {
 						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
 						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+						articleList.get(i).setIdCheck(boardService.recidCheck(articleList.get(i).getBoardnum(), recid));
+						
 					}
 				}
 

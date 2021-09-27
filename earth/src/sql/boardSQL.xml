@@ -125,9 +125,9 @@
 		<insert id="insertDiary" parameterType="diaryDTO">
 			insert into diary values(diary_seq.nextval, #{subject}, #{id}, #{pw}, #{ctt}, #{img}, sysdate, #{readcount}, 3, 0)
 		</insert>
-		<select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
+        <select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
 			<![CDATA[
-				select B.*, id nickname, id badgeimg from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
+				select B.*, id nickname, id badgeimg, boardnum idCheck from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
 			]]>
 		</select>
 		<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">

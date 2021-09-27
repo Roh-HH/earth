@@ -87,10 +87,10 @@ margin-right:4px;
 		                        <a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
 		                        	<h4 style="height:60px;"> ${article.subject}</h4></a><br>
 	                           	<div class="meta-bottom d-flex">
-	                           		<c:if test="${article.recommend == 0}">	
+	                           		<c:if test="${article.idCheck != 1}">	
 	                           			<a href="#">♡ ${article.recommend}like</a>
 	                           		</c:if>
-	                           		<c:if test="${article.recommend > 0}">	
+	                           		<c:if test="${article.idCheck == 1}">	
                                 		<a href="#">♥ ${article.recommend}like</a>
                                 	</c:if>                    
 	                            </div>

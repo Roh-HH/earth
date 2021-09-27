@@ -21,16 +21,12 @@ public class DiaryDTO {
 	
 	// 뱃지 이미지 추가 
 	private String badgeimg;
-	public String getBadgeimg() {
-		return badgeimg;
-	}
-	public void setBadgeimg(String badgeimg) {
-		this.badgeimg = badgeimg;
-	}
+	private String nickname;
 	
 	//좋아요 
 	private String recid;
-	 
+	private Integer idCheck;
+	
 	//환경일기 댓글 
 	private Integer commentnum;
 	private Integer ref;
@@ -40,7 +36,20 @@ public class DiaryDTO {
 	private String writer;
 	private String commen;
 	
-	private String nickname;
+	 
+	public Integer getIdCheck() {
+		return idCheck;
+	}
+	public void setIdCheck(Integer idCheck) {
+		this.idCheck = idCheck;
+	}
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
+	
  
 	public String getNickname() {
 		return nickname;
