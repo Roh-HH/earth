@@ -102,7 +102,7 @@ margin-right:4px;
 	<h1 class="entry-title"> 이달의 챌린지 </h1>
 	<hr>
 	<p  style ="text-align: center;" >  
-	‘이달의 챌린지’에 참여한 후, 한 달간 도전하며 작은 성취를 느껴보세요 !  
+	‘이달의 챌린지’에 참여한 후, 한 달간 도전하며 작은 성취를 느껴보세요 ! 
 	 </p>
 	 
 <!-- 상단 컨텐츠  -->	
@@ -204,8 +204,8 @@ article.dateck == 1 : 데이트 마감 안됨
 			<p> 챌린지 진행중 	</p>
 		</c:if>
 		<c:if test="${article.maxcount == article.joincount}">
-			<p> 챌린지 성공 ! 	</p>
-			<p> 챌린지가 마감되었습니다! </p>
+			<p>  챌린지 성공 ! 	</p>
+			<p> 챌린지가 마감되었습니다. </p>
 		</c:if>
 	</c:if>
 </c:if>
@@ -398,22 +398,18 @@ article.dateck == 1 : 데이트 마감 안됨
 			<c:if test="${endPage > pageCount}">
 				<c:set var="endPage" value="${pageCount}" /> 
 		</c:if> 
-		
 				<c:if test="${startPage > pageBlock}">
-					<a class="back page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage-pageBlock}&pageNum=${pageNum}#comment" class="pageNums"> «back</a>
+					<a class="back page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage-pageBlock}&pageNum=${pageNum}#comment" class="pageNums"> «</a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-					<a class="page-numbers" href="/earth/board/challengeContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a class="page-numbers" href="/earth/board/challengeContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">${i}</a>
 				</c:forEach>
 				
 				<c:if test="${endPage < pageCount}">
-					<a class="next page-numbers"href="/earth/board/challengeContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> Next»</a>
+					<a class="next page-numbers"href="/earth/board/challengeContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> »</a>
 				</c:if>
-	
 		</c:if>  
-		</nav> 
-		<%-- <p style="color:grey"> 현재페이지 : ${pageN} </p>  --%>
- 
+		</nav>
 	</div>
  <br /> <br />
 <div id="button" align="center">	

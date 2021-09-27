@@ -133,16 +133,16 @@ margin-right:4px;
 			</c:if>	
 		</c:if> <%-- end:count > 0 --%>
 			<c:if test="${startPage > pageBlock}">
-				<a class="back page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back</a>
+				<a class="back page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage-pageBlock}" class="pageNums"> «</a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-				<a class="page-numbers" href="/earth/board/challengeList.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+				<a class="page-numbers" href="/earth/board/challengeList.et?pageNum=${i}" class="pageNums">${i}</a>
 			</c:forEach>
 			<c:if test="${endPage < pageCount}">
-				<a class="next page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»</a>
+				<a class="next page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage+pageBlock}" class="pageNums"> »</a>
 			</c:if>
 		</nav>
-			<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p>
+			<%-- <p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p> --%>
 	</div>
 					
 <%@ include file = "../include/footer.jsp" %>

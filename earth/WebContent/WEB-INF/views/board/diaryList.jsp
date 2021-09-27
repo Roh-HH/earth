@@ -43,7 +43,7 @@ margin-right:4px;
 				</h3>
 				    <h1 class="entry-title"> 환경일기  </h1>
 				    <hr>
-				    <p> 실천과 변명, 반성을 써보며 동기부여해보세요 ! </p>
+				    <p> 실천과 변명, 반성을 써보며 동기부여 해보세요 !  </p>
 					<form action="/earth/board/diaryList.et" >
 	         		<div class="input-group" style="width:300px; float:right;">
 	         			<select name="sel" style="height:30px;">
@@ -74,7 +74,7 @@ margin-right:4px;
 									<img src="${pageContext.request.contextPath}/save/${article.img}" style="width:290px; height:290px;"/>
 								</c:if>
 								<c:if test="${article.img == null}">
-									<img src="" style="width:290px; height:290px;"/>
+									<img src="${pageContext.request.contextPath}/save/default.png" style="width:290px; height:290px;"/>
 								</c:if>							
 								</a>
 							</div>
@@ -136,33 +136,33 @@ margin-right:4px;
 						<%-- 검색했을때 페이지번호들 --%>
 						<c:if test="${sel != null && search != null}">
 							<c:if test="${startPage > pageBlock}">
-								<a class="back page-numbers"  href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «back</a>
+								<a class="back page-numbers"  href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «</a>
 							</c:if>
 							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums"> &nbsp; ${i} &nbsp; </a>
+								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums">  ${i}   </a>
 							</c:forEach>
 							<c:if test="${endPage < pageCount}">
-								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> Next»</a>
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> »</a>
 							</c:if>
 						</c:if>
 						
 						<%-- 검색 안했을때 페이지번호들   --%> 
 						<c:if test="${sel == null || search == null}">
 							<c:if test="${startPage > pageBlock}">
-								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back</a>
+								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}" class="pageNums"> « </a>
 							</c:if>
 							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}" class="pageNums"> ${i} </a>
 							</c:forEach>
 							
 							<c:if test="${endPage < pageCount}">
-								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»</a>
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}" class="pageNums"> »</a>
 							</c:if>
 						</c:if>
 						
 					</c:if> <%-- end:count > 0 --%>
 					</nav>
-						<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p>
+				<%-- 		<p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p> --%>
 				</div>
 					
 <%@ include file = "../include/footer.jsp" %>

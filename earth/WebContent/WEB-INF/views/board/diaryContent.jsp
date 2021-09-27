@@ -327,14 +327,14 @@ margin-right:4px;
 		</c:if> 
 		
 				<c:if test="${startPage > pageBlock}">
-					<a class="back page-numbers" href="/earth/board/diaryContent.et?pageN=${startPage-pageBlock}#comment" class="pageNums"> «back</a>
+					<a class="back page-numbers" href="/earth/board/diaryContent.et?pageN=${startPage-pageBlock}#comment" class="pageNums"> « </a>
 				</c:if>
 				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-					<a class="page-numbers" href="/earth/board/diaryContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+					<a class="page-numbers" href="/earth/board/diaryContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">${i}</a>
 				</c:forEach>
 				
 				<c:if test="${endPage < pageCount}">
-					<a class="next page-numbers"href="/earth/board/diaryContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> Next»</a>
+					<a class="next page-numbers"href="/earth/board/diaryContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> »</a>
 				</c:if>
 	
 		</c:if>  
