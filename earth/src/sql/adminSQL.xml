@@ -206,6 +206,10 @@
 	<delete id="processTwo" parameterType="string">
 		delete from users where id = #{value}
 	</delete>
+	
+	<update id="updateReportCount">
+		update users set warncount = floor(reportcount/3) where reportcount != 0
+	</update>
 	<!-- 신고 끝 -->
 	
 	
