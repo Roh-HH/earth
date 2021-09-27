@@ -190,6 +190,12 @@
 				select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
 			]]>
 		</select>
+        <delete id="replydeletediary" parameterType="int">
+			delete from diarycomment where commentnum = #{commentnum}
+		</delete>
+		<delete id="deleteArticleDiary" parameterType="int">
+			delete from diary where boardnum = #{value}
+		</delete>
 	
 	 
 	<!-- 이달의 챌린지 (4) 이다희  -->
@@ -249,14 +255,12 @@
 		<delete id="replydeletechallenge" parameterType="int">
 			delete from challengecomment where commentnum = #{commentnum}
 		</delete>
-
-		<delete id="replydeletediary" parameterType="int">
-			delete from diarycomment where commentnum = #{commentnum}
-		</delete>
-
 		<select id="dateCheck" parameterType="int" resultType="int">
 			select count(*) from challenge where enddate > to_char(sysdate, 'YYYY/MM/DD') and boardnum = #{value}
 		</select>
+		<delete id="deleteArticleChallenge" parameterType="int">
+			delete from challenge where boardnum = #{value}
+		</delete>
  
 	<!-- 오늘의 실천 (5) 노현호 -->
 		<insert id="upload" parameterType="todayDTO">
