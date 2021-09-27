@@ -1115,6 +1115,11 @@ public class BoardController {
 				
 				EventDTO article = boardService.getEventArticle(boardnum);
 				model.addAttribute("article", article);
+				EventDTO prev = boardService.prevBoard(boardnum);
+				model.addAttribute("prev", prev);
+				EventDTO next = boardService.nextBoard(boardnum);
+				model.addAttribute("next", next);
+				
 				
 				article.setNickname(boardService.getNickname(article.getId()));
 				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	
@@ -1124,7 +1129,7 @@ public class BoardController {
 			
 				System.out.println(path);
 				model.addAttribute("path", path);
-				
+			
 				return "board/eventContent";
 			}
 			

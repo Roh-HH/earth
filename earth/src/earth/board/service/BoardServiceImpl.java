@@ -594,7 +594,20 @@ public class BoardServiceImpl implements BoardService {
 			int result = boardDAO.updateEventArticleImg(dto);
 			return result;
 		}
-		
+		//행사 이전글 -김하영 
+		@Override
+		public EventDTO prevBoard(int boardnum) throws SQLException {
+			EventDTO prevBoard = boardDAO.prevBoard(boardnum);
+
+			return prevBoard;
+		}
+		//행사 다음글 - 김하영 
+		@Override
+		public EventDTO nextBoard(int boardnum) throws SQLException {
+			EventDTO nextBoard = boardDAO.nextBoard(boardnum);
+			
+			return nextBoard;
+		}
 		
 	// 8. 꿀팁
 		//꿀팁 게시글 등록 - 김하영

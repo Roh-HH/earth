@@ -296,6 +296,26 @@
 			<select id="eventCount" parameterType="hashmap" resultType="int">
 				select count(*) from event where ${sel} like '%'||#{search}||'%'
 			</select>
+			<select id="prevBoard" resultType="eventDTO">
+				<![CDATA[	
+					select * from (
+					SELECT boardnum, subject,
+					  	   LAG(subject,1) OVER(ORDER BY boardnum) as prevsub,
+					       LAG(boardnum,1) OVER (ORDER BY boardnum) as prevnum
+					  FROM event)
+					  where boardnum =#{boardnum}
+				]]>
+			</select>
+			<select id="nextBoard" resultType="eventDTO">
+				<![CDATA[	
+					select * from (	
+					SELECT boardnum, subject,
+					  	   LEAD(subject,1) OVER(ORDER BY boardnum) as nextsub,
+					       LEAD(boardnum,1) OVER (ORDER BY boardnum) as nextnum
+					  FROM event) 
+					  where boardnum =#{boardnum}
+				]]>
+			</select>
 		
 		<!-- 꿀팁 -->
 			<select id="countAllTip" resultType="int">

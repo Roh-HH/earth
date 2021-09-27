@@ -665,6 +665,20 @@ public class BoardDAOImpl implements BoardDAO {
 			int result = sqlSession.update("board.updateEventArticleImg", dto);
 			return result;
 		}
+		//행사일정 이전글 -김하영
+		@Override
+		public EventDTO prevBoard(int boardnum) throws SQLException {
+			EventDTO prev = sqlSession.selectOne("board.prevBoard", boardnum); 
+
+			return prev;
+		}
+		//행사일정 다음글-김하영
+		@Override
+		public EventDTO nextBoard(int boardnum) throws SQLException {
+			EventDTO next = sqlSession.selectOne("board.nextBoard", boardnum); 
+
+			return next;
+		}
 		
 		
 	// 8. 꿀팁

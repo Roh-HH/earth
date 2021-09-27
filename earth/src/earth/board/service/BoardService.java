@@ -128,7 +128,10 @@ public interface BoardService {
 		public int updateEventArticle(EventDTO dto) throws SQLException;
 		//행사일정 글 수정처리(이미지포함) - 김하영
 		public int updateEventArticleImg(EventDTO dto) throws SQLException;
-		
+		//행사 이전글 - 김하영
+		public EventDTO prevBoard(int boardnum) throws SQLException ;
+		//행사 다음글-김하영 
+		public EventDTO nextBoard(int boardnum) throws SQLException ;
 	// 8. 꿀팁
 		//꿀팁 게시글 등록 - 김하영
 		public int insertTip(TipDTO dto) throws SQLException;
