@@ -64,7 +64,7 @@ public class MainController {
 		}
 
 		// 쪽지
-			// *받은 쪽지함 요청 - 노현호
+			// 받은 쪽지함 요청 - 노현호
 			@RequestMapping("messageReceiveList.et")
 			public String messageReceiveList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageReceiveList.et");
@@ -74,8 +74,7 @@ public class MainController {
 				// 쪽지 보관함 : 3
 				
 				int code = 1;
-				String id = "java";
-				//String id = (String)session.getAttribute("sid");
+				String id = (String)session.getAttribute("sid");
 				model.addAttribute("id", id);
 				
 				// message 테이블에서 receiver가 id인 데이터 전부 가져오기
@@ -107,7 +106,7 @@ public class MainController {
 				return "main/messageReceiveList";
 			}
 			
-			// *보낸 쪽지함 요청 - 노현호
+			// 보낸 쪽지함 요청 - 노현호
 			@RequestMapping("messageSendList.et")
 			public String messageSendList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageSendList.et");
@@ -117,8 +116,7 @@ public class MainController {
 				// 쪽지 보관함 : 3
 				
 				int code = 2;
-				String id = "java";
-				//String id = (String)session.getAttribute("sid");
+				String id = (String)session.getAttribute("sid");
 				
 				// message 테이블에서 receiver가 id인 데이터 전부 가져오기
 				Map<String, Object> result = null;
@@ -149,7 +147,7 @@ public class MainController {
 				return "main/messageSendList";
 			}
 			
-			// *쪽지 보관함 요청 - 노현호
+			// 쪽지 보관함 요청 - 노현호
 			@RequestMapping("messageRemindList.et")
 			public String messageRemindList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageRemindList.et");
@@ -191,13 +189,12 @@ public class MainController {
 				return "main/messageRemindList";
 			}
 			
-			// *쪽지 쓰기 - 노현호
+			// 쪽지 쓰기 - 노현호
 			@RequestMapping("messageWriteForm.et")
 			public String messageWriteForm(String receiver, String pageNum, String uri, Model model, HttpSession session) {
 				System.out.println("messageWriteForm.et");
 				
-				String id = "java";
-				//String id = (String)session.getAttribute("sid");
+				String id = (String)session.getAttribute("sid");
 				
 				model.addAttribute("id", id);
 				model.addAttribute("receiver", receiver);
@@ -207,13 +204,12 @@ public class MainController {
 				return "main/messageWriteForm";
 			}
 			
-			// *쪽지 쓰기 처리 - 노현호
+			// 쪽지 쓰기 처리 - 노현호
 			@RequestMapping("messageWritePro.et")
-			public String messageWritePro(String uri, String pageNum, Model model, MessageDTO dto) throws SQLException {
+			public String messageWritePro(String uri, String pageNum, Model model, MessageDTO dto, HttpSession session) throws SQLException {
 				System.out.println("messageWritePro.et");
 				
-				String id = "java";
-				//String id = (String)session.getAttribute("sid");
+				String id = (String)session.getAttribute("sid");
 				dto.setId(id);
 				
 				if(pageNum == null || pageNum == "") {

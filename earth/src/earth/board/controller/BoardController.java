@@ -666,7 +666,7 @@ public class BoardController {
 			
 			
 		// 1. 공지사항 - 노현호
-			// *공지사항 목록 요청
+			// 공지사항 목록 요청
 			@RequestMapping("noticeList.et")
 			public String notice(String pageNum, Model model, HttpSession session) throws SQLException{
 				System.out.println("noticeList.et");
@@ -711,6 +711,16 @@ public class BoardController {
 				int code = 2;
 				Map<String, Object> result = boardService.getArticleList(pageNum, code);
 				
+				//리스트 닉네임을 아이디로 저장 
+				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
+					List<FreeDTO> articleList = (List<FreeDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+					}
+				}
+				
 				// view 에 전달할 데이터 보내기
 				model.addAttribute("pageSize", result.get("pageSize"));
 				model.addAttribute("pageNum", result.get("pageNum"));
@@ -741,6 +751,22 @@ public class BoardController {
 				
 				// 글 고유번호를 가지고 자유게시판 게시글 하나의 댓글 정보 불러오기
 				Map<String, Object> result = boardService.getCommentList(commentPageNum, boardnum, code);
+				
+				//리스트 닉네임을 아이디로 저장(게시글) 
+				if (article != null) {
+					article.setNickname(boardService.getNickname(article.getId()));
+					article.setBadgeimg(boardService.getBadgeimg(article.getId()));
+				}
+				
+				//리스트 닉네임을 아이디로 저장(댓글) 
+				if (result.get("comment") != null) {
+					@SuppressWarnings("unchecked")
+					List<FreeCommentDTO> comment = (List<FreeCommentDTO>)result.get("comment");
+					for(int i=0; i<comment.size(); i++) {
+						comment.get(i).setNickname(boardService.getNickname(comment.get(i).getWriter()));
+						comment.get(i).setBadgeimg(boardService.getBadgeimg(comment.get(i).getWriter()));
+					}
+				}
 				
 				// 컨트롤러에 보낼 정보 저장하기
 				model.addAttribute("comment", result.get("comment"));
@@ -811,7 +837,7 @@ public class BoardController {
 			}
  	
 		// 환경일기 게시글 내용 조회
-        @RequestMapping("diaryContent.et")
+		@RequestMapping("diaryContent.et")
 		public String diaryContent(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, String pageN, 
 				Model model, HttpServletRequest request, HttpSession session) throws SQLException {
 			
@@ -864,40 +890,39 @@ public class BoardController {
     
 		// 4. 이달의 챌린지 - 이다희
 			//지난 챌린지 목록 요청
-        @RequestMapping("challengeList.et") 
-        public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
-            Map<String, Object> result = null;
-            int code = 4;
-            result = boardService.getArticleList(pageNum, code);
+			@RequestMapping("challengeList.et") 
+			public String challengeList(String pageNum, Model model, HttpSession session) throws SQLException {
+				Map<String, Object> result = null;
+				int code = 4;
+				result = boardService.getArticleList(pageNum, code);
 
-            // 아이디를 닉네임으로 변경 
-            if (result.get("articleList") != null) {
-                @SuppressWarnings("unchecked")
-                List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
-                for(int i=0; i<articleList.size(); i++) {
-                    articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
-                }
-            }
-            // view에 전달할 데이터 보내기 
-            model.addAttribute("pageSize", result.get("pageSize"));
-            model.addAttribute("pageNum", result.get("pageNum"));
-            model.addAttribute("currentPage", result.get("currentPage"));
-            model.addAttribute("startRow", result.get("startRow"));
-            model.addAttribute("endRow", result.get("endRow"));
-            model.addAttribute("articleList", result.get("articleList"));
-            model.addAttribute("count", result.get("count"));
-            model.addAttribute("number", result.get("number"));
-            return "board/challengeList";
-        }
+				// 아이디를 닉네임으로 변경 
+				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
+					List<MonthDTO> articleList = (List<MonthDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setId(boardService.getNickname(articleList.get(i).getId()));
+					}
+				}
+				// view에 전달할 데이터 보내기 
+				model.addAttribute("pageSize", result.get("pageSize"));
+				model.addAttribute("pageNum", result.get("pageNum"));
+				model.addAttribute("currentPage", result.get("currentPage"));
+				model.addAttribute("startRow", result.get("startRow"));
+				model.addAttribute("endRow", result.get("endRow"));
+				model.addAttribute("articleList", result.get("articleList"));
+				model.addAttribute("count", result.get("count"));
+				model.addAttribute("number", result.get("number"));
+				return "board/challengeList";
+			}
 
-        // 상단메뉴에서 보여지는 최신 챌린지 가져오기  
-        @RequestMapping("monthlyChallenge.et")
-        public String monthlyChallenge(Model model, HttpSession session) throws SQLException {
-            //챌린지글 컨텐츠 가져오기
-        	int boardnum = boardService.getChallenge(); 
-            return "redirect:/board/challengeContent.et?boardnum=" + boardnum + "&pageNum=1";	 
-
-            }
+			// 상단메뉴에서 보여지는 최신 챌린지 가져오기  
+			@RequestMapping("monthlyChallenge.et")
+			public String monthlyChallenge(Model model, HttpSession session) throws SQLException {
+				//챌린지글 컨텐츠 가져오기
+				int boardnum = boardService.getChallenge(); 
+				return "redirect:/board/challengeContent.et?boardnum=" + boardnum + "&pageNum=1";	 
+			}
     
         // 이달의 챌린지 게시글 가져오기   - 이다희
         @RequestMapping("challengeContent.et")
@@ -966,6 +991,16 @@ public class BoardController {
 				int code = 5;
 				// today 테이블에서 전체 게시글 가져오기
 				Map<String, Object> result = boardService.getArticleList(pageNum, code);
+				
+				//리스트 닉네임을 아이디로 저장 
+				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
+					List<TodayDTO> articleList = (List<TodayDTO>)result.get("articleList");
+					for(int i=0; i<articleList.size(); i++) {
+						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
+						articleList.get(i).setBadgeimg(boardService.getBadgeimg(articleList.get(i).getId()));
+					}
+				}
 				
 				// view 에 전달할 데이터 보내기
 				model.addAttribute("pageSize", result.get("pageSize"));

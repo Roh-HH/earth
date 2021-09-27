@@ -91,7 +91,7 @@ public interface BoardService {
 		// 이달의 챌린지 참여하기 - 이다희
 		public int insertChJoin(int boardnum, String id) throws SQLException;
 		// 이달의 챌린지 최신글 1개 가져오기 (추가)
-        public int getChallenge() throws SQLException;
+		public int getChallenge() throws SQLException;
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
 		public MonthDTO getChallengeArticle(int boardnum) throws SQLException;
 		// 이달의 챌린지 조인 아이디 체크 - 이다희
@@ -106,6 +106,8 @@ public interface BoardService {
 	// 5. 오늘의 실천
 		// 오늘의 실천 업로드 - 노현호
 		public int upload(TodayDTO dto) throws SQLException;
+		// 오늘의 실천 글 1개 가져오기 - 노현호
+		public TodayDTO getTodayArticle(int boardnum) throws SQLException;
 	
 	// 6. 상점소개
 		//상점소개 게시글 업로드 - 김하영 

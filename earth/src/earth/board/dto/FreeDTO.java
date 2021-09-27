@@ -20,7 +20,21 @@ public class FreeDTO {
 	private Integer code;
 	private MultipartFile uploadFile;
 	private Integer refCount;
+	private String nickname;
+	private String badgeimg;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
 	public Integer getRefCount() {
 		return refCount;
 	}

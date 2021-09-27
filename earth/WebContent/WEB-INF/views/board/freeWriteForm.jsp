@@ -24,33 +24,18 @@
     <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
-<script type="text/javascript">
-	<%-- 유효성검사 --%>
-	function sendIt(){
-		if (n.subject.value == "") {
-			alert("제목을 입력하지 않았습니다.")
-			n.subject.focus();
-			return false;
-		}
-		
-		if (n.pw.value == "") {
-			alert("비밀번호를 입력하지 않았습니다.")
-			n.pw.focus();
-			return false;
-		}
-	}
-</script>
+
 <body>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
 	<section class="category-page area-padding">
-		<div class="container">   	
+        <div class="container">   	
 			<div id="content" class="site-content">
 				<div id="primary" class="content-area column full">
 					<main id="main" class="site-main" role="main">
 						<div id="container">
 							<div id="content" role="main">
-								<form name="n" action="/earth/board/noticeWritePro.et" method="post" enctype="multipart/form-data" onsubmit="return sendIt();">
+								<form name="n" action="/earth/board/freeWritePro.et" method="post" enctype="multipart/form-data" onsubmit="return sendIt();">
 									<table>
 										<tr>
 											<td>작성자</td>
@@ -59,6 +44,11 @@
 										<tr>
 											<td>제  목</td>
 											<td align="left">
+												<select name="categ" style="border:none;">
+													<c:forEach var="Brackets" items="${Brackets}">
+													    <option value="${Brackets.num}">${Brackets.name}</option>
+												    </c:forEach>
+												</select>
 												<input type="text" name="subject" style="width:700px;" />
 											</td>
 										</tr>
@@ -78,12 +68,10 @@
 											</td>
 										</tr>
 										<tr>
-											<td colspan="2" >
-												<input type="submit" value="등 록"
-												style="background-color:#1E88E5; color:#ffffff; float:right"/>
-												<input type="button" value="목록으로" onclick="window.location='/earth/board/noticeList.et'" 
-												style="background-color:#ffffff; color:#1E88E5;"/>
-											</td>
+											<td colspan="2">
+											<input type="submit" value="저장" style="background-color:#1E88E5; color:#ffffff; float:right"/>
+											<input type="button" value="목록으로" onclick="window.location='/earth/board/freeList.et'" style="background-color:#ffffff; color:#1E88E5; " />
+										</td>
 										</tr>
 									</table>
 								</form>
@@ -95,7 +83,6 @@
 			</div>
 		<!-- #primary -->
 		</div>
-		<!-- #content -->
 	</section>
 	<%@ include file = "../include/footer.jsp" %>
 <!-- #page -->

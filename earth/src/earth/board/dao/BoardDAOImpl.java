@@ -443,12 +443,12 @@ public class BoardDAOImpl implements BoardDAO {
 			return boardList;
 		}
 	
-        //최신글 하나 가져오기 (추가)
-        @Override
-	    public int getChallenge() throws SQLException {
-            int boardnum = sqlSession.selectOne("board.getChallenge");
-            return boardnum;
-        }
+		//최신글 하나 가져오기 (추가)
+		@Override
+		public int getChallenge() throws SQLException {
+			int boardnum = sqlSession.selectOne("board.getChallenge");
+			return boardnum;
+		}
 		
 		
 		// 이달의 챌린지 글 1개 가져오기 - 이다희
@@ -516,6 +516,13 @@ public class BoardDAOImpl implements BoardDAO {
 			
 			List<TodayDTO> boardList = sqlSession.selectList("board.getTodayArticles", map);
 			return boardList;
+		}
+	
+		// 오늘의 실천 글 1개 가져오기 - 노현호
+		@Override
+		public TodayDTO getTodayArticle(int boardnum) throws SQLException {
+			TodayDTO article = sqlSession.selectOne("board.getTodayArticle", boardnum);
+			return article;
 		}
 		
 		

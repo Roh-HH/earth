@@ -13,7 +13,7 @@
             <select id="getNickname" parameterType="string" resultType="string">
                 select nickname from users where id=#{id}
             </select>
-            <select id="getBaordid" parameterType="string" resultType="string">
+            <select id="getBordid" parameterType="string" resultType="string">
                 select id from users where nickname=#{search}
             </select>
     <!-- 공용 뱃지 이미지 불러오기  -->
@@ -89,6 +89,14 @@
 		
 	
 	<!-- Read(select) -->
+		<!-- 공통사항 -->
+			<select id="getBoardCount" parameterType="string" resultType="int">
+				select boardcount from point where id = #{value}
+			</select>
+			<select id="getCommentCount" parameterType="string" resultType="int">
+				select commentcount from point where id = #{value}
+			</select>
+	
 		<!-- 공지사항 -->
 			<select id="countAllNotice" resultType="int">
 				select count(*) from notice
@@ -221,6 +229,10 @@
 					select B.* from (select A.*, rownum r from (select * from today order by reg desc) A) B where r >= #{start} and r <= #{end} and to_char(reg,'YY/MM/DD') >= to_char(sysdate, 'YY/MM/DD')
 				]]>
 			</select>
+			<select id="getTodayArticle" parameterType="int" resultType="todayDTO">
+				select * from today where boardnum=${value}
+			</select>
+	
 		
 		<!-- 상점소개 -->
 			<select id="countAllShop" resultType="int">

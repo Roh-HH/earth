@@ -13,7 +13,21 @@ public class FreeCommentDTO {
 	private String receiver;
 	private String writer;
 	private String ctt;
+	private String nickname;
+	private String badgeimg;
 	
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	public String getBadgeimg() {
+		return badgeimg;
+	}
+	public void setBadgeimg(String badgeimg) {
+		this.badgeimg = badgeimg;
+	}
 	public Integer getCommentnum() {
 		return commentnum;
 	}

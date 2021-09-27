@@ -8,6 +8,7 @@
 	<title>삭제 결과</title>
 </head>
 <body>
+	<%-- 비밀번호가 일치해야 삭제되는 경우(팝업페이지) --%>
 	<c:if test="${pop == 1}">
 		<c:if test="${result == 1}">
 			<script>
@@ -32,6 +33,7 @@
 		</c:if>
 	</c:if>
 	
+	<%-- 비밀번호 없이 삭제되는 경우 --%>
 	<c:if test="${pop == 0}">
 		<c:if test="${result == 1}">
 			<script>
