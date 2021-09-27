@@ -81,7 +81,7 @@
 	<%-- 앵커태그(위치이동/지우지말것) --%>
 	<a href="#list"></a>
 	<!--================ Start header Top Area =================-->
-    <%@ include file = "../include/header.jsp" %>
+	<%@ include file = "../include/header.jsp" %>
 	<section class="category-page area-padding">
         <div class="container">   	
     		<h3 class="page-title" id="list">커뮤니티</h3>
