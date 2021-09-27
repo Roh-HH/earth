@@ -37,7 +37,7 @@
 	   return true;
 	 }
 	</script>
-    
+
 </head>
 <%-- 로그인 상태에서 로그인폼 접근시  check == 1
 <c:if test="${check != 0}">
@@ -120,7 +120,6 @@
 					<tr>
 						<td colspan="2">
 							<input type="submit" value="로그인" style="background-color:#1E88E5; border : none;width:330px; height:40px; border-radius:3px;color:#ffffff;"/><br><br>
-							<input type="button" value="아이디/비밀번호 찾기" onclick="window.location='/earth/user/idFind.et'" style="border:none; float:left; color:black;"/>
 							<input type="button" value="회원가입" onclick="window.location='/earth/user/signupForm.et'"
 									style="background-color:#ffffff; border:none; color:#1E88E5; float:right;"/>
 						</td>
@@ -132,15 +131,7 @@
 </div>
 </section>
 	<!-- .container -->
-	<footer id="colophon" class="site-footer">
-	<div class="container">
-		<div class="site-info">
-			<h1 style="color: #ccc;text-align:left;margin-bottom:0;margin-top:0;line-height:1.4;font-size: 25px;">어뜨</h1><br>
-			어뜨 운영팀: help@earthKorea.com <br> 지구를 살리는 작은 실천, 어뜨는 건강한 커뮤니티를 위해 엄격하게 관리되고 있습니다. <br><i class="fa fa-love"> Copyright ⓒ 어뜨 All Right Reserved.
-			</i>
-		</div>
-	</div>	
-	</footer>
+<%@ include file = "../include/footer.jsp" %>
 <!-- #page -->
 <script src='/earth/resources/bootstrap/js/jquery.js'></script>
 <script src='/earth/resources/bootstrap/js/plugins.js'></script>

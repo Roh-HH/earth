@@ -1,11 +1,13 @@
 package earth.user.dao;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import earth.board.dto.DiaryDTO;
 import earth.board.dto.FreeDTO;
 import earth.board.dto.TodayDTO;
+import earth.badge.dto.BadgeDTO;
 import earth.user.dto.CommentDTO;
 import earth.user.dto.QuestionDTO;
 import earth.user.dto.ReportDTO;
@@ -20,7 +22,9 @@ public interface UserDAO {
 	
 		// 사용자 회원가입
 		public void insertUser(UserDTO dto) throws SQLException;
-		// 회원가입 : 닉네임 중복여부 확인
+		// 아이디 중복 확인
+		public int idCheck(UserDTO dto) throws SQLException;
+		// 닉네임 중복여부 확인
 		public int nickCheck(UserDTO dto) throws SQLException;
 
 		// 암호화 된 비밀번호 가져오기
@@ -28,6 +32,7 @@ public interface UserDAO {
 		
 		// 로그인 : 아이디, 패스워드 확인 (+.회원가입 : 아이디 중복여부 확인 / 암호화 비밀번호 확인시 활용)
 		public int idPwCheck(UserDTO dto) throws SQLException;
+		
 
 	// 마이페이지 : 마이페이지, 내 프로필 보기	
 		
@@ -122,16 +127,14 @@ public interface UserDAO {
 		
 		// 뱃지 장착하기 - 김예찬
 		public void equipBadge(String id, int badgenum) throws SQLException;	
-			
-	// 작성자 : 이다희 김하영
-	// 마이페이지 : 출석체크
-	
+		
+	//출석체크 : 이다희 김하영
+		
 		//출석 인서트
 		public int insertCheck(String id, String date) throws SQLException;
 		// 출석 : 출석현황 개수 가져오기 
 		public int getAttendListCount(String id)throws SQLException;
 		//출석 : 출석현황 리스트 가져오기
-		public ArrayList<String> getAttendList(String id) throws SQLException;
-
-
+		public ArrayList<String> getAttendList(String id) throws SQLException;		
+		
 }

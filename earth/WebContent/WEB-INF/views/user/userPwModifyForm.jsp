@@ -13,46 +13,46 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
-
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
- 	<script type="text/javascript" src="/earth/resources/bootstrap/js/valCheck.js"></script>
-	
+ 	<script type="text/javascript" src="/earth/resources/bootstrap/js/valCheck.js"></script>	
 	<script type="text/javascript">
 		//유효성검사
 		function check(frm){
 			if(!checkExistData(frm.pw.value, "비밀번호를")
-					|| !checkExistData(frm.newpw.value, "변경 비밀번호를")
+					|| !checkNewPw(frm.newpw.value)
 			) return false;
 		   return true;
 		 }
 	</script>
 
 </head>
+
+<style>
+	.alert{
+		color:#212529;
+	}
+	 .center, .silchun, .heading-section{
+     	text-align:center;
+     	vertical-align:middle;
+     }
+     .center_ {
+     	text-align:center; 
+     	width:800px;
+     }
+     .right_side, .blog_details{
+     	width:800px;
+     	height:1200px;
+     }
+</style> 
 <body>
 
      <!--================ Start header Top Area =================-->
   	<%@ include file = "../include/header.jsp" %>
-    <!-- 영인이 여기부터 수정가능.  -->   
 	<section class="blog_area single-post-area area-padding">
-	<%-- // check == 0 : 비로그인  check == 1 : 로그인
-	<c:if test="${check == 0}">
-		<script>
-			alert("로그인후 이용해주세요"); 
-			window.location = "/earth/user/loginForm.et";
-		</script>
-	</c:if>
-	
-	<c:if test="${check != 0}">
-	 --%>
-			
     <div class="container">
         <div class="row" style="width:1000px;">        			
 		<!-- -------------------------------------------------------- -->
@@ -114,60 +114,49 @@
 						<a href="/earth/user/myBag.et">나의 에코백</a>
 						</li>
 						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
+						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;"
+							onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>							
 						</li>
 						</ul>
                       </aside>
-		
-				
-				<!-- .widget-area -->
-			</div>
-			<!-- #secondary -->
-		</div>
-               
-        <section class="right_side" style="width:600px;">               
-            <div class="col-lg-8 posts-list">
-                <div class="single-post">
-					<div align="center">
-                    <div class="blog_details" style="width:880px; height:900px;">                       
-                        <h2>비밀번호 변경</h2>
-                        <br/>
-						<form action="/earth/user/userPwModifyPro.et" method="post" onsubmit="return check(this)" >
-							<table>
-								<tr>
-									<td>현재 사용중인 비밀번호</td>
-									<td>
-										<input type="password" name="pw" placeholder="현재 비밀번호를 입력해주세요." style="width:300px;" autofocus />
-									</td>
-								</tr>
-								<tr>
-									<td>새 비밀번호 </td>
-									<td>
-										<input type="password" name="newpw" placeholder="새 비밀번호를 입력해주세요." style="width:300px;" />					
-									</td>
-								</tr>
-								<tr>
-									<td colspan="2">
-										<input type="button" value="변경 취소" onclick="window.location='/earth/user/userModifyForm.et'" style="background-color:#ffffff; width:150px; height:40px; border-radius:3px;color:#1E88E5; float:right; margin-left:20px;" />
-										<input type="submit" value="비밀번호 변경" style="background-color:#1E88E5; width:200px; border:none; height:40px; border-radius:3px;color:#ffffff; float:right;" />
-									</td>
-								</tr>
-							</table>
-						</form>					
-                    </div> <%--<div class="blog_details">--%>
-                </div>		
-			</div>
-		</div>
+					</div>
+				</div>
+         		<section class="right_side">   
+		                    <div class="blog_details">                       
+									<div class="row justify-content-center">
+										<div class="col-md-6 text-center mb-5">
+											<h2 class="heading-section">비밀번호 변경</h2>
+                        				</div><br/>
+										<form action="/earth/user/userPwModifyPro.et" name="frm" method="post" onsubmit="return check(this)" >
+											<table class="table">
+												<tbody>
+													<tr>
+														<td>현재 사용중인 비밀번호</td>
+														<td>
+															<input type="password" name="pw" placeholder="현재 비밀번호를 입력해주세요." style="width:300px;" autofocus />
+														</td>
+													</tr>
+													<tr>
+														<td>새 비밀번호 </td>
+														<td>
+															<input type="password" name="newpw" placeholder="새 비밀번호를 입력해주세요." style="width:300px;" />					
+														</td>
+													</tr>
+													<tr>
+														<td colspan="2">
+															<input type="button" value="변경 취소" onclick="window.location='/earth/user/userModifyForm.et'" style="background-color:#ffffff; width:150px; height:40px; color:#343a40; border:none" />
+															<input type="submit" value="비밀번호 변경" style="background-color:#343a40; width:150px; border:none; height:40px; color:#ffffff; float:right;" />
+														</td>
+													</tr>
+												</tbody>
+											</table>
+										</form>
+									</div>					
+                    			</div> <%--<div class="blog_details">--%>
+                   </section>
+                </div>	<!-- <div class="row"> -->	
+			</div>		<!-- <div class="container"> -->
 		</section>
-			<!--------------------------------------------------------------------------------------- #masthead 
-		여러분 여기서부터는 건들거 없습니다!!!! -->
-
-		<!-- #content -->
-		</div>	<!-- <div class="row"> -->
-	</div> 		<!-- <div class="container"> -->
-</section>
-<!-- - 여기서부터는 건들지 마세요.  -->
 <%@ include file = "../include/footer.jsp" %>
 </body>
-<%-- </c:if> --%>
 </html>

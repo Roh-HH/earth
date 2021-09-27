@@ -31,27 +31,24 @@
 	
 	<script type="text/javascript">
 		//유효성검사
-		function check(frm){
-			if(!checkExistData(frm.id.value, "아이디를") 
-					|| !checkName(frm.name.value)
-					|| !checkExistData(frm.nickname.value, "닉네임을")
-					|| !checkExistData(frm.pw.value, "비밀번호를")
-					|| !checkExistData(frm.phone.value, "전화번호를")
-					|| !checkEmail(frm.email.value)					 
-			) return false;
-		   return true;
+		 function check(frm){
+				if(!checkExistData(frm.id.value, "아이디를")) {
+					return false;
+				} else if(!checkName(frm.name.value)) {
+					return false;
+				} else if(!checkExistData(frm.nickname.value, "닉네임을")) {
+					return false;
+				} else if(!checkPw(frm.pw.value)) {
+					return false;
+				} else if(!checkPhone(frm.phone.value)) {
+					return false;
+				} else if(!checkEmail(frm.email.value)) {
+					return false;
+				}
+			   return true;
 		 }
-		/* 방법1. 회원가입 ID 중복확인
-			function confirmId(inputForm){  
-			if(inputForm.id.value == "" || !inputForm.id.value) {
-				alert("아이디를 입력하세요!");
-				return;	// 강제종료
-			}
-			// 팝업 띄우기
-			var url = "/earth/user/confirmId.et?id=" + inputForm.id.value; 
-			open(url, "confirmId", "toolbar=no, location=no, status=no, menubar=no, scrollbars=no, resizable=no, width=300, height=200"); 
-		} */
-		
+		 
+
 		$(document).ready(function(){
 			$("#id").change(function(){ 	// id 입력란에 변화가 있을때 동작
 				var idVal = $("#id").val(); // id 입력란에 사용자가 작성한 값을 가져오기 
@@ -64,12 +61,16 @@
 					success : function(data){ // data 매개변수 = Controller에서 리턴해준 결과가 대입 
 						console.log("success!!!!!");
 					
-						$("#idCheck").text(data);
-						$("#idCheck").css("color", "red");
-						
 						var idResult = $.trim(data);					// 문자열 비교 하기 위해 공백 제거후 변수에 저장
+						
 						if(idResult === "이미 사용중인 아이디입니다."){		// 중복 된 아이디의 경우 submit = false
-							$('form').submit(false);
+							$("#idCheck").text(data);
+							$("#idCheck").css("color", "red");
+							$(".signupbtn").prop("disabled", true);
+						} else {
+							$("#idCheck").text(data);
+							$("#idCheck").css("color", "blue");
+							$(".signupbtn").prop("disabled", false);
 						}
 												
 					}, 
@@ -94,12 +95,15 @@
 						console.log("success");
 						console.log("data : " + data);
 						
-						$("#nickCheck").text(data);
-						$("#nickCheck").css("color", "red");
-						
 						var nickResult = $.trim(data);
 						if(nickResult === "이미 사용중인 닉네임입니다."){
-							$('form').submit(false);					// 중복 된 닉네임의 경우 submit = false
+							$("#nickCheck").text(data);
+							$("#nickCheck").css("color", "red");
+							$(".signupbtn").prop("disabled", true);					// 중복 된 닉네임의 경우 submit = false
+						} else{
+							$("#nickCheck").text(data);
+							$("#nickCheck").css("color", "blue");
+							$(".signupbtn").prop("disabled", false);
 						}
 												
 					},
@@ -171,20 +175,20 @@
 
 	<div id="content" class="site-content"> 
      <div class="maintext" align="center">
-		<form action="/earth/user/signupPro.et" method="post" name="inputForm" onsubmit="return check(this)" style="width:400px; height:700px;">
+		<form action="/earth/user/signupPro.et" method="post" name="frm" onsubmit="return check(this)" style="width:400px; height:700px;">
 			<h2>회원가입</h2>
 			<table>
 				<tr>
 					<td>아이디 </td>
 					<td>
-						<input type="text" name="id" id="id" placeholder="ID" style="width:250px; height:40px;" required /> <br />
+						<input type="text" name="id" id="id" style="width:250px; height:40px;" required autofocus /> <br />
 						<div id="idCheck"></div>
 					</td>
 				</tr>
 				<tr>
 					<td>이름</td>
 					<td>
-						<input type="text" width="400px" name="name"  style="width:250px; height:40px;"/> 
+						<input type="text" width="400px" name="name" id="name" style="width:250px; height:40px;"/> 
 					</td>
 				</tr>
 				<tr>
@@ -197,25 +201,25 @@
 				<tr>
 					<td>비밀번호</td>
 					<td>
-						<input type="password" width="400px;" name="pw" placeholder="password"  style="width:250px; height:40px;"/> 
+						<input type="password" width="400px;" name="pw" id="pw" placeholder="8자리 ~ 20자리까지 입력해주세요."  style="width:250px; height:40px;"/> 
 					</td>
 				</tr>
 				<tr>
 					<td>전화번호 </td>
 					<td>
-						<input type="text" width="400px;" name="phone" placeholder="ㅡ 포함하여 작성해주세요."  style="width:250px; height:40px;"/> 
+						<input type="text" width="400px;" name="phone" id="phone" placeholder="-를 제외한 숫자만 입력해주세요."  style="width:250px; height:40px;"/> 
 					</td>
 				</tr>
 				<tr>
 					<td>이메일</td>
 					<td>
-						<input type="text" width="400px;" name="email" style="width:250px; height:40px;" /> 
+						<input type="text" width="400px;" name="email" id="email" placeholder="ex) E-mail@gmail.com" style="width:250px; height:40px;" /> 
 					</td>
 				</tr>
 				<tr>
 					<td colspan="2" align="center"> 
-					<input type="submit" id="submit" value="회원가입" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff; "/><br><br>
-					<input type="button" value="로그인" style="background-color:#ffffff; width:400px; height:40px; border-radius:3px;color:#1E88E5; "/><br>
+					<input type="submit" id="submit" class="signupbtn" value="회원가입" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff;" disabled="disabled" /><br><br>
+					<input type="button" value="로그인" onclick="window.location='/earth/user/loginForm.et'" style="background-color:#ffffff; width:400px; height:40px; border-radius:3px;color:#1E88E5; "/><br>
 						<input type="button" value="취소" onclick="window.location='/earth/main/main.et'"
 									style="background-color:#ffffff; border:none; color:#1E88E5; float:right;"/>
 					</td>
@@ -229,15 +233,7 @@
 </div>
 </section>
 	<!-- .container -->
-	<footer id="colophon" class="site-footer">
-	<div class="container">
-		<div class="site-info">
-			<h1 style="color: #ccc;text-align:left;margin-bottom:0;margin-top:0;line-height:1.4;font-size: 25px;">어뜨</h1><br>
-			어뜨 운영팀: help@earthKorea.com <br> 지구를 살리는 작은 실천, 어뜨는 건강한 커뮤니티를 위해 엄격하게 관리되고 있습니다. <br><i class="fa fa-love"> Copyright ⓒ 어뜨 All Right Reserved.
-			</i>
-		</div>
-	</div>	
-	</footer>
+<%@ include file = "../include/footer.jsp" %>
 <!-- #page -->
 <script src='/earth/resources/bootstrap/js/jquery.js'></script>
 <script src='/earth/resources/bootstrap/js/plugins.js'></script>
@@ -245,30 +241,4 @@
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
 <%--</c:if> --%>
-</html>
-
-
-	
-		
-		<!--------------------- #primary ----------------여러분 여기서부터도 건들지 마세요>
-		</div>
-		<!-- #content -->
-	</div>
-	<!-- .container -->
-<footer id="colophon" class="site-footer">
-	<div class="container">
-		<div class="site-info">
-			<h1 style="color: #ccc;text-align:left;margin-bottom:0;margin-top:0;line-height:1.4;font-size: 25px;">어뜨</h1><br>
-			어뜨 운영팀: help@earthKorea.com <br> 지구를 살리는 작은 실천, 어뜨는 건강한 커뮤니티를 위해 엄격하게 관리되고 있습니다. <br><i class="fa fa-love"> Copyright ⓒ 어뜨 All Right Reserved.
-			</i>
-		</div>
-	</div>	
-	</footer>
-</div>
-<!-- #page -->
-<script src='/earth/resources/bootstrap/js/jquery.js'></script>
-<script src='/earth/resources/bootstrap/js/plugins.js'></script>
-<script src='/earth/resources/bootstrap/js/scripts.js'></script>
-<script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
-</body>
 </html>

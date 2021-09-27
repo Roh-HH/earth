@@ -10,31 +10,35 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="img/favicon.png" type="image/png">
-    <title>어뜨 - 지구를 살리는 작은 실천 </title>
+   <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
-    
-    <style>
-    
-     tr.article {
-     	background-color:#A5D8FA; 
-     	height:100px;
-     }
-     tr.space {border-bottom: 10px solid #fff; border-top:solid #fff;}
-    
-    </style>
-    
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/earth/resources/bootstrap/css/table.css"> <%--table css 추가요  --%>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-	<%-- 삭제 후 팝업창 닫고, 페이지 새로고침 : 컨트롤러에서 처리 못해서 일단 이 방법으로 했음 --%>
+</head>
+<style>
+	.alert{
+		color:#212529;
+	}
+	 .center, .silchun, .heading-section{
+     	text-align:center;
+     	vertical-align:middle;
+     }
+     .center_ {
+     	text-align:center; 
+     	width:800px;
+     }
+     .right_side, .blog_details{
+     	width:800px;
+     	height:1200px;
+     }
+</style> 
+ 	<%-- 삭제 후 팝업창 닫고, 상위페이지 새로고침 --%>
 	<c:if test="${delete == 1}">
 		<script>
 			alert("나의 실천 게시글이 삭제 되었습니다.");
@@ -42,41 +46,24 @@
 			opener.parent.location='/earth/user/myToday.et';
 		</script>
 	</c:if>
-
 </head>
 <body>
-
-     <!--================ Start header Top Area =================-->
-  	<%@ include file = "../include/header.jsp" %>
-    <!-- 영인이 여기부터 수정가능.  -->   
+<!--================ Start header Top Area =================-->
+<%@ include file = "../include/header.jsp" %>
 	<section class="blog_area single-post-area area-padding">
-	<%-- // check == 0 : 비로그인  check == 1 : 로그인
-	<c:if test="${check == 0}">
-		<script>
-			alert("로그인후 이용해주세요"); 
-			window.location = "/earth/user/loginForm.et";
-		</script>
-	</c:if>
-	
-	<c:if test="${check != 0}">
-	 --%>
-			
     <div class="container">
-        <div class="row" style="width:1000px;">        			
-		<!-- -------------------------------------------------------- -->
-		<!-- 영인아여기 사이드 바라서 경로 잘못됐거나 바꿔야되면 여기서 바꾸면돼!!!! -->	
+        <div class="row" style="width:1000px; height:1200px;">        			
 		      <div class="col-lg-30" style="text-align:left; width:200px;">
                   <div class="blog_right_sidebar">
                       <aside class="single_sidebar_widget search_widget">
                             <div class="form-group">
                               <div class="input-group mb-3">
-                              
-								<!--  여기 벳지 받아오는 이미지 입니다.  -->
+								<!-- 사용자 착용벳지 이미지  -->
 								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	
-                        	<!--경고횟수 분기처리 : 일단 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
+                        	<!--경고횟수 분기처리 : 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
                         	<c:if test="${user.warncount != 0}">            	
 	                        	<p> 
 	                        		<a href="/earth/user/mypage.et" style="color:red;"> 
@@ -122,136 +109,132 @@
 						<a href="/earth/user/myBag.et">나의 에코백</a>
 						</li>
 						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
+						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;"
+							onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>					
 						</li>
 						</ul>
                       </aside>
-		
-				
-				<!-- .widget-area -->
-			</div>
-			<!-- #secondary -->
-		</div>
-               
-        <section class="right_side" style="width:600px;">               
-            <div class="col-lg-8 posts-list">
-                <div class="single-post">
-					<div align="center">
-                    <div class="blog_details" style="width:880px; height:900px;">                       
-                        <h2>${user.name}님의 오늘의 실천</h2>
-                        	<br/><br/>
-							<c:if test="${count == 0}">
-								<table>
-									<tr>
-										<td colspan="2">
-											<h5>오늘의 실천 게시글이 없습니다.</h5>
-											<input type="button" value="${user.name}님의 오늘의 실천을 다른 분들과 공유해주세요!" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff;" />
-										</td>
-									</tr>
-								</table>
-							</c:if>
+					</div>
+				</div>
+         		<section class="right_side">   
+		                    <div class="blog_details">                       
+									<div class="row justify-content-center">
+										<div class="col-md-6 text-center mb-5">
+											<h2 class="heading-section">${user.name}님의 오늘의 실천</h2>
+										</div>
+									</div>
+									<div class="center_">
+										<c:if test="${count == 0}">
+											<table >
+												<tr>
+													<td colspan="2" class = "silchun">
+														<h5 style="text-align:center;">오늘의 실천 게시글이 없습니다.</h5>
+														<input type="button" value="${user.name}님의 오늘의 실천을 다른 분들과 공유해주세요!" onclick="window.location='/earth/board/dailyChallenge.et'" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff;" />
+													</td>
+												</tr>
+											</table>
+										</c:if>
 							
-							<c:if test="${count != 0}">
-								<table>
-									<c:forEach var="article" items="${articleList}">
-										<tr class="space"></tr>
-										<tr class="article">
-											<td> 
-												&nbsp;&nbsp;&nbsp;&nbsp;
-												<img src='/earth/resources/bootstrap/imgs/logo.png' height='30px' width='30px'/><br> <!--  여기 벳지 받아오는 이미지 입니다.  -->
-												&nbsp;&nbsp;
-												${user.nickname} 
-											</td>
-											<td align="left">
-													<c:if test="${article.condition == 1}">
-														<strong>텀블러 들고다니기</strong>
-													</c:if>
-													<c:if test="${article.condition == 2}">
-														<strong>샴푸 대신 샴푸바 / 손세정제 대신 비누</strong>
-													</c:if>
-													<c:if test="${article.condition == 3}">
-														<strong>일회용 빨대 사용하지말기</strong>
-													</c:if>
-													<c:if test="${article.condition == 4}">
-														<strong>배달음식 그릇에 테이크아웃 해오기</strong>
-													</c:if>
-													<c:if test="${article.condition == 5}">
-														<strong>장바구니 들고다니기</strong>
-													</c:if>
-													<c:if test="${article.condition == 6}">
-														<strong>배달음식 시킬떄 일회용품 거절하기</strong>
-													</c:if>
-													<c:if test="${article.condition == 7}">
-														<strong>손수건 챙기기</strong>
-													</c:if>
-													<c:if test="${article.condition == 8}">
-														<strong>페트병에 라벨 제거하고 분리수거하기</strong>
-													</c:if>
-													<c:if test="${article.condition == 9}">
-														<strong>스탠, 유리제품 사용하기</strong>
-													</c:if>
-													<c:if test="${article.condition == 10}">
-														<strong>이면지 사용하기</strong>
-													</c:if>
-												<br/>
-												${article.ctt}
-											</td>
-											<td>
-												<fmt:formatDate value="${article.reg}" pattern="yyyy/MM/dd [E] a hh:mm"/><br/>	
-												<button onclick="window.open('/earth/user/myTodayDeleteForm.et?boardnum=${article.boardnum}&id=${article.id}', '', 'width=500,height=300,location=no,status=no,scrollbars=yes,left=750,top=250');" style="float:right;" >삭제</button>
-											</td>
-										</tr>
-										<tr class="space"></tr>
-									</c:forEach>
-								</table>
-							</c:if>
+										<c:if test="${count != 0}">
+				                       	<p class="heading-section">총 ${count}개의 실천글을 작성하셨습니다! <a href="/earth/board/dailyChallenge.et">${user.name}님의 작은 실천도 어뜨와 자유롭게 공유해주세요!</a></p>
+										<table class="table">
+											<tbody>
+												<c:forEach var="article" items="${articleList}">
+													<tr class="alert" role="alert">
+														<th scope="row" style="text-align:center; color:green;">
+															<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:40px; height:40px;"/><br>
+															${user.nickname} 
+														</th>
+														<td>
+															<c:if test="${article.condition == 1}">
+																<strong>텀블러 들고다니기</strong>
+															</c:if>
+															<c:if test="${article.condition == 2}">
+																<strong>샴푸 대신 샴푸바 / 손세정제 대신 비누</strong>
+															</c:if>
+															<c:if test="${article.condition == 3}">
+																<strong>일회용 빨대 사용하지말기</strong>
+															</c:if>
+															<c:if test="${article.condition == 4}">
+																<strong>배달음식 그릇에 테이크아웃 해오기</strong>
+															</c:if>
+															<c:if test="${article.condition == 5}">
+																<strong>장바구니 들고다니기</strong>
+															</c:if>
+															<c:if test="${article.condition == 6}">
+																<strong>배달음식 시킬떄 일회용품 거절하기</strong>
+															</c:if>
+															<c:if test="${article.condition == 7}">
+																<strong>손수건 챙기기</strong>
+															</c:if>
+															<c:if test="${article.condition == 8}">
+																<strong>페트병에 라벨 제거하고 분리수거하기</strong>
+															</c:if>
+															<c:if test="${article.condition == 9}">
+																<strong>스탠, 유리제품 사용하기</strong>
+															</c:if>
+															<c:if test="${article.condition == 10}">
+																<strong>이면지 사용하기</strong>
+															</c:if>
+															<br>
+															${article.ctt}
+														</td>
+														<td class="center">
+															<fmt:formatDate value="${article.reg}" pattern="yyyy/MM/dd [E]"/>	
+														</td>
+														<td class="center">
+															<button onclick="window.open('/earth/user/myTodayDeleteForm.et?boardnum=${article.boardnum}&id=${article.id}', '', 'width=500,height=300,location=no,status=no,scrollbars=yes,left=750,top=250');" 
+															style="background-color:#fff; border:none;">삭제</button>
+														</td>
+													</tr>
+												</c:forEach>
+											</tbody>
+									</table>
+								</c:if>
 							<br /><br />
 							<%-- 페이지 번호 --%>
-							<div align="center">
-							<nav class="pagination">							
-							<c:if test="${count > 0}">
-								<c:set var="pageBlock" value="3" />
-								<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
-								<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
-								<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
-								<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
-								<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
-								<c:if test="${endPage > pageCount}">
-									<c:set var="endPage" value="${pageCount}" /> 
-								</c:if>
-								
-								<%-- 페이지번호  --%> 
-								<c:if test="${sel == null || search == null}">
-									<c:if test="${startPage > pageBlock}">
-										<a class="back page-numbers"  href="/earth/user/myToday.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back</a>
+							<div class="center_">
+								<nav class="pagination">							
+								<c:if test="${count > 0}">
+									<c:set var="pageBlock" value="3" />
+									<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+									<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+									<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+									<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+									<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+									<c:if test="${endPage > pageCount}">
+										<c:set var="endPage" value="${pageCount}" /> 
 									</c:if>
-									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a class="page-numbers" href="/earth/user/myToday.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
-									</c:forEach>
-									<c:if test="${endPage < pageCount}">
-										<a class="next page-numbers" href="/earth/user/myToday.et?pageNum=${startPage+pageBlock}" class="pageNums">Next» </a>
+									
+									<%-- 페이지번호  --%> 
+									<c:if test="${sel == null || search == null}">
+										<c:if test="${startPage > pageBlock}">
+											<a class="back page-numbers"  href="/earth/user/myToday.et?pageNum=${startPage-pageBlock}" class="pageNums">«Back</a>
+										</c:if>
+										<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+											<c:choose>
+												<c:when test="${pageNum eq i}">
+													<a class="current" href="/earth/user/myToday.et?pageNum=${pageNum}">${i}</a>
+												</c:when>
+												<c:otherwise>
+													<a class="page-numbers" href="/earth/user/myToday.et?pageNum=${i}" class="pageNums">${i}</a>
+												</c:otherwise>
+											</c:choose>
+										</c:forEach>
+										<c:if test="${endPage < pageCount}">
+											<a class="next page-numbers" href="/earth/user/myToday.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
+										</c:if>
 									</c:if>
-								</c:if>
-								
-							</c:if> <%-- end:count > 0 --%>
-							</nav>
-								<!-- 현재 페이지 표시 -->
-								<p style="color:#FAEBD7;"> 현재 ${pageNum} Page </p> 							
+									
+								</c:if> <%-- end:count > 0 --%>
+								</nav>
 							</div>					
-                    </div> <%--<div class="blog_details">--%>
-                </div>		
-			</div>
+                    </div>
+				</div>  <%--<div class="blog_details">--%>
+			</section>
 		</div>
-		</section>
-			<!--------------------------------------------------------------------------------------- #masthead 
-		여러분 여기서부터는 건들거 없습니다!!!! -->
-
-		<!-- #content -->
-		</div>	<!-- <div class="row"> -->
-	</div> 		<!-- <div class="container"> -->
-</section>
-<!-- - 여기서부터는 건들지 마세요.  -->
+	</div>
+</section>					
 <%@ include file = "../include/footer.jsp" %>
 </body>
-<%-- </c:if> --%>
 </html>

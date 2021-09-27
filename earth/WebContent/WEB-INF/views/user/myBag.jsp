@@ -13,18 +13,17 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
-    
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
+<style>
+	 .heading-section{
+     	text-align:center;
+     	vertical-align:middle;
+     }
+</style> 
 <body>
   <%@ include file = "../include/header.jsp" %>
 	<section class="blog_area single-post-area area-padding">
@@ -37,12 +36,12 @@
                       <aside class="single_sidebar_widget search_widget">
                             <div class="form-group">
                               <div class="input-group mb-3">
-								<!--  여기 벳지 받아오는 이미지 입니다.  -->
+								<!-- 사용자 착용벳지 이미지 -->
 								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	
-                        	<!--경고횟수 분기처리 : 일단 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
+                        	<!--경고횟수 분기처리 : 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
                         	<c:if test="${user.warncount != 0}">            	
 	                        	<p> 
 	                        		<a href="/earth/user/mypage.et" style="color:red;"> 
@@ -92,25 +91,21 @@
 						</li>
 						</ul>
                       </aside>
-		
-				
 				<!-- .widget-area -->
 			</div>
 			<!-- #secondary -->
 		</div>	
 		
-		
-		
         <section class="right_side" style="width:600px;">  
         	<div class="col-lg-8 posts-list">
                 <div class="single-post">
 					<div align="center">
-                    	<div class="blog_details" style="width:600px; height:900px;"> 
-                 		<h2>${user.name}님의 에코백</h2>  <br><br>
+                    	<div class="blog_details" style="width:600px; height:600px;"> 
+                 		<h2 class="heading-section">${user.name}님의 에코백</h2>  <br><br>
                    			착용중인 뱃지<br>
                    			<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:140px; height:140px;align:center;"/><br><br>
                    			<c:if test="${mybadge ne '새싹.png'}">
-                   				<button onclick="window.location='/earth/user/releaseBadge.et'">해제하기</button><br><br> 
+                   				<button onclick="window.location='/earth/user/releaseBadge.et'" style="border:#343a40; color:#343a40;">해제하기</button><br><br> 
                    			</c:if>	               
 						<c:if test="${count == 0}">				
 	        				<div class="g_item_text">
@@ -119,28 +114,31 @@
 							</div>
 						</c:if>
 						
-			    	 	<div class="maintext" align="center">
-			        		<div class="gallery_f_inner row imageGallery1">
-				        		<c:if test="${count != 0}">
-								<c:forEach var="article" items="${articleList}">
-				        			<div class="col-lg-6 col-md-4 col-sm-6 brand manipul design print" style="width:100px;">
-				        				<div class="h_gallery_item" style="align:center;">
-				        					<div class="g_img_item" style="float:center;">
-												<img src='/earth/resources/bootstrap/imgs/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
-				        						<a class="light" onclick="window.location='/earth/user/equipBadge.et?badgenum=${article.badgenum}'" style="color:#ffffff;">
-				        							<button type="button"  style="background-color:#1E88E5; color:#fff;" >착용하기</button>								
-				        						</a>
-				        						<p style="font-size:17px;font-weight: bold ;">${article.badgename}</p>
-				        					</div>
-				        				</div>
-				        			</div>
-				        		</c:forEach>
-								</c:if>
-							</div>
-							
-							<div align="center" class="col-12 text-center">
-								<nav class="pagination" style="float:center;">
-								
+				    	 	<div class="maintext" align="center">
+				        		<div class="gallery_f_inner row imageGallery1">
+					        		<c:if test="${count != 0}">
+									<c:forEach var="article" items="${articleList}">
+					        			<div class="col-lg-6 col-md-4 col-sm-6 brand manipul design print" style="width:100px;">
+					        				<div class="h_gallery_item" style="align:center;">
+					        					<div class="g_img_item" style="float:center;">
+													<img src='/earth/resources/bootstrap/imgs/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
+					        						<a class="light" onclick="window.location='/earth/user/equipBadge.et?badgenum=${article.badgenum}'" style="color:#ffffff;">
+					        							<button type="button"  style="background-color:#343a40; border:none; color:#fff;" >착용하기</button>								
+					        						</a>
+					        						<p style="font-size:17px;font-weight: bold ;">${article.badgename}</p>
+					        					</div>
+					        				</div>
+					        			</div>
+					        		</c:forEach>
+									</c:if>
+								</div>
+				        	</div>
+			        	</div>
+        	    	</div>
+        	    </div>
+        	</div>
+							<div align="center">
+								<nav class="pagination" style="float:center;">	
 									<c:if test="${count > 0}">
 										<c:set var="pageBlock" value="5" />
 										<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
@@ -152,38 +150,38 @@
 											<c:set var="endPage" value="${pageCount}" /> 
 										</c:if>
 										
-										<%-- 검색 안했을때 페이지번호들   --%> 
+										<%-- 페이지번호 --%> 
 										<c:if test="${sel == null || search == null}">
 											<c:if test="${startPage > pageBlock}">
-												<a class="back page-numbers" href="/earth/user/myBag.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back»</a>
+												<a class="back page-numbers" href="/earth/user/myBag.et?pageNum=${startPage-pageBlock}" class="pageNums">«Back</a>
 											</c:if>
-					
 											<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-												<a class="page-numbers" href="/earth/user/myBag.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+												<c:choose>
+													<c:when test="${pageNum eq i}">
+														<a class="current" href="/earth/user/myBag.et?pageNum=${pageNum}">${i}</a>
+													</c:when>
+													<c:otherwise>
+														<a class="page-numbers" href="/earth/user/myBag.et?pageNum=${i}" class="pageNums">${i}</a>
+													</c:otherwise>
+												</c:choose>
 											</c:forEach>
 											
 											<c:if test="${endPage < pageCount}">
-												<a class="next page-numbers" href="/earth/user/myBag.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»&gt; </a>
+												<a class="next page-numbers" href="/earth/user/myBag.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
 											</c:if>
 										</c:if>
 										
 									</c:if> <%-- end:count > 0 --%>
 								</nav>
 							</div>
-							
 			        		<c:if test="${sessionScope.sid eq 'admin'}">
 				        		<div class="more_btn">
 				        			<a class="main_btn" onclick="window.location='/earth/badge/addBadge.et'" style="color:#ffffff;"> 뱃지등록</a>
 				        		</div>
 							</c:if>
-			        	</div>
-        	    		</div>
-        	    	</div>
-        	    </div>
-        	</div>
         </section>  
-        </div>
-        </div>              			
+      </div>
+    </div>              			
    </section> 
   <%@ include file = "../include/footer.jsp" %>
 </body>

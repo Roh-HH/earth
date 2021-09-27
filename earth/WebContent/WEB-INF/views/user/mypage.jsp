@@ -50,35 +50,20 @@
 
      <!--================ Start header Top Area =================-->
   	<%@ include file = "../include/header.jsp" %>
-    <!-- 영인이 여기부터 수정가능.  -->   
 	<section class="blog_area single-post-area area-padding">
-	<%-- // check == 0 : 비로그인  check == 1 : 로그인
-	<c:if test="${check == 0}">
-		<script>
-			alert("로그인후 이용해주세요"); 
-			window.location = "/earth/user/loginForm.et";
-		</script>
-	</c:if>
-	
-	<c:if test="${check != 0}">
-	 --%>
-			
     <div class="container">
         <div class="row" style="width:1000px;">        			
-		<!-- -------------------------------------------------------- -->
-		<!-- 영인아여기 사이드 바라서 경로 잘못됐거나 바꿔야되면 여기서 바꾸면돼!!!! -->	
 		      <div class="col-lg-30" style="text-align:left; width:200px;">
                   <div class="blog_right_sidebar">
                       <aside class="single_sidebar_widget search_widget">
                             <div class="form-group">
                               <div class="input-group mb-3">
-                              
-								<!--  여기 벳지 받아오는 이미지 입니다.  -->
+								<!-- 사용자 착용벳지 이미지  -->
 								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	
-                        	<!--경고횟수 분기처리 : 일단 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
+                        	<!--경고횟수 분기처리 : 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
                         	<c:if test="${user.warncount != 0}">            	
 	                        	<p> 
 	                        		<a href="/earth/user/mypage.et" style="color:red;"> 
@@ -128,8 +113,6 @@
 						</li>
 						</ul>
                       </aside>
-		
-				
 				<!-- .widget-area -->
 			</div>
 			<!-- #secondary -->
@@ -188,9 +171,6 @@
 			</div>
 		</div>
 		</section>
-			<!--------------------------------------------------------------------------------------- #masthead 
-		여러분 여기서부터는 건들거 없습니다!!!! -->
-
 		<!-- #content -->
 		</div>	<!-- <div class="row"> -->
 	</div> 		<!-- <div class="container"> -->
@@ -198,5 +178,4 @@
 <!-- - 여기서부터는 건들지 마세요.  -->
 <%@ include file = "../include/footer.jsp" %>
 </body>
-<%-- </c:if> --%>
 </html>

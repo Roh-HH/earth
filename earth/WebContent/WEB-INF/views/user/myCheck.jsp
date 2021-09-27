@@ -33,6 +33,23 @@
 	<script src='/earth/resources/bootstrap/js/locales-all.min.js'></script>
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+<style>
+	.alert{
+		color:#212529;
+	}
+	 .center, .silchun, .heading-section{
+     	text-align:center;
+     	vertical-align:middle;
+     }
+     .center_ {
+     	text-align:center; 
+     	width:800px;
+     }
+     .right_side, .blog_details{
+     	width:800px;
+     	height:1200px;
+     }
+</style>
 <body>
 <script type="text/javascript">
 	document.addEventListener('DOMContentLoaded', function() {
@@ -127,12 +144,12 @@
                       		<aside class="single_sidebar_widget search_widget">
                             		<div class="form-group">
 		                              <div class="input-group mb-3">
-										<!--  여기 벳지 받아오는 이미지 입니다.  -->
+										<!-- 사용자 착용벳지 이미지 -->
 										<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
 		                              </div>
 		                            </div>
 		                        	<h4>${user.nickname}</h4>                      	
-		                        	<!--경고횟수 분기처리 : 일단 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
+		                        	<!--경고횟수 분기처리 : 경고횟수로만 분기처리 (신고 카운트에 따른 변화X)-->
 		                        	<c:if test="${user.warncount != 0}">            	
 			                        	<p> 
 			                        		<a href="/earth/user/mypage.et" style="color:red;"> 
@@ -183,25 +200,25 @@
 										</ul>
 				                      </aside>
 						</div>
-					</div>
-			        <section class="right_side" style="width:600px;">               
-			            <div class="col-lg-8 posts-list">
-			                <div class="single-post">
-								<div align="center">
-			                    	<div class="blog_details" style="width:880px; height:900px;">  
-			                    	   <h2>나의 출석체크</h2>
+					</div>	
+					<section class="right_side">   
+		                    <div class="blog_details">                       
+									<div class="row justify-content-center">
+										<div class="col-md-6 text-center mb-5">
+											<h2 class="heading-section">${user.name}님의 출석체크</h2>
+										</div>
+									</div>
+									<div class="center_">
 				                       <div class="container calendar-container" style="width:700px;">
 											<div id="calendar" style="max-width:600px; margin:40px auto;">
 											</div>
-										</div>
-				                    </div>
-			              	  	</div>
-							</div>
-						</div>
-					</section>
-				</div>
-			</div>
-		</section>
+									   </div>
+									</div>
+				            </div>
+				    </section>
+		</div>
+	</div>
+</section>
 	<%@ include file = "../include/footer.jsp" %>
 </body>
 </html>

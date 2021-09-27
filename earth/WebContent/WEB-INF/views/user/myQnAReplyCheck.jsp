@@ -10,22 +10,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="icon" href="img/favicon.png" type="image/png">
-    <title>어뜨 - 지구를 살리는 작은 실천 </title>
+   <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="/earth/resources/bootstrap/css/table.css"> <%--table css 추가요  --%>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <style>
 	.alert{
 		color:#212529;
 	}
-	 .center, .silchun{
+	 .center, .silchun, .heading-section{
      	text-align:center;
      	vertical-align:middle;
      }
@@ -38,26 +38,17 @@
      	height:1200px;
      }
 </style> 
-<script>
-	//유효성검사
-	function check(frm){
-		if(!checkExistData(frm.subject.value, "문의 제목을") 
-				|| !checkExistData(frm.ctt.value, "문의 내용을")
-		) return false;
-	   return true;
-	 }	
-</script>
 <body>
- <%@ include file = "../include/header.jsp" %>
- <section class="blog_area single-post-area area-padding">
-  <div class="container">
+   	<%@ include file = "../include/header.jsp" %>
+	<section class="blog_area single-post-area area-padding">
+   <div class="container">
         <div class="row" style="width:1000px; height:1200px;">        			
 		      <div class="col-lg-30" style="text-align:left; width:200px;">
                   <div class="blog_right_sidebar">
                       <aside class="single_sidebar_widget search_widget">
                             <div class="form-group">
                               <div class="input-group mb-3">
-								<!-- 사용자 착용벳지 이미지 -->
+								<!-- 사용자 착용벳지 이미지  -->
 								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
@@ -109,55 +100,49 @@
 						</li>
 						<li>
 						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;"
-							onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>							
+							onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>	
 						</li>
 						</ul>
-                     </aside>
+                      </aside>
 					</div>
 				</div>
          		<section class="right_side">   
-		                    <div class="blog_details">                       
-									<div class="row justify-content-center">
-										<div class="col-md-6 text-center mb-5">
-											<h2 class="heading-section">${user.name}님의 1:1 문의 </h2>
-										</div>
-										<p> * 1:1 문의글은 오직 관리자만 열람 및 답변 가능합니다.<br /> 궁금하신 점을 자유롭게 문의해주세요.</p>
-									</div><br>
-									<div class="center_">
-										<form action="/earth/user/myQnAModifyPro.et?questionnum=${question.questionnum}" method="post" onsubmit="return check(this)" style="width:600px; height:700px;">
-											<table class="table">
-												<tr>
-													<td>아이디 </td>
-													<td>${user.id}</td>				
-												</tr>
-												<tr>
-													<td>1:1 문의 제목</td>
-													<td>
-														<input type="text" value="${question.subject}" width="400px;" name="subject" style="width:450px; height:40px;"/> 
-													</td>
-												</tr>
-												<tr>
-													<td>1:1 문의 내용</td>
-													<td>
-														<input type="text" value="${question.ctt}" width="400px;" name="ctt" style="width:450px; height:450px; border-width:3;" />
-													</td>
-												</tr>
-												<tr>
-													<td colspan="2"> 
-														<input type="submit" value="수정하기" style="background-color:#343a40;border:none; height:40px; color:#ffffff; float:right; "/><br /><br />
-														<input type="button" value="취소" onclick="window.location='/earth/user/myOnetoOne.et'" style="background-color:#f3f3f3; border:none; color:#343a40;"/>
-													</td>
-												</tr>
-											</table>
-										</form>	
-														
-                   					 </div> 
-                   					 <%--<div class="blog_details">--%>
-                			</div>		
-                	</section>	
-			</div>
+                   <div class="blog_details">                       
+						<div class="row justify-content-center">
+							<div class="col-md-6 text-center mb-5">
+								<h2 class="heading-section">'${question.subject}'에 대한 문의 답변</h2>
+							</div>
+						</div>
+						<div class="center_">
+								<br>
+								<table class="table">
+									<thead class="thead-dark">
+										<tr>
+											<th>관리자 답변</th>
+										</tr>
+									</thead>
+									<tbody>	
+										<tr>
+											<td>
+												${question.replyctt}
+											</td>
+										</tr>
+										<!-- 테투리 안보이게 하고싶어요.. -->
+										<tr>
+											<td style="border:none; color:blue; float:right;">
+												답변일 : <fmt:formatDate value="${question.replydate}" pattern="yyyy.MM.dd HH:mm"/>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							<br/>
+							<input type="button" onclick="window.location='http://localhost:8080/earth/user/myOnetoOne.et'" value="돌아가기" /> 
+						</div><%--center_ --%>
+                   	</div> <%--<div class="blog_details">--%>
+          	</section>
 		</div>
-	</section>
+	</div>
+</section>					
 <%@ include file = "../include/footer.jsp" %>
 </body>
 </html>

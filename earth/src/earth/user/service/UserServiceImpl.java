@@ -1,6 +1,7 @@
 package earth.user.service;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,7 +40,7 @@ public class UserServiceImpl implements UserService {
 		// 회원가입 : 아이디 중복여부 체크
 		@Override
 		public int idCheck(UserDTO dto) throws SQLException {
-			int result = userDAO.idPwCheck(dto);
+			int result = userDAO.idCheck(dto);
 			return result;
 		}
 		// 회원가입 : 닉네임 중복여부 체크
@@ -90,7 +91,7 @@ public class UserServiceImpl implements UserService {
 			}		
 			return result;
 		}
-
+		
 
 	//******** 사용자 마이페이지 ********
 		
@@ -389,7 +390,7 @@ public class UserServiceImpl implements UserService {
 			String id = (String)RequestContextHolder.getRequestAttributes().getAttribute("sid", RequestAttributes.SCOPE_SESSION);
 			// **게시글 페이지 관련 정보 세팅**
 			// 한 페이지에 보여줄 게시글의 수
-			int pageSize = 5;
+			int pageSize = 3;
 			
 			// 현재 페이지 번호 : pageNum 파라미터 안넘어왔을때 1 페이지 세팅
 			if(pageNum == null) {
@@ -500,7 +501,7 @@ public class UserServiceImpl implements UserService {
 			
 			return result;		
 		}
-	
+		
 	// 작성자 : 김예찬	
 	// 마이페이지 : 나의 에코백
 
@@ -569,11 +570,11 @@ public class UserServiceImpl implements UserService {
 			
 			userDAO.equipBadge(id,badgenum);
 			
-		}	
+		}		
 	
 	// 작성자 : 이다희 김하영
 	// 마이페이지 : 출석체크
-		
+			
 		//출석 인서트
 		@Override
 		public int insertCheck(String id, String date) throws SQLException {
@@ -582,7 +583,7 @@ public class UserServiceImpl implements UserService {
 
 			return result;
 		}
-		
+
 		//출석 리스트 받아오기
 		@Override
 		public ArrayList<String> getAttendList(String id) throws SQLException {		
