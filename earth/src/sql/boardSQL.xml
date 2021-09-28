@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="board">
 
-	<!-- 공용:  컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
+	<!-- 공용 컨텐츠, 댓글 닉네임 가져오기 / search 를 위해 id 가져오기 -->	
 		<select id="getNicknamereply" parameterType="string" resultType="string">
 			select nickname from users where id=#{writer}
 		</select>
@@ -14,7 +14,6 @@
 		<select id="getBoardid" parameterType="string" resultType="string">
 			select id from users where nickname=#{search}
 		</select>
-	
 	
 	<!-- 공용 뱃지 이미지 불러오기  -->
 		<select id="getBadgeimg" parameterType="string" resultType="string">
@@ -32,6 +31,23 @@
 		<select id="getCommentCount" parameterType="string" resultType="int">
 			select commentcount from point where id = #{value}
 		</select>
+	
+	<!-- 포인트 처리 -->
+		<select resultType="int" parameterType="string" id="getBoardCount">
+			select boardcount from point where id = #{value}
+		</select>
+		<select resultType="int" parameterType="string" id="getCommentCount">
+			select commentcount from point where id = #{value}
+		</select>
+		<update id="addPoint" parameterType="string">
+			update point set point = point+5 where id = #{value}  
+		</update>
+		<update id="addBoardCount" parameterType="string">
+			update point set boardcount = 1 where id = #{value}
+		</update>
+		<update id="addCommentCount" parameterType="string">
+			update point set commentcount = 1 where id = #{value}
+		</update>
 	
 	<!-- 공지사항 (1) 노현호 -->
 		<insert id="insertNotice" parameterType="noticeDTO">
