@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import earth.badge.dto.BadgeDTO;
-import earth.mybag.dto.MybagDTO;
+import earth.user.dto.MybagDTO;
 
 public interface BadgeDAO {
 
