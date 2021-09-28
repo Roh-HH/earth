@@ -47,8 +47,8 @@ margin-right:4px;
 					<form action="/earth/board/diaryList.et" >
 	         		<div class="input-group" style="width:300px; float:right;">
 	         			<select name="sel" style="height:30px;">
-							<option value="nickname">닉네임</option>
-							<option value="ctt">내용</option>	
+	         			    <option value="ctt">내용</option>	
+							<option value="nickname">닉네임</option>		 
 						</select>
                        	<input class="form-control" type="text" placeholder="검색" name="search" value="" title="search" style="border-top:none; border-left:none; border-right:none; height:30px;" onfocus="this.placeholder = '내용 검색'" onblur="this.placeholder = '내용 검색'">
                         <input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px;">
