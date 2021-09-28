@@ -795,7 +795,7 @@ public class BoardDAOImpl implements BoardDAO {
 		@Override
 		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException {
 			
-			HashMap map = new HashMap();
+			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("boardnum", boardnum);
 			map.put("ctt", ctt);
 			map.put("writer", writer);
