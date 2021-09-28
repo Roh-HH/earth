@@ -45,12 +45,12 @@ margin-right:4px;
 		window.open(popUrl,"",popOption);
 	}
 	function reportArticle(boardnum){
-		var popUrl = "/earth/adminmypage/reportForm.et?id=${article.id}&uri=dairy&boardnum=" + boardnum;
+		var popUrl = "/earth/adminmypage/reportForm.et?id=${article.id}&uri=diary&boardnum=" + boardnum;
 		var popOption = "width=500, height=500, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
 	function reportComment(commentnum, id){
-		var popUrl = "/earth/adminmypage/reportForm.et?id=" + id + "&uri=diaryComment&boardnum=" + commentnum;
+		var popUrl = "/earth/adminmypage/reportForm.et?id=" + id + "&uri=diarycomment&boardnum=" + commentnum;
 		var popOption = "width=500, height=500, resizable=no, scrollbars=no, status=no;";
 		window.open(popUrl,"",popOption);
 	}
