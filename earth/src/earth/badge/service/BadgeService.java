@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 
 import earth.badge.dto.BadgeDTO;
-import earth.mybag.dto.MybagDTO;
+import earth.user.dto.MybagDTO;
 
 @Service
 public interface BadgeService {

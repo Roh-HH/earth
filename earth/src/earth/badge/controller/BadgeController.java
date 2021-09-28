@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import earth.badge.dto.BadgeDTO;
-import earth.mybag.dto.MybagDTO;
+import earth.user.dto.MybagDTO;
 import earth.badge.service.BadgeServiceImpl;
 
 

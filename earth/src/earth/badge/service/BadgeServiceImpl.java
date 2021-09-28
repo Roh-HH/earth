@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import earth.badge.dao.BadgeDAOImpl;
 import earth.badge.dto.BadgeDTO;
-import earth.mybag.dto.MybagDTO;
+import earth.user.dto.MybagDTO;
 
 
 @Service
