@@ -76,7 +76,7 @@ public class BoardController {
 				
 			// 공지사항 게시글 등록 처리 요청
 			@RequestMapping("noticeWritePro.et")
-			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model, HttpSession session) throws SQLException, IOException {
+			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
 				System.out.println("noticeWritePro.et");
 				
 				dto.setId((String)session.getAttribute("sid"));
