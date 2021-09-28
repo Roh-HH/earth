@@ -218,7 +218,7 @@
 						<input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
 						<br/>
 						<input type="submit" value="공유하기" 
-                  			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right;"/>
+                  			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right; color:#fff;"/>
 					</div>
 				</form>
 			</div>
