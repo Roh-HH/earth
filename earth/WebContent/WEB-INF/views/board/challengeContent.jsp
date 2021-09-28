@@ -380,18 +380,25 @@ article.dateck == 1 : 데이트 마감 안됨
 			<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
 			<c:if test="${endPage > pageCount}">
 				<c:set var="endPage" value="${pageCount}" /> 
+			</c:if> 
+		
+			<c:if test="${startPage > pageBlock}">
+				<a class="back page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage-pageBlock}&pageNum=${pageNum}#comment" class="pageNums">«Back</a>
+			</c:if>
+			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+				<c:choose>
+					<c:when test="${pageN eq i}">
+						<a class="current"  href="/earth/board/challengeContent.et?pageN=${pageN}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment"> ${i}</a>
+					</c:when>
+					<c:otherwise>
+						<a class="page-numbers" href="/earth/board/challengeContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">${i}</a>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${endPage < pageCount}">
+				<a class="next page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">Next»</a>
+			</c:if>
 		</c:if> 
-				<c:if test="${startPage > pageBlock}">
-					<a class="back page-numbers" href="/earth/board/challengeContent.et?pageN=${startPage-pageBlock}&pageNum=${pageNum}#comment" class="pageNums"> «</a>
-				</c:if>
-				<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-					<a class="page-numbers" href="/earth/board/challengeContent.et?pageN=${i}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums">${i}</a>
-				</c:forEach>
-				
-				<c:if test="${endPage < pageCount}">
-					<a class="next page-numbers"href="/earth/board/challengeContent.et?pageN=${startPage+pageBlock}&pageNum=${pageNum}&boardnum=${article.boardnum}#comment" class="pageNums"> »</a>
-				</c:if>
-		</c:if>  
 		</nav>
 	</div>
  <br /> <br />

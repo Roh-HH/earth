@@ -47,8 +47,8 @@ margin-right:4px;
 					<form action="/earth/board/diaryList.et" >
 	         		<div class="input-group" style="width:300px; float:right;">
 	         			<select name="sel" style="height:30px;">
-	         			    <option value="ctt">내용</option>	
-							<option value="nickname">닉네임</option>		 
+	         				<option value="ctt">내용</option>	
+							<option value="nickname">닉네임</option>
 						</select>
                        	<input class="form-control" type="text" placeholder="검색" name="search" value="" title="search" style="border-top:none; border-left:none; border-right:none; height:30px;" onfocus="this.placeholder = '내용 검색'" onblur="this.placeholder = '내용 검색'">
                         <input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px;">
@@ -136,30 +136,42 @@ margin-right:4px;
 						<%-- 검색했을때 페이지번호들 --%>
 						<c:if test="${sel != null && search != null}">
 							<c:if test="${startPage > pageBlock}">
-								<a class="back page-numbers"  href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «</a>
+								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">«Back</a>
 							</c:if>
 							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums">  ${i}   </a>
+								<c:choose>
+									<c:when test="${pageNum eq i}">
+										<a class="current" href="/earth/board/diaryList.et?pageNum=${pageNum}&sel=${sel}&search=${search}">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 							<c:if test="${endPage < pageCount}">
-								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> »</a>
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next»</a>
 							</c:if>
 						</c:if>
-						
 						<%-- 검색 안했을때 페이지번호들   --%> 
 						<c:if test="${sel == null || search == null}">
 							<c:if test="${startPage > pageBlock}">
-								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}" class="pageNums"> « </a>
+								<a class="back page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage-pageBlock}" class="pageNums">«Back</a>
 							</c:if>
 							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-								<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}" class="pageNums"> ${i} </a>
+								<c:choose>
+									<c:when test="${pageNum eq i}">
+										<a class="current" href="/earth/board/diaryList.et?pageNum=${pageNum}">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-numbers" href="/earth/board/diaryList.et?pageNum=${i}" class="pageNums">${i}</a>
+									</c:otherwise>
+								</c:choose>
 							</c:forEach>
 							
 							<c:if test="${endPage < pageCount}">
-								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}" class="pageNums"> »</a>
+								<a class="next page-numbers" href="/earth/board/diaryList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
 							</c:if>
 						</c:if>
-						
 					</c:if> <%-- end:count > 0 --%>
 					</nav>
 				</div>

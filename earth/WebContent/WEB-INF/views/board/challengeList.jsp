@@ -118,7 +118,7 @@ margin-right:4px;
     </section>
                 		
 		<br /><br><br>
-				<%-- 페이지 번호 --%>
+<%-- 페이지 번호 --%>
 	<div align="center">
 		<nav class="pagination">
 		<c:if test="${count > 0}">
@@ -131,18 +131,30 @@ margin-right:4px;
 			<c:if test="${endPage > pageCount}">
 				<c:set var="endPage" value="${pageCount}" /> 
 			</c:if>	
-		</c:if> <%-- end:count > 0 --%>
+  
 			<c:if test="${startPage > pageBlock}">
-				<a class="back page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage-pageBlock}" class="pageNums"> «</a>
+				<a class="back page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage-pageBlock}" class="pageNums">«Back</a>
 			</c:if>
 			<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-				<a class="page-numbers" href="/earth/board/challengeList.et?pageNum=${i}" class="pageNums">${i}</a>
+				<c:choose>
+					<c:when test="${pageNum eq i}">
+						<a class="current"  href="/earth/board/challengeList.et?pageNum=${pageNum}">${i}</a>
+					</c:when>
+					<c:otherwise>
+						<a class="page-numbers" href="/earth/board/challengeList.et?pageNum=${i}" class="pageNums">${i}</a>
+					</c:otherwise>
+				</c:choose>
 			</c:forEach>
 			<c:if test="${endPage < pageCount}">
-				<a class="next page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage+pageBlock}" class="pageNums"> »</a>
+				<a class="next page-numbers" href="/earth/board/challengeList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
 			</c:if>
+		</c:if> <%-- end:count > 0 --%>
+		
+		
+		
+		
+		
 		</nav>
-			<%-- <p align="center" style="color:grey"> 현재페이지 : ${pageNum} </p> --%>
 	</div>
 					
 <%@ include file = "../include/footer.jsp" %>
