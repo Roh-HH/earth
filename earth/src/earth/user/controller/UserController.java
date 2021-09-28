@@ -569,6 +569,8 @@ public class UserController {
 			model.addAttribute("count", result.get("count"));
 			model.addAttribute("number", result.get("number"));
 			model.addAttribute("mybadge", mybadge.getBadgeimg());
+			model.addAttribute("badgeName", mybadge.getBadgename());
+			model.addAttribute("point", point);
 
 			return "user/myBag";
 		}
