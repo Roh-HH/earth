@@ -143,7 +143,7 @@
 		</insert>
         <select id="getDiaryArticles" parameterType="hashmap" resultType="diaryDTO">		
 			<![CDATA[
-				select B.*, id nickname, id badgeimg, boardnum idCheck from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
+				select B.* from (select A.*, rownum r from (select * from diary order by reg desc) A) B where r >= #{start} and r <= #{end}
 			]]>
 		</select>
 		<select id="getDiaryArticle" parameterType="int" resultType="diaryDTO">
@@ -199,7 +199,7 @@
 
 		<select id="getDiaryReplyList" parameterType="hashmap" resultType="diaryDTO">		
 			<![CDATA[
-				select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				select B.* from (select A.*, rownum r from (select * from diarycomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
 			]]>
 		</select>
         <delete id="replydeletediary" parameterType="int">
@@ -266,7 +266,7 @@
 
 		<select id="getChReplyList" parameterType="hashmap" resultType="monthDTO">		
 			<![CDATA[
-				select B.*, writer nickname, writer badgeimg from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
+				select B.* from (select A.*, rownum r from (select * from challengecomment order by regcomm desc) A) B where r >= #{startRow} and r <= #{endRow} and boardnum = #{boardnum}
 			]]>
 		</select>
 		<select id="idCheck" parameterType="hashmap" resultType="int">
