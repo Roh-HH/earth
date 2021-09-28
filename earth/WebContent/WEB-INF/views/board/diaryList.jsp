@@ -85,13 +85,13 @@ margin-right:4px;
                                 	<a href="#" >조회수 :${article.readcount} </a>
 		                        </div>
 		                        <a href="/earth/board/diaryContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">
-		                        	<h4 style="height:60px;"> ${article.subject}</h4></a><br>
+		                        	<h4 style="height:60px;"> ${article.subject}</h4></a>
 	                           	<div class="meta-bottom d-flex">
 	                           		<c:if test="${article.idCheck != 1}">	
-	                           			<a href="#">♡ ${article.recommend}like</a>
+	                           			<a href="#"style="color: red;"> ♡ ${article.recommend} like</a>
 	                           		</c:if>
 	                           		<c:if test="${article.idCheck == 1}">	
-                                		<a href="#">♥ ${article.recommend}like</a>
+                                		<a href="#" style="color: red;"> ♥ ${article.recommend} like</a>
                                 	</c:if>                    
 	                            </div>
 								<p><fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH:mm"/></p>
