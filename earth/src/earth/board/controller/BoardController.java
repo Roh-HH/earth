@@ -816,6 +816,7 @@ public class BoardController {
 
 				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
 				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
 					List<DiaryDTO> articleList = (List<DiaryDTO>)result.get("articleList");
 					for(int i=0; i<articleList.size(); i++) {
 						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
@@ -928,62 +929,64 @@ public class BoardController {
 				return "redirect:/board/challengeContent.et?boardnum=" + boardnum + "&pageNum=1";	 
 			}
     
-        // 이달의 챌린지 게시글 가져오기   - 이다희
-        @RequestMapping("challengeContent.et")
-        public String challengeContent(@ModelAttribute("boardnum") int boardnum,  String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
-            System.out.println("이달의 챌린지 요청");
+			// 이달의 챌린지 게시글 가져오기   - 이다희
+			@RequestMapping("challengeContent.et")
+			public String challengeContent(@ModelAttribute("boardnum") int boardnum,  String pageNum, String pageN, Model model, HttpSession session) throws SQLException {
+				System.out.println("이달의 챌린지 요청");
 
-            //참여자 확인을 위해 세션아이디 필요
-            String id = (String)session.getAttribute("sid");
+				//참여자 확인을 위해 세션아이디 필요
+				String id = (String)session.getAttribute("sid");
 
-            //챌린지글 컨텐츠 가져오기
-            MonthDTO article = boardService.getChallengeArticle(boardnum); 
+				//챌린지글 컨텐츠 가져오기
+				MonthDTO article = boardService.getChallengeArticle(boardnum); 
 
-            //댓글 가져오기
-            Map<String, Object> map = null;
-            map = boardService.getChReplyList(boardnum,pageN);
+				//댓글 가져오기
+				Map<String, Object> map = null;
+				map = boardService.getChReplyList(boardnum,pageN);
 
 
-            //댓글 아이디 닉네임으로 변경 
-             if (map.get("replyList") != null) {
-                List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");	
-                for(int i=0; i<replyList.size(); i++) {			
-                    replyList.get(i).setNickname(boardService.getNicknamereply(replyList.get(i).getWriter()));
-                    replyList.get(i).setBadgeimg(boardService.getBadgeimgreply(replyList.get(i).getWriter()));
-                }
-            }
-            //게시글 닉네임 가져오기
-            String nickname = boardService.getNickname(article.getId());
-            System.out.println("id ============> " + article.getId());
+				//댓글 아이디 닉네임으로 변경 
+				if (map.get("replyList") != null) {
+					@SuppressWarnings("unchecked")
+					List<MonthDTO> replyList = (List<MonthDTO>)map.get("replyList");
+					for(int i=0; i<replyList.size(); i++) {			
+						replyList.get(i).setNickname(boardService.getNicknamereply(replyList.get(i).getWriter()));
+						replyList.get(i).setBadgeimg(boardService.getBadgeimgreply(replyList.get(i).getWriter()));
+					}
+				}
+				
+				//게시글 닉네임 가져오기
+				String nickname = boardService.getNickname(article.getId());
+				System.out.println("id ============> " + article.getId());
 
-            //참여자확인 
-            int joinidCheck = boardService.joinidCheck(boardnum, id);
+				//참여자확인 
+				int joinidCheck = boardService.joinidCheck(boardnum, id);
 
-            //마감데이트 확인 
-            int dateCheck = boardService.dateCheck(boardnum);
-            System.out.println("dateCheck" + dateCheck);
+				//마감데이트 확인 
+				int dateCheck = boardService.dateCheck(boardnum);
+				System.out.println("dateCheck" + dateCheck);
 
-            //컨텐츠용 
-            model.addAttribute("article", article);	
-            model.addAttribute("pageNum", pageNum);
-            //댓글용 
-            model.addAttribute("pageSize", map.get("pageSize"));
-            model.addAttribute("pageN", map.get("pageN"));
-            model.addAttribute("currentPage", map.get("currentPage"));
-            model.addAttribute("startRow", map.get("startRow"));
-            model.addAttribute("endRow", map.get("endRow"));
-            model.addAttribute("replyList", map.get("replyList"));
-            model.addAttribute("count", map.get("count"));
-            model.addAttribute("number", map.get("number"));
-            //참여자확인 
-            model.addAttribute("joinidCheck", joinidCheck);
-            //마감데이트 확인
-            model.addAttribute("dateCheck", dateCheck);
-            // 컨텐츠아이디 닉네임으로 
-            model.addAttribute("nickname", nickname);
+				//컨텐츠용 
+				model.addAttribute("article", article);	
+				model.addAttribute("pageNum", pageNum);
+				//댓글용 
+				model.addAttribute("pageSize", map.get("pageSize"));
+				model.addAttribute("pageN", map.get("pageN"));
+				model.addAttribute("currentPage", map.get("currentPage"));
+				model.addAttribute("startRow", map.get("startRow"));
+				model.addAttribute("endRow", map.get("endRow"));
+				model.addAttribute("replyList", map.get("replyList"));
+				model.addAttribute("count", map.get("count"));
+				model.addAttribute("number", map.get("number"));
+				//참여자확인 
+				model.addAttribute("joinidCheck", joinidCheck);
+				//마감데이트 확인
+				model.addAttribute("dateCheck", dateCheck);
+				// 컨텐츠아이디 닉네임으로 
+				model.addAttribute("nickname", nickname);
 
-            return "board/challengeContent"; 
-        }
+				return "board/challengeContent"; 
+			}
 			
 			
 		// 5. 오늘의 실천 - 노현호
@@ -1093,6 +1096,7 @@ public class BoardController {
 				
 				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
 				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
 					List<EventDTO> articleList = (List<EventDTO>)result.get("articleList");
 					for(int i=0; i<articleList.size(); i++) {
 						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
@@ -1168,6 +1172,7 @@ public class BoardController {
 				
 				// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
 				if (result.get("articleList") != null) {
+					@SuppressWarnings("unchecked")
 					List<TipDTO> articleList = (List<TipDTO>)result.get("articleList");
 					for(int i=0; i<articleList.size(); i++) {
 						articleList.get(i).setNickname(boardService.getNickname(articleList.get(i).getId()));
