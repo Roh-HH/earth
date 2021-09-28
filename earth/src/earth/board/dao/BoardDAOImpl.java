@@ -912,6 +912,21 @@ public class BoardDAOImpl implements BoardDAO {
 			int result = sqlSession.delete(delete, commentnum);
 			return result;
 		}
+
+		// 환경일기 댓글 하나가져오기 
+		@Override
+		public DiaryDTO getDiaryComment(int commentnum) throws SQLException {
+			DiaryDTO dto = sqlSession.selectOne("board.getDiaryCommentOne", commentnum);
+			return dto;
+		}
+		// 이달의 챌린지 댓글 하나 가져오기 
+		@Override
+		public MonthDTO getChallengeComment(int commentnum) throws SQLException {
+			MonthDTO dto = sqlSession.selectOne("board.getChallengeCommentOne", commentnum);
+			return dto;
+		}
 	
+ 
+		
 
 }

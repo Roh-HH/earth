@@ -217,6 +217,9 @@
 		<select id="getImgDiary" resultType="string">
 			select img from diary where boardnum = #{value}
 		</select>
+		 <select id="getDiaryCommentOne" parameterType="int" resultType="diaryDTO">
+			select * from diarycomment where commentnum = #{value}
+		</select>
 	
 	 
 	<!-- 이달의 챌린지 (4) 이다희  -->
@@ -285,6 +288,9 @@
 		 <select id="getPwChallenge" resultType="string">
             select pw from challenge where boardnum = #{value}
          </select>
+         <select id="getChallengeCommentOne" parameterType="int" resultType="monthDTO">
+			select * from challengecomment where commentnum = #{value}
+		</select>
  
 	<!-- 오늘의 실천 (5) 노현호 -->
 		<insert id="upload" parameterType="todayDTO">

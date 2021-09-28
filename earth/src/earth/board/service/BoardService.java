@@ -164,7 +164,8 @@ public interface BoardService {
 		public void insertDiaryReply(int boardnum, String ctt, String writer, String receiver) throws SQLException;
 		// 환경일기 댓글 가져오기 - 이다희
 		public Map<String, Object> getDiaryReplyList(int boardnum, String pageN) throws SQLException;
-		
+		//환경일기댓글 하나 가져오기 
+		public DiaryDTO getDiaryComment(int commentnum) throws SQLException;
 	// 11. 이달의 챌린지 댓글
 		// 이달의 챌린지 댓글 업로드 - 이다희
 		public void insertChReply(int boardnum, String ctt, String writer) throws SQLException;
@@ -172,5 +173,7 @@ public interface BoardService {
 		public Map<String, Object> getChReplyList(int boardnum, String pageN) throws SQLException;
 		// 이달의 챌린지 및 환경일기 댓글삭제 - 이다희
 		public int replydelete (int commentnum, String categ) throws SQLException;
+		// 이달의 챌린지 댓글 하나 가져오기 
+		public MonthDTO getChallengeComment(int commentnum) throws SQLException;
 
 }

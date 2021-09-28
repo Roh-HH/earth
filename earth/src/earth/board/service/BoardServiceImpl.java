@@ -788,6 +788,20 @@ public class BoardServiceImpl implements BoardService {
 			int result = boardDAO.replydelete(commentnum, categ);
 			return result;
 		}
-	
+		// 환경일기 댓글 하나 가져오기 
+		@Override
+		public DiaryDTO getDiaryComment(int commentnum) throws SQLException {
+			DiaryDTO dto = boardDAO.getDiaryComment(commentnum);
+			return dto;
+		}
+		// 이달챌 댓글 하나 가져오기 
+		@Override
+		public MonthDTO getChallengeComment(int commentnum) throws SQLException {
+			MonthDTO dto = boardDAO.getChallengeComment(commentnum);
+			return dto;
+		}
+		
+	 
+		
 	
 }

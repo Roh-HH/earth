@@ -196,6 +196,8 @@ public interface BoardDAO {
 			public List<DiaryDTO> getDiaryReplyList(int startRow, int endRow, int boardnum) throws SQLException;
 			// 환경일기 댓글 갯수 가져오기 - 이다희 
 			public int getDiaryReplyListCount(int boardnum) throws SQLException;
+			//환경일기 댓글 하나 가져오기 
+			public DiaryDTO getDiaryComment(int commentnum) throws SQLException;
 			
 		// 11. 이달의 챌린지 댓글
 			// 이달의 챌린지 댓글 업로드 - 이다희
@@ -206,5 +208,6 @@ public interface BoardDAO {
 			public int getChReplyListCount(int boardnum) throws SQLException;
 			// 이달의 챌린지 및 환경일기 댓글삭제 - 이다희
 			public int replydelete (int commentnum, String categ) throws SQLException;
-	
+			// 이달의 챨린지댓글 하나 가져오기 
+			public MonthDTO getChallengeComment(int commentnum) throws SQLException;
 }
