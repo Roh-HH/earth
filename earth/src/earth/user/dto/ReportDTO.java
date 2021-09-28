@@ -9,10 +9,16 @@ public class ReportDTO {
 	private Timestamp reg;
 	private String ctt;
 	private Integer condition;
-	private Integer commentnum;
 	private Integer boardnum;
 	private Integer process;
+	private String reportctt;
 	
+	public String getReportctt() {
+		return reportctt;
+	}
+	public void setReportctt(String reportctt) {
+		this.reportctt = reportctt;
+	}
 	public Integer getReportnum() {
 		return reportnum;
 	}
@@ -48,12 +54,6 @@ public class ReportDTO {
 	}
 	public void setCondition(Integer condition) {
 		this.condition = condition;
-	}
-	public Integer getCommentnum() {
-		return commentnum;
-	}
-	public void setCommentnum(Integer commentnum) {
-		this.commentnum = commentnum;
 	}
 	public Integer getBoardnum() {
 		return boardnum;

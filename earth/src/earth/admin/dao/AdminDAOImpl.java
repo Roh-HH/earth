@@ -324,7 +324,7 @@ public class AdminDAOImpl implements AdminDAO {
 			sqlSession.update("admin.processOne", id);
 			break;
 		case 2:
-			sqlSession.update("admin.processTwo", id);
+			sqlSession.delete("admin.processTwo", id);
 			break;
 		}
 		

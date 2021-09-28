@@ -81,7 +81,7 @@
 	<%-- 앵커태그(위치이동/지우지말것) --%>
 	<a href="#list"></a>
 	<!--================ Start header Top Area =================-->
-	<%@ include file = "../include/header.jsp" %>
+    <%@ include file = "../include/header.jsp" %>
 	<section class="category-page area-padding">
         <div class="container">   	
     		<h3 class="page-title" id="list">커뮤니티</h3>
@@ -165,26 +165,33 @@
 			<div align="center">
 				<nav class="pagination">
 					<c:if test="${count > 0}">
-					<c:set var="pageBlock" value="3" />
-					<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
-					<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
-					<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
-					<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
-					<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
-					<c:if test="${endPage > pageCount}">
-						<c:set var="endPage" value="${pageCount}" /> 
-					</c:if>
-					
-					<%-- 페이지번호 --%>
-					<c:if test="${startPage > pageBlock}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage-pageBlock}#list" class="pageNums">Back</a>
-					</c:if>
-					<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${i}#list" class="pageNums">${i}</a>
-					</c:forEach>
-					<c:if test="${endPage < pageCount}">
-						<a href="/earth/board/dailyChallenge.et?pageNum=${startPage+pageBlock}#list" class="pageNums">Next</a>
-					</c:if>
+						<c:set var="pageBlock" value="3" />
+						<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+						<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+						<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+						<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+						<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+						<c:if test="${endPage > pageCount}">
+							<c:set var="endPage" value="${pageCount}" /> 
+						</c:if>
+						
+						<%-- 페이지번호 --%>
+						<c:if test="${startPage > pageBlock}">
+							<a class="back page-numbers" href="/earth/board/dailyChallenge.et?pageNum=${startPage-pageBlock}#list" class="pageNums">«Back</a>
+						</c:if>
+						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+							<c:choose>
+								<c:when test="${pageNum eq i}">
+									<a class="current" href="/earth/board/dailyChallenge.et?pageNum=${pageNum}#list">${i}</a>
+								</c:when>
+								<c:otherwise>
+									<a class="page-numbers" href="/earth/board/dailyChallenge.et?pageNum=${i}#list" class="pageNums">${i}</a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:if test="${endPage < pageCount}">
+							<a class="next page-numbers" href="/earth/board/dailyChallenge.et?pageNum=${startPage+pageBlock}#list" class="pageNums">Next»</a>
+						</c:if>
 					</c:if> <%-- end:count > 0 --%>
 				</nav>
 			</div>
@@ -208,7 +215,7 @@
 						</div>
 					</div>
 					<div class="comment-form">
-                           <input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
+						<input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
 						<br/>
 						<input type="submit" value="공유하기" 
                   			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right;"/>

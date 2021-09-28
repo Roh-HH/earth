@@ -31,11 +31,19 @@
 	margin-right:4px;
 	}
 </style>
+<script>
+	$(document).ready(function(){
+		var hash = $.trim( window.location.hash );
+		if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
+	});
+</script>
 
 <body>
+	<%-- 앵커태그(위치이동/지우지말것) --%>
+	<a href="#anc"></a>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
-	<section class="category-page area-padding">
+	<section id="anc" class="category-page area-padding">
 		<div class="container">
 		<h3 class="page-title">커뮤니티</h3>
 		<h1 class="entry-title">자유게시판 </h1>
@@ -75,11 +83,13 @@
 						</tr>
 					</c:forEach>
 				</table>
-				<div class="col-12 text-center">
-					<button type="button"class="main_btn" style="width:80px; height:50px; text-align:center;"
-					onclick="window.location='/earth/board/freeWriteForm.et'">글쓰기
-					</button>	
-				</div>
+				<c:if test="${sessionScope.sid != null}">
+					<div class="col-12 text-center">
+						<button type="button"class="main_btn" style="width:100px; height:50px; text-align:center;"
+						onclick="window.location='/earth/board/freeWriteForm.et'">글쓰기
+						</button>	
+					</div>
+				</c:if>
 				<br />
 				
 				<%-- 페이지 번호 --%>
@@ -99,30 +109,54 @@
 							<%-- 검색했을때 페이지번호들 --%>
 							<c:if test="${sel != null && search != null}">
 								<c:if test="${startPage > pageBlock}">
-									<a href="/earth/board/freeList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
+									<a class="back page-numbers" href="/earth/board/freeList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Back</a>
 								</c:if>
 								<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-									<a href="/earth/board/freeList.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
+									<c:choose>
+										<c:when test="${pageNum eq i}">
+											<a class="current" href="/earth/board/freeList.et?pageNum=${pageNum}&sel=${sel}&search=${search}#anc">${i}</a>
+										</c:when>
+										<c:otherwise>
+											<a class="page-numbers" href="/earth/board/freeList.et?pageNum=${i}&sel=${sel}&search=${search}#anc" class="pageNums">${i}</a>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 								<c:if test="${endPage < pageCount}">
-									&nbsp; <a href="/earth/board/freeList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
+									<a class="next page-numbers" href="/earth/board/freeList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Next</a>
 								</c:if>
 							</c:if>
 							
-							<%-- 검색 안했을때 페이지번호들   --%> 
+							<%-- 페이지번호 --%> 
 							<c:if test="${sel == null || search == null}">
 								<c:if test="${startPage > pageBlock}">
-									<a href="/earth/board/freeList.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
+									<a class="back page-numbers" href="/earth/board/freeList.et?pageNum=${startPage-pageBlock}#anc" class="pageNums">«Back</a>
 								</c:if>
 								<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-									<a href="/earth/board/freeList.et?pageNum=${i}" class="pageNums">${i}</a>
+									<c:choose>
+										<c:when test="${pageNum eq i}">
+											<a class="current" href="/earth/board/freeList.et?pageNum=${pageNum}#anc">${i}</a>
+										</c:when>
+										<c:otherwise>
+											<a class="page-numbers" href="/earth/board/freeList.et?pageNum=${i}#anc" class="pageNums">${i}</a>
+										</c:otherwise>
+									</c:choose>
 								</c:forEach>
 								<c:if test="${endPage < pageCount}">
-									<a href="/earth/board/freeList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
+									<a class="next page-numbers" href="/earth/board/freeList.et?pageNum=${startPage+pageBlock}#anc" class="pageNums">Next»</a>
 								</c:if>
 							</c:if>
 						</c:if> <%-- end:count > 0 --%>
-					</nav> 
+					</nav>
+					<form action="/earth/board/freeList.et#anc" >
+						<select style="boder:none;" name="sel">
+   								<option value="" >-선택-</option>
+							<option value="id">작성자</option>
+							<option value="subject">내용</option>
+						</select>
+						<input type="text" placeholder="검색" name="search" value="" title="search"
+							style="border-top:none; border-left:none; border-right:none;width:130px;height:30px; font-size:11px;"/>
+						<input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px;">
+					</form>
 				</div>
 				<br /> <br /> <br /> <br /> <br /> <br />
 			</c:if>

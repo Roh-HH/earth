@@ -184,16 +184,23 @@
 					<c:if test="${endPage > pageCount}">
 						<c:set var="endPage" value="${pageCount}" /> 
 					</c:if>
-				
-						<c:if test="${startPage > pageBlock}">
-							<a href="/earth/board/freeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}&commentPageNum=${startPage-pageBlock}#comment" class="pageNums">Back</a>
-						</c:if>
-						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a href="/earth/board/freeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}&commentPageNum=${i}#comment" class="pageNums">${i}</a>
-						</c:forEach>
-						<c:if test="${endPage < pageCount}">
-							<a href="/earth/board/freeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}&commentPageNum=${startPage+pageBlock}#comment" class="pageNums">Next</a>
-						</c:if>
+					
+					<c:if test="${startPage > pageBlock}">
+						<a class="back page-numbers" href="/earth/board/freeContent.et?pageNum=${startPage-pageBlock}#comment" class="pageNums">«Back</a>
+					</c:if>
+					<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+						<c:choose>
+							<c:when test="${pageNum eq i}">
+								<a class="current" href="/earth/board/freeContent.et?pageNum=${pageNum}#comment">${i}</a>
+							</c:when>
+							<c:otherwise>
+								<a class="page-numbers" href="/earth/board/freeContent.et?pageNum=${i}#comment" class="pageNums">${i}</a>
+							</c:otherwise>
+						</c:choose>
+					</c:forEach>
+					<c:if test="${endPage < pageCount}">
+						<a class="next page-numbers" href="/earth/board/freeContent.et?pageNum=${startPage+pageBlock}#comment" class="pageNums">Next»</a>
+					</c:if>
 				</c:if> <%-- end:count > 0 --%>
 				</nav> 
 			</div>
