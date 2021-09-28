@@ -220,7 +220,7 @@
 		select * from checkAttend where id=#{id}
 	</select>
 	
-    <!-- 포인트 관련  -->
+    <!-- 포인트 관련 : 이다희 -->
 	<update id="updatePoint">
 		update point set attendcount = 0, boardcount=0,  commentcount=0
 	</update>
