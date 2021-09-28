@@ -69,14 +69,14 @@ public class BoardDAOImpl implements BoardDAO {
 		// 게시글용 포인트카운트 체크 
 		@Override
 		public int getBoardCount(String id) throws SQLException {
-			int count = sqlSession.selectOne("board.getBoardCount", id);
+			int count = sqlSession.selectOne("board.getPointBoardCount", id);
 			return count;
 		}
 		
 		// 댓글용 포인트카운트 체크
 		@Override
 		public int getCommentCount(String id) throws SQLException {
-			int count = sqlSession.selectOne("board.getCommentCount", id);
+			int count = sqlSession.selectOne("board.getPointCommentCount", id);
 			return count;
 		}
 		
