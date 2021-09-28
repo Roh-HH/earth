@@ -33,10 +33,10 @@
 		</select>
 	
 	<!-- 포인트 처리 -->
-		<select resultType="int" parameterType="string" id="getBoardCount">
+		<select resultType="int" parameterType="string" id="getPointBoardCount">
 			select boardcount from point where id = #{value}
 		</select>
-		<select resultType="int" parameterType="string" id="getCommentCount">
+		<select resultType="int" parameterType="string" id="getPointCommentCount">
 			select commentcount from point where id = #{value}
 		</select>
 		<update id="addPoint" parameterType="string">
