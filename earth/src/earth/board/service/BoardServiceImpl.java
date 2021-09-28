@@ -31,37 +31,64 @@ public class BoardServiceImpl implements BoardService {
 
 	// 0. 공용
     
-        //// ============= 닉네임 가져오기 다희 추가
-        @Override
-        public String getNickname(String id) throws SQLException {
-            String nickname = boardDAO.getNickname(id);
-            return nickname;
-        }
+		//// ============= 닉네임 가져오기 다희 추가
+		@Override
+		public String getNickname(String id) throws SQLException {
+			String nickname = boardDAO.getNickname(id);
+			return nickname;
+		}
 
-        @Override
-        public String getBoardid(String search) throws SQLException {
-            String boardid = boardDAO.getBoardid(search);
-            return boardid;
-        }
+		@Override
+		public String getBoardid(String search) throws SQLException {
+			String boardid = boardDAO.getBoardid(search);
+			return boardid;
+		}
 
-         @Override
-         public String getNicknamereply(String writer) throws SQLException {	
-             String nicknamereply = boardDAO.getNicknamereply(writer);
-             return nicknamereply;
-         }
+		@Override
+		public String getNicknamereply(String writer) throws SQLException {	
+			String nicknamereply = boardDAO.getNicknamereply(writer);
+			return nicknamereply;
+		}
 
-        @Override
-        public String getBadgeimg(String id) throws SQLException {
-            String badgeimg = boardDAO.getBadgeimg(id);
-            return badgeimg;
-        }
-        
-        //// ============= 뱃지이미지 가져오기 다희 추가
-        @Override
-        public String getBadgeimgreply(String writer) throws SQLException {
-            String badgeimg = boardDAO.getBadgeimgreply(writer);
-            return badgeimg;
-        }
+		@Override
+		public String getBadgeimg(String id) throws SQLException {
+			String badgeimg = boardDAO.getBadgeimg(id);
+			return badgeimg;
+		}
+
+		//// ============= 뱃지이미지 가져오기 다희 추가
+		@Override
+		public String getBadgeimgreply(String writer) throws SQLException {
+			String badgeimg = boardDAO.getBadgeimgreply(writer);
+			return badgeimg;
+		}
+	
+		// 포인트 추가 관련 - 노현호
+		// 게시글용 포인트카운트 체크 
+		@Override
+		public int getBoardCount(String id) throws SQLException {
+			int count = boardDAO.getBoardCount(id);
+			return count;
+		}
+		
+		// 댓글용 포인트카운트 체크
+		@Override
+		public int getCommentCount(String id) throws SQLException {
+			int count = boardDAO.getCommentCount(id);
+			return count;
+		}
+		
+		// 게시글용 포인트 5점 추가
+		@Override
+		public void addBoardPoint(String id) throws SQLException {
+			boardDAO.addBoardPoint(id);
+		}
+		
+		// 댓글용 포인트 5점 추가
+		@Override
+		public void addCommentPoint(String id) throws SQLException {
+			boardDAO.addCommentPoint(id);
+		}
     
 		// 게시판의 게시글 목록 가져오기 - 노현호
 		@Override
