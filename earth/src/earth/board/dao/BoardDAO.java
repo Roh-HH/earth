@@ -42,6 +42,16 @@ public interface BoardDAO {
 			public String getBadgeimg(String id) throws SQLException;	
 			//뱃지 이미지 가져오기 (댓글)
 			public String getBadgeimgreply(String writer) throws SQLException;
+	
+			// 포인트 추가 관련 - 노현호
+			// 게시글용 포인트카운트 체크 
+			public int getBoardCount(String id) throws SQLException;
+			// 댓글용 포인트카운트 체크
+			public int getCommentCount(String id) throws SQLException;
+			// 게시글용 포인트 5점 추가
+			public void addBoardPoint(String id) throws SQLException;
+			// 댓글용 포인트 5점 추가
+			public void addCommentPoint(String id) throws SQLException;
                 
 
 		// 1. 공지사항
