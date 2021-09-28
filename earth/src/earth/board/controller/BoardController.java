@@ -118,11 +118,15 @@ public class BoardController {
 				System.out.println("freeWritePro.et");
 				
 				dto.setId((String)session.getAttribute("sid"));
-				model.addAttribute("id", "javatest");
 				dto.setCode(2);
 				dto.setReadcount(0);
 				String hashedPassword = BCrypt.hashpw(dto.getPw(), BCrypt.gensalt());
 				dto.setPw(hashedPassword);
+				
+				// id의 글쓰기 포인트(boardcount)가 0이라면 1로 바꾸고 포인트 5점 추가
+				if(boardService.getBoardCount(dto.getId()) == 0) {
+					boardService.addBoardPoint(dto.getId());
+				}
 				
 				int result = boardService.insertFree(dto);
 				if(result == 1) {
@@ -639,6 +643,11 @@ public class BoardController {
 					dto.setRef(dto.getRef() + 1);
 				if(dto.getRelevel()==null || dto.getRelevel()==0)
 					dto.setRelevel(1);
+				
+				// id의 댓글 포인트(commentcount)가 0이라면 1로 바꾸고 포인트 5점 추가
+				if(boardService.getCommentCount(dto.getWriter()) == 0) {
+					boardService.addCommentPoint(dto.getWriter());
+				}
 
 				int result = boardService.uploadFreeComment(dto);
 				if(result == 1) {
