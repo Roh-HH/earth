@@ -365,7 +365,7 @@ public class BoardController {
 		// 6. 상점소개 - 김하영
 			// 상점소개 게시글 등록 페이지
 			@RequestMapping("writeShopForm.et")
-			public String writeShopForm(HttpServletRequest request, Model model, HttpSession session ) {
+			public String etwriteShopForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeShopForm.et");			
 	
 				int num=0, ref=1, re_step=0, re_level=0;
@@ -453,7 +453,7 @@ public class BoardController {
 		// 7. 행사 - 김하영
 			// 행사 게시글 등록 페이지
 			@RequestMapping("writeEventForm.et")
-			public String writeEventForm(HttpServletRequest request, Model model, HttpSession session ) {
+			public String etwriteEventForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeEventForm.et");			
 
 				int num=0, ref=1, re_step=0, re_level=0;
@@ -541,7 +541,7 @@ public class BoardController {
 		// 8. 꿀팁 - 김하영
 			// 꿀팁 게시글 등록 페이지
 			@RequestMapping("writeTipForm.et")
-			public String writeTipForm(HttpServletRequest request, Model model, HttpSession session ) {
+			public String etwriteTipForm(HttpServletRequest request, Model model, HttpSession session ) {
 				System.out.println("writeTipForm.et");			
 
 				int num=0, ref=1, re_step=0, re_level=0;
