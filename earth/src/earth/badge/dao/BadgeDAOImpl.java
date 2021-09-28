@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import earth.badge.dto.BadgeDTO;
-import earth.mybag.dto.MybagDTO;
+import earth.user.dto.MybagDTO;
 
 @Repository
 public class BadgeDAOImpl implements BadgeDAO{
