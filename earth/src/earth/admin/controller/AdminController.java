@@ -252,7 +252,7 @@ public class AdminController {
 		return "adminmypage/reportForm";
 	}
 	
-	// 신고 처리
+    // 신고 처리
 	@RequestMapping("reportPro.et")
 	public String reportPro(String uri, ReportDTO report, Model model, HttpSession session) throws SQLException{
 		
@@ -264,6 +264,16 @@ public class AdminController {
 		}else if(uri.equals("freeComment")) {
 			FreeCommentDTO dto = boardService.getFreeComment(report.getBoardnum());
 			report.setCtt(dto.getCtt());
+		}else if(uri.equals("diary")) {
+			DiaryDTO dto = boardService.getDiaryArticle(report.getBoardnum());
+			report.setCtt(dto.getCtt());
+		}else if(uri.equals("diarycomment")) {
+			DiaryDTO dto = boardService.getDiaryComment(report.getBoardnum());
+			report.setCtt(dto.getCommen());
+		}else if(uri.equals("challengecomment")){
+			MonthDTO dto = boardService.getChallengeComment(report.getBoardnum());
+			report.setCtt(dto.getCommen());
+			
 		}
 		
 		int result = adminService.insertReport(report);
