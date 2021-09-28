@@ -24,10 +24,18 @@
     
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
+<script>
+	$(document).ready(function(){
+		var hash = $.trim( window.location.hash );
+		if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
+	});
+</script>
 <body>
+	<%-- 앵커태그(위치이동/지우지말것) --%>
+	<a href="#list"></a>
 	<!--================ Start header Top Area =================-->
 	<%@ include file = "../include/header.jsp" %>
-	<section class="category-page area-padding">
+	<section id="list" class="category-page area-padding">
 		<div class="container">
 		<h3 class="page-title">커뮤니티</h3>
 		<h1 class="entry-title">공지사항 </h1>
@@ -75,34 +83,41 @@
 			<br />
 		</c:if>
 
-			<%-- 페이지 번호 --%>
+				<%-- 페이지 번호 --%>
 				<div align="center" class="col-12 text-center">
-				<nav class="pagination" style="float:center;">
-				<c:if test="${count > 0}">
-				<c:set var="pageBlock" value="5" />
-				<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
-				<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
-				<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
-				<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
-				<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
-				<c:if test="${endPage > pageCount}">
-					<c:set var="endPage" value="${pageCount}" /> 
-				</c:if>
-				
-				<%-- 검색 안했을때 페이지번호들   --%> 
-				<c:if test="${sel == null || search == null}">
-					<c:if test="${startPage > pageBlock}">
-						<a href="/earth/board/noticeList.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
-					</c:if>
-					<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-						<a href="/earth/board/noticeList.et?pageNum=${i}" class="pageNums">${i}</a>
-					</c:forEach>
-					<c:if test="${endPage < pageCount}">
-						<a href="/earth/board/noticeList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
-					</c:if>
-				</c:if>
-				</c:if> <%-- end:count > 0 --%>
-				</nav> 
+					<nav class="pagination" style="float:center;">
+						<c:if test="${count > 0}">
+							<c:set var="pageBlock" value="5" />
+							<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+							<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+							<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+							<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+							<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+							<c:if test="${endPage > pageCount}">
+								<c:set var="endPage" value="${pageCount}" /> 
+							</c:if>
+							
+							<%-- 검색 안했을때 페이지번호들   --%> 
+							<c:if test="${sel == null || search == null}">
+								<c:if test="${startPage > pageBlock}">
+									<a class="back page-numbers" href="/earth/board/noticeList.et?pageNum=${startPage-pageBlock}#list" class="pageNums">«Back</a>
+								</c:if>
+								<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+									<c:choose>
+										<c:when test="${pageNum eq i}">
+											<a class="current" href="/earth/board/noticeList.et?pageNum=${pageNum}#list">${i}</a>
+										</c:when>
+										<c:otherwise>
+											<a class="page-numbers" href="/earth/board/noticeList.et?pageNum=${i}#list" class="pageNums">${i}</a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:if test="${endPage < pageCount}">
+									<a class="next page-numbers" href="/earth/board/noticeList.et?pageNum=${startPage+pageBlock}#list" class="pageNums">Next»</a>
+								</c:if>
+							</c:if>
+						</c:if> <%-- end:count > 0 --%>
+					</nav>
 				</div>
 
        </div><!-- container -->
