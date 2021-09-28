@@ -29,40 +29,70 @@ public class BoardDAOImpl implements BoardDAO {
 	// 공용 및 게시판 번호순 1차 정렬 CRUD순 2차 정렬
 
 	// 0. 공용
-        // 닉네임 관련 추가 =================== 이다희
-        //댓글 닉네임 가져오기
-        @Override
-        public String getNicknamereply(String writer) throws SQLException {	
-            String nicknamreply = sqlSession.selectOne("board.getNicknamereply", writer);	
-            return nicknamreply;
-        }
-        //컨텐츠 닉네임 가져오기 
-        @Override
-        public String getNickname(String id) throws SQLException {	
-            String nickname = sqlSession.selectOne("board.getNickname", id);	
-            return nickname;
-        }
-        //search 아이디 가져오기 
-        @Override
-        public String getBoardid(String search) throws SQLException {	
-            String boardid = sqlSession.selectOne("board.getBoardid", search);
-            System.out.println("boardid " + boardid);	
-            return boardid;
-        }
-        
-        // 뱃지이미지 추가 =================== 이다희
-        @Override
-        public String getBadgeimg(String id) throws SQLException {
-            String badgeimg = sqlSession.selectOne("board.getBadgeimg", id);
-            return badgeimg;
-        }
+		// 닉네임 관련 추가 =================== 이다희
+		//댓글 닉네임 가져오기
+		@Override
+		public String getNicknamereply(String writer) throws SQLException {	
+			String nicknamreply = sqlSession.selectOne("board.getNicknamereply", writer);	
+			return nicknamreply;
+		}
+	
+		//컨텐츠 닉네임 가져오기 
+		@Override
+		public String getNickname(String id) throws SQLException {	
+			String nickname = sqlSession.selectOne("board.getNickname", id);	
+			return nickname;
+		}
+	
+		//search 아이디 가져오기 
+		@Override
+		public String getBoardid(String search) throws SQLException {	
+			String boardid = sqlSession.selectOne("board.getBoardid", search);
+			System.out.println("boardid " + boardid);	
+			return boardid;
+		}
 
-        @Override
-        public String getBadgeimgreply(String writer) throws SQLException {
-            String badgeimg = sqlSession.selectOne("board.getBadgeimgreply", writer);
-            return badgeimg;
-        }
-    
+		// 뱃지이미지 추가 =================== 이다희
+		@Override
+		public String getBadgeimg(String id) throws SQLException {
+			String badgeimg = sqlSession.selectOne("board.getBadgeimg", id);
+			return badgeimg;
+		}
+
+		@Override
+		public String getBadgeimgreply(String writer) throws SQLException {
+			String badgeimg = sqlSession.selectOne("board.getBadgeimgreply", writer);
+			return badgeimg;
+		}
+    		
+		// 포인트 추가 관련 - 노현호
+		// 게시글용 포인트카운트 체크 
+		@Override
+		public int getBoardCount(String id) throws SQLException {
+			int count = sqlSession.selectOne("board.getBoardCount", id);
+			return count;
+		}
+		
+		// 댓글용 포인트카운트 체크
+		@Override
+		public int getCommentCount(String id) throws SQLException {
+			int count = sqlSession.selectOne("board.getCommentCount", id);
+			return count;
+		}
+		
+		// 게시글용 포인트 5점 추가
+		@Override
+		public void addBoardPoint(String id) throws SQLException {
+			sqlSession.update("board.addPoint", id);
+			sqlSession.update("board.addBoardCount", id);
+		}
+		
+		// 댓글용 포인트 5점 추가
+		@Override
+		public void addCommentPoint(String id) throws SQLException {
+			sqlSession.update("board.addPoint", id);
+			sqlSession.update("board.addCommentCount", id);
+		}
     
 		// 전체 게시글 글 개수 가져오기(모든 테이블 사용 가능) - 노현호
 		@Override
