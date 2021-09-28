@@ -140,29 +140,42 @@ button{
 													<%-- 검색했을때 페이지번호들 --%>
 													<c:if test="${sel != null && search != null}">
 														<c:if test="${startPage > pageBlock}">
-															<a href="/earth/main/messageSendList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Back</a>
+															<a class="back page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Back</a>
 														</c:if>
 														<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-															<a href="/earth/main/messageSendList.et?pageNum=${i}&sel=${sel}&search=${search}#anc" class="pageNums">${i}</a>
+															<c:choose>
+																<c:when test="${pageNum eq i}">
+																	<a class="current" href="/earth/main/messageSendList.et?pageNum=${pageNum}&sel=${sel}&search=${search}#anc">${i}</a>
+																</c:when>
+																<c:otherwise>
+																	<a class="page-numbers" href="/earth/main/messageSendList.et?pageNum=${i}&sel=${sel}&search=${search}#anc" class="pageNums">${i}</a>
+																</c:otherwise>
+															</c:choose>
 														</c:forEach>
 														<c:if test="${endPage < pageCount}">
-															<a href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Next</a>
+															<a class="next page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}#anc" class="pageNums">Next</a>
 														</c:if>
 													</c:if>
 													
 													<%-- 검색 안했을때 페이지번호들   --%> 
 													<c:if test="${sel == null || search == null}">
 														<c:if test="${startPage > pageBlock}">
-															<a href="/earth/main/messageSendList.et?pageNum=${startPage-pageBlock}#anc" class="pageNums">Back</a>
+															<a class="back page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage-pageBlock}#anc" class="pageNums">«Back</a>
 														</c:if>
 														<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-															<a href="/earth/main/messageSendList.et?pageNum=${i}#anc" class="pageNums">${i}</a>
+															<c:choose>
+																<c:when test="${pageNum eq i}">
+																	<a class="current" href="/earth/main/messageSendList.et?pageNum=${pageNum}#anc">${i}</a>
+																</c:when>
+																<c:otherwise>
+																	<a class="page-numbers" href="/earth/main/messageSendList.et?pageNum=${i}#anc" class="pageNums">${i}</a>
+																</c:otherwise>
+															</c:choose>
 														</c:forEach>
 														<c:if test="${endPage < pageCount}">
-															<a href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}#anc" class="pageNums">Next</a>
+															<a class="next page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
 														</c:if>
 													</c:if>
-													
 												</c:if> <%-- end:count > 0 --%>
 											</nav>
 											<form action="/earth/main/messageSendList.et" >
