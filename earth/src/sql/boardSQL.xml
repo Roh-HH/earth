@@ -153,10 +153,6 @@
 		<update id="updateDiaryArticleImg" parameterType="diaryDTO" >
 			update diary set subject = #{subject}, ctt = #{ctt}, img = #{img} where boardnum = #{boardnum} 
 		</update>
-		 <select id="getPwDiary" resultType="string">
-			select pw from diary where boardnum = #{value}
-		</select>
-
 		<insert id="likeup" parameterType="hashmap">
 			insert into diary_recommend values(#{boardnum}, #{recid})
 		</insert>
@@ -195,7 +191,16 @@
 		</delete>
 		<delete id="deleteArticleDiary" parameterType="int">
 			delete from diary where boardnum = #{value}
-		</delete>
+		</delete>	
+		<select id="getPwDiary" resultType="string">
+			select pw from diary where boardnum = #{value}
+		</select>
+		<select id="getCttDiary" resultType="string">
+			select ctt from diary where boardnum = #{value}
+		</select>
+		<select id="getImgDiary" resultType="string">
+			select img from diary where boardnum = #{value}
+		</select>
 	
 	 
 	<!-- 이달의 챌린지 (4) 이다희  -->
@@ -261,6 +266,9 @@
 		<delete id="deleteArticleChallenge" parameterType="int">
 			delete from challenge where boardnum = #{value}
 		</delete>
+		 <select id="getPwChallenge" resultType="string">
+            select pw from challenge where boardnum = #{value}
+         </select>
  
 	<!-- 오늘의 실천 (5) 노현호 -->
 		<insert id="upload" parameterType="todayDTO">
