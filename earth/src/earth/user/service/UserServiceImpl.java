@@ -570,7 +570,14 @@ public class UserServiceImpl implements UserService {
 			
 			userDAO.equipBadge(id,badgenum);
 			
-		}		
+		}
+	
+		// 나의 포인트 가져오기
+		@Override
+		public int getPoint(String id) throws SQLException {
+			int point = userDAO.getPoint(id);
+			return point;
+		}
 	
 	// 작성자 : 이다희 김하영
 	// 마이페이지 : 출석체크
