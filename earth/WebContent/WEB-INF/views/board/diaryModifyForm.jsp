@@ -26,6 +26,37 @@
     <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
     
 </head>
+<script type="text/javascript">
+function readURL(input) {
+   	if (input.files && input.files[0]) {
+       var reader = new FileReader();
+       reader.onload = function (e) {
+   
+       		var thumb=new Image();
+       		thumb.src=reader.result;
+       		thumb.onload=function(){
+       			var canvas=document.createElement('canvas');
+       			var ctx=canvas.getContext("2d");
+       		
+           	var image = new Image();
+        	image.src = e.target.result;
+        	
+       		canvas.width='200';
+       		canvas.height='200';
+       		
+       		ctx.drawImage(this,0,0,canvas.width,canvas.height);
+       		
+       		var dataURI=canvas.toDataURL("image/jpeg");
+       		
+       		document.querySelector("#thumbnail").src=dataURI;
+       	}
+       };
+       reader.readAsDataURL(input.files[0]);
+
+   	}
+}
+</script>
+
 <body>
 <%@ include file = "../include/header.jsp" %>
  
@@ -71,11 +102,9 @@
 								</tr>
 								<tr>
 									<td>대표 이미지</td>
-									<td align="left"><input type="file" name="uploadFile"/>
+										<td align="left" ><input type="file" name="uploadFile" onchange="readURL(this)" /><br>
+										<img src="" id="thumbnail"/> 
 									</td>
-									<c:if test="${article.img != null}">
-									<td> <img src="${pageContext.request.contextPath}/save/${article.img}" width="300"/>
-									</c:if>
 								</tr>
 								<tr>
 									<td colspan="2">

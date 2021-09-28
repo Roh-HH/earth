@@ -97,7 +97,7 @@ function readURL(input) {
 										</td>
 									</tr>
 									<tr>
-										<td>대표 이미지</td>
+									<td>대표 이미지</td>
 										<td align="left" ><input type="file" name="uploadFile" onchange="readURL(this)" /><br>
 										<img src="" id="thumbnail"/> 
 									</td>
