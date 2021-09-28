@@ -41,10 +41,10 @@
 	<script>
 	// 체크박스 선택시 1:1문의 내용 포함하여 재정렬
 	$(document).ready(function(){
-		$("[id^=ofCtt]").hide();
+		$("[id^=ctt]").attr('style', "display:none;");
 					
 	   $("#onCtt").change(function(){
-		   $("[id^=ofCtt]").slideToggle();
+		   $("[id^=ctt]").slideToggle("fast");
 	    });	
 	});
 	
@@ -170,7 +170,6 @@
 															<td>
 																<c:if test="${article.reply == 0}"><a href='/earth/user/myQnAModifyForm.et?questionnum=${article.questionnum}'>${article.subject}</a></c:if>
 																<c:if test="${article.reply == 1}">${article.subject}</c:if>
-																<div id="ofCtt" style="color:blue;">문의내용 :<br>${article.ctt}</div>
 															</td>
 															<td><fmt:formatDate value="${article.reg}" pattern="yyyy.MM.dd HH:mm"/></td>
 															<td class='center'>
@@ -179,7 +178,7 @@
 																	<button onclick="window.location='/earth/user/myQnAReplyCheck.et?questionnum=${article.questionnum}'" style="float:right;background-color:#fff;color:black;border:none;">답변확인</button>
 																</c:if>
 															</td>
-															<td style="color:red;">
+															<td style="color:red; float:right;">
 																<c:if test="${article.reply == 0}">	<!-- 관리자가 답변하기 전에만 문의취소, 1:1문의 삭제 가능 -->
 																	<button onclick="window.open('/earth/user/myQnADeleteForm.et?questionnum=${article.questionnum}&id=${article.id}', '', 'width=500,height=300,location=no,status=no,scrollbars=yes,left=750,top=250');" 
 																			style="float:right;background-color:#fff; border:none;" >문의취소</button>
@@ -187,6 +186,11 @@
 																<c:if test="${article.reply == 1}">
 																	취소불가
 																</c:if>
+															</td>
+														</tr>
+														<tr id="ctt">
+															<td colspan="3" style="color:blue;">
+																문의내용 :<br>${article.ctt}
 															</td>
 														</tr>
 													</c:forEach>

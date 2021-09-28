@@ -205,7 +205,8 @@
 		                    <div class="blog_details">                       
 									<div class="row justify-content-center">
 										<div class="col-md-6 text-center mb-5">
-											<h2 class="heading-section">${user.name}님의 출석체크</h2>
+											<h2 class="heading-section">매일매일 출석체크</h2><br>
+											<p style="color:blue;">매일 어뜨에 출첵하고 포인트 받아가세요!</p>
 										</div>
 									</div>
 									<div class="center_">

@@ -103,6 +103,9 @@ public interface UserService {
 
 		// 뱃지 장착하기
 		public void equipBadge(String id,int badgenum) throws SQLException;
+	
+		// 나의 포인트 가져오기
+		public int getPoint(String id) throws SQLException;
 		
 	// 출석하기- 이다희 김하영 
 		

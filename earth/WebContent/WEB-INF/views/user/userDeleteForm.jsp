@@ -18,9 +18,17 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   	<script type="text/javascript" src="/earth/resources/bootstrap/js/valCheck.js"></script>
 </head>
 
 	<script>
+	//유효성검사
+	function check(frm){
+		if(!checkExistData(frm.pw.value, "비밀번호를") 
+		) return false;
+	   return true;
+	 }
+	
 	// 안내사항 체크 후에만 탈퇴 가능 : submit 버튼 활성화
 	function agreeCheck(frm){
 	   if (frm.deletebtn.disabled == true) {

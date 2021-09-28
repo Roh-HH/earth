@@ -192,7 +192,7 @@
 	</select>
 
 	<select id="getMyBadge" resultType="badgeDTO">
-		select badgenum,badgeprice,badgeimg,sellnum,Y.reg from users X, badge Y where X.badge = Y.badgenum and id=#{id}	
+		select badgenum,badgename,badgeprice,badgeimg,sellnum,Y.reg from users X, badge Y where X.badge = Y.badgenum and id=#{id}	
 	</select>
 
 	<update id="releaseBadge">
@@ -201,7 +201,11 @@
 	
 	<update id="equipBadge" parameterType="hashmap" >
 		update users set badge=#{badgenum} where id=#{id}
-	</update>		
+	</update>	
+	
+	<select id="getPoint" parameterType="String" resultType="int">
+		select point from point where id = #{id}
+	</select>
 	
 	
 	<!-- 출석체크 김하영 이다희 -->

@@ -118,14 +118,19 @@
 														<tr>
 															<td colspan="2" class="silchun">
 																<h5 style="text-align:center;">환경일기 게시글이 없습니다.</h5>
-																<input type="button" value="${user.name}님의 글을 다른 분들과 공유해주세요!" onclick="window.location='/earth/board/dialyList.et'" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff;" />
+																<c:if test="${sel != null && search != null}">
+																	<script>
+																		alert("검색 된 게시글이 없습니다.")
+																	</script>
+																</c:if>
+																<input type="button" value="${user.name}님의 글을 다른 분들과 공유해주세요!" onclick="window.location='/earth/board/diaryList.et'" style="background-color:#1E88E5; width:400px; border:none; height:40px; border-radius:3px;color:#ffffff;" />
 															</td>
 														</tr>
 													</table>
 												</c:if>		
 												
 												<c:if test="${count != 0}">
-				                        		<p class="heading-section">환경일기를 총 ${count}회 작성하셨습니다! ${user.name}님의 활동을 어뜨가 응원합니다. </p>
+				                        		<p class="heading-section">환경일기를 총 ${count}회 작성하셨습니다! <a href="/earth/board/diaryList.et">${user.name}님의 활동을 어뜨가 응원합니다.</a> </p>
 													<table class="table">
 														<thead class="thead-dark">
 															<tr>

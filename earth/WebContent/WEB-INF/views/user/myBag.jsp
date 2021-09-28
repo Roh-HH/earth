@@ -101,9 +101,14 @@
                 <div class="single-post">
 					<div align="center">
                     	<div class="blog_details" style="width:600px; height:600px;"> 
-                 		<h2 class="heading-section">${user.name}님의 에코백</h2>  <br><br>
+                 		<h2 class="heading-section">${user.name}님의 보유 벳지</h2>
+                 		<c:if test="${point != 0}">
+                 			<p style="color:blue;">보유 포인트 : ${point} point</p>
+                 		</c:if><br>
                    			착용중인 뱃지<br>
-                   			<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:140px; height:140px;align:center;"/><br><br>
+                   			<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:140px; height:140px;align:center;"/>
+                   			<br>
+                   			<p style="color:green;">- ${badgeName} -</p>
                    			<c:if test="${mybadge ne '새싹.png'}">
                    				<button onclick="window.location='/earth/user/releaseBadge.et'" style="border:#343a40; color:#343a40;">해제하기</button><br><br> 
                    			</c:if>	               

@@ -371,7 +371,14 @@ public class UserDAOImpl implements UserDAO {
 			map.put("badgenum", badgenum);
 			
 			sqlSession.update("user.equipBadge", map);
-		}		
+		}	
+	
+		// 나의 포인트 가져오기
+		@Override
+		public int getPoint(String id) throws SQLException {
+			int point = sqlSession.selectOne("user.getPoint", id);
+			return point;
+		}
 
 	// 작성자 : 이다희 김하영
 	// 출석체크 : 김하영 이다희	

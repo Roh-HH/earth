@@ -118,6 +118,11 @@
 												<tr>
 													<td colspan="2">
 														<h5>작성한 댓글이 없습니다.</h5>
+														<c:if test="${sel != null && search != null}">
+															<script>
+																alert("검색 된 댓글이 없습니다.")
+															</script>
+														</c:if>
 														<h6>${user.name}님! 어뜨의 다양한 게시판에 자유롭게 댓글을 남겨주세요!</h6>
 													</td>
 												</tr>
@@ -143,7 +148,7 @@
 														</th>
 														<td>
 															<c:if test="${article.code == 9}">
-																<a href="/earth/board/freeContent.et?freenum=${article.freenum}">
+																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1">
 																	${article.commen}
 																</a>
 															</c:if>

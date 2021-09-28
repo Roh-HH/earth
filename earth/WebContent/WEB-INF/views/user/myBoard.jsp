@@ -126,7 +126,7 @@
 											</table>
 										</c:if>							
 										<c:if test="${count != 0}">
-			                        	<p class="heading-section">자유게시판에 총 ${count}개의 글을 작성하셨습니다! <a href="/earth/board/freeList.et">${user.name}님의 더 많은 어뜨 활동을 기다립니다.</a></p>
+			                        	<p class="heading-section">자유게시판에 총 ${count}개의 글을 작성하셨습니다! <a href="/earth/board/freeList.et">${user.name}님의 활동을 어뜨가 응원합니다.</a></p>
 											<table class="table">
 												<thead class="thead-dark">
 													<tr>
@@ -147,7 +147,7 @@
 																<c:if test="${article.categ == 3}">[정보공유]</c:if>
 															</td>
 															<td>
-																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}">${article.subject}</a>
+																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1">${article.subject}</a>
 															</td>
 															<td><fmt:formatDate value="${article.reg}" pattern="yyyy/MM/dd [E]"/></td>
 															<td class="center" style="color:#FFB400">${article.readcount}</td>

@@ -142,7 +142,7 @@
 												<tr>
 													<td>1:1 문의 내용</td>
 													<td>
-														<input type="text" width="400px;" name="ctt" style="width:450px; height:450px; border-width:3;" /> 
+														<textarea name="ctt" style="width:450px; height:450px; border-width:3;"></textarea>
 													</td>
 												</tr>
 												<tr>

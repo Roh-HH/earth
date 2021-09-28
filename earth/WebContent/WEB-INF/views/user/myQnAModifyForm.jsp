@@ -25,7 +25,7 @@
 	.alert{
 		color:#212529;
 	}
-	 .center, .silchun{
+	 .center, .silchun, .heading-section{
      	text-align:center;
      	vertical-align:middle;
      }
@@ -139,7 +139,7 @@
 												<tr>
 													<td>1:1 문의 내용</td>
 													<td>
-														<input type="text" value="${question.ctt}" width="400px;" name="ctt" style="width:450px; height:450px; border-width:3;" />
+														<textarea name="ctt" style="width:450px; height:450px; border-width:3;">${question.ctt}</textarea>
 													</td>
 												</tr>
 												<tr>

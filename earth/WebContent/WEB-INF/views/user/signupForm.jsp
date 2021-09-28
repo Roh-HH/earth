@@ -207,7 +207,7 @@
 				<tr>
 					<td>전화번호 </td>
 					<td>
-						<input type="text" width="400px;" name="phone" id="phone" placeholder="-를 제외한 숫자만 입력해주세요."  style="width:250px; height:40px;"/> 
+						<input type="number" width="400px;" name="phone" id="phone" placeholder="-를 제외한 숫자만 입력해주세요."  style="width:250px; height:40px;"/> 
 					</td>
 				</tr>
 				<tr>
