@@ -355,7 +355,7 @@ public class AdminController {
 	@RequestMapping("adminReport.et")
 	public String adminReport(String pageNum, String process, String sel, String search, Model model, HttpSession session) throws SQLException{
 		
-		if(!(session.getAttribute("sid")==null)) {
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 			return "main/main.et";
 		}
@@ -396,7 +396,7 @@ public class AdminController {
 	@RequestMapping("adminReportForm.et")
 	public String adminReportForm(String pageNum, int reportnum, String sel, String search, Model model, HttpSession session) throws SQLException{
 		
-		if(!(session.getAttribute("sid")==null)) {
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 			return "main/main.et";
 		}
@@ -425,7 +425,7 @@ public class AdminController {
 	@RequestMapping("adminReportPro.et")
 	public String adminReportPro(String pageNum, String id, int reportnum, int punish, String sel, String search, Model model, HttpSession session) throws SQLException{
 		
-		if(!(session.getAttribute("sid")==null)) {
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 			return "main/main.et";
 		}
