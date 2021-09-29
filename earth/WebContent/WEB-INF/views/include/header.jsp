@@ -46,14 +46,18 @@
 								</c:if>
 							</li>
 							<c:if test="${sessionScope.sid != null}">
-				                            <li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+								<li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
 							</c:if>
 							<c:if test="${sessionScope.sid == null }">
 								<li><img onclick="window.location='/earth/user/loginForm.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
 							</c:if>
-				           	<li>
-				           		<img onclick="window.location='/earth/board/dailyChallenge.et#upload'" src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px">
-				           	</li>
+
+							<c:if test="${sessionScope.sid != null}">
+								<li><img onclick="window.location='/earth/board/dailyChallenge.et#upload'" src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
+							</c:if>
+							<c:if test="${sessionScope.sid == null }">
+								<li><img onclick="window.location='/earth/user/loginForm.et'" src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
+							</c:if>
                         </ul>
                     </div>
                 </div>
