@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
+
 <style>
 .badgeImg{
 width:20px; 
@@ -61,7 +62,8 @@ margin-right:4px;
 						<td colspan="6" align="right"> 
 							<c:if test="${sid eq 'admin'}">
 								<input type="submit" value="수정" style="background-color:#1E88E5; color:#ffffff; float:right; border:none; " onclick="window.location='/earth/board/tipModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'" /> 
-								<input type="submit" value="삭제" style="background-color:#ffffff; color:#1E88E5; float:right; border:none; " onclick="" />		
+								<input type="submit" value="삭제" style="background-color:#ffffff; color:#1E88E5; float:right; border:none; " 
+								 onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=8&uri=/earth/board/tip.et&pageNum=${pageNum}'" />		
 							</c:if>
 							<input type="button" value="목록으로" onclick="window.location='/earth/board/tip.et?pageNum=${pageNum}'" style="background-color:#ffffff; border:none; color:#1E88E5; " />
 						</td>

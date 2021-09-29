@@ -71,7 +71,7 @@ text-align:right;
 							<c:if test="${sid eq 'admin'}">
 								<button onclick="window.location='/earth/board/eventModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
 								style="background-color:#1E88E5; color:#ffffff; border:none;float:right;">수 정</button>
-								<button onclick=""
+								<button  onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=7&uri=/earth/board/event.et&pageNum=${pageNum}'"
 								style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
 							</c:if>
 							
