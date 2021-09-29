@@ -35,10 +35,17 @@
 	</script>
 </c:if>
 
+<c:if test="${id eq null}">
+	<script language="javascript">
+		alert("로그인 하셔야 구매 가능합니다");
+		self.close();
+	</script>
+</c:if>
+
 <body >
 	<p style="text-align:center; font-size:18px; font-weight:bold; color:#111111;">뱃지 구매하기</p>
 	<div style="text-align : center;">
-		<img src="/earth/resources/bootstrap/imgs/${result.badgeimg}" style="align:center;width:80px; height:80px;"/>
+		<img src="/earth/save/${result.badgeimg}" style="align:center;width:80px; height:80px;"/>
 	</div>
 	<table>
 		<tr>

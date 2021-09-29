@@ -106,7 +106,7 @@ public class BadgeDAOImpl implements BadgeDAO{
 
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("num",num);
-		map.put("uid",id);
+		map.put("id",id);
 		
 		int result = 0;
 		int check = sqlSession.selectOne("badge.checkBadge", map);

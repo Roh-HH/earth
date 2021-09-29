@@ -3,7 +3,6 @@ package earth.badge.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -56,6 +54,7 @@ public class BadgeController {
 		model.addAttribute("count", BadgeList.get("count"));
 		model.addAttribute("number", BadgeList.get("number"));
 		model.addAttribute("filter", filter);
+
 		
 		return "badge/badgeShop";
 	}
@@ -76,19 +75,28 @@ public class BadgeController {
 		//String id = "admin";
 		//session.setAttribute("sid", id);
 
-		// 뱃지 하나 불러오기
-		BadgeDTO result = badgeService.getBadge(num);
+		
+		BadgeDTO result = null;
+		int check = 0;
+		int point = 0;
 
-		// 이미 보유중인지 파악하기
-		int check = badgeService.checkBadge(num,id);
-
-		// 유저 포인트 불러오기  
-		int point = badgeService.getPoint(id);
+		if(id != null) {
+			
+			// 뱃지 하나 불러오기
+			result = badgeService.getBadge(num);
+			
+			// 이미 보유중인지 파악하기
+			check = badgeService.checkBadge(num,id);
+			
+			// 유저 포인트 불러오기  
+			point = badgeService.getPoint(id);
+		}
 		
 		// view 에 전달할 데이터 보내기
 		model.addAttribute("result",result);
 		model.addAttribute("point",point);
 		model.addAttribute("check",check);
+		model.addAttribute("id", id);
 		
 		
 		return "badge/buyBadge";

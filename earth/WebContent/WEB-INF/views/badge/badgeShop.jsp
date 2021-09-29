@@ -27,7 +27,7 @@
 <script language="javascript">
 
 	function showPopup(num) {
-		window.open("/earth/badge/buyBadge.et?num="+num, "a", "width=400, height=550, left=100, top=50");
+		window.open("/earth/badge/buyBadge.et?num="+num, "a", "width=460, height=370, left=100, top=50");
 	}
 
  </script>    
