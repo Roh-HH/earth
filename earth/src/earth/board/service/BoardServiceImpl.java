@@ -665,6 +665,21 @@ public class BoardServiceImpl implements BoardService {
 			return result;
 		}
 		
+		//꿀팁 이전글 -김하영 
+		@Override
+		public TipDTO prevTipBoard(int boardnum) throws SQLException {
+			TipDTO prevBoard = boardDAO.prevTipBoard(boardnum);
+
+			return prevBoard;
+		}
+		//꿀팁 다음글 - 김하영 
+		@Override
+		public TipDTO nextTipBoard(int boardnum) throws SQLException {
+			TipDTO nextBoard = boardDAO.nextTipBoard(boardnum);
+
+			return nextBoard;
+		}
+
 		
 	// 9. 자유게시판 댓글
 		// 자유게시판 댓글 업로드 - 노현호
