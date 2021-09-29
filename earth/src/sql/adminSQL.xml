@@ -186,7 +186,71 @@
 		]]>
 	</select>
 	
+	<!-- 신고 시작 -->
+	<insert id="insertReport" parameterType="reportDTO">
+		insert into report values(report_seq.nextval, #{id}, #{receiver}, sysdate, #{ctt}, #{condition}, #{boardnum}, 0, #{reportctt})
+	</insert>
 	
+	<select id="getReport" resultType="reportDTO" parameterType="int">
+		select * from report where reportnum = #{value}
+	</select>
+	
+	<select id="getReportCount" resultType="int">
+		select count(*) from report where process = #{value} 
+	</select>
+	
+	<select id="getReportCountProcess" resultType="int">
+		select count(*) from report where process != 0 
+	</select>
+	
+	<select id="getSearchReportCount" resultType="int">
+		select count(*) from report where process = ${process} and ${sel} like '%'||#{search}||'%'
+	</select>
+	
+	<select id="getSearchReportCountProcess" resultType="int">
+		select count(*) from report where process != 0 and ${sel} like '%'||#{search}||'%'
+	</select>
+	
+	<select id="getReportList" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process = ${process} order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
+	<select id="getReportListProcess" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process != 0 order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
+	<select id="getReportSearch" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process = ${process} and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
+	<select id="getReportSearchProcess" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process != 0 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
+	<update id="processUpdate" parameterType="hashmap">
+		update report set process = #{process} where reportnum = #{reportnum}
+	</update>
+	
+	<update id="processOne" parameterType="string">
+		update users set reportcount = reportcount + 1 where id = #{value}
+	</update>
+	
+	<delete id="processTwo" parameterType="string">
+		delete from users where id = #{value}
+	</delete>
+	
+	<update id="updateReportCount">
+		update users set warncount = floor(reportcount/3) where reportcount != 0
+	</update>
+	<!-- 신고 끝 -->
 	
 	
 </mapper>
