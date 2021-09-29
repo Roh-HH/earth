@@ -99,7 +99,7 @@
 							<div class="single-comment justify-content-between d-flex">
 								<div class="user justify-content-between d-flex">
 									<div class="thumb">
-										<img src="/earth/resources/bootstrap/imgs/logo.png" alt="">
+										<img src='${pageContext.request.contextPath}/save/${mybadge}' style="width:40px; height:40px;"/><br>
 									</div>
 									<div class="desc">
 										<p class="comment" style="color:#1E88E5; font-weight:bold; width:800px;">
