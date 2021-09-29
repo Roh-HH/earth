@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import earth.user.dto.ReportDTO;
 import earth.admin.service.AdminServiceImpl;
+import earth.board.dto.DiaryDTO;
 import earth.board.dto.FreeCommentDTO;
 import earth.board.dto.FreeDTO;
+import earth.board.dto.MonthDTO;
 import earth.board.service.BoardServiceImpl;
 
 @Controller
