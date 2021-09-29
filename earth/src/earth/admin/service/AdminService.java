@@ -3,6 +3,9 @@ package earth.admin.service;
 import java.sql.SQLException;
 import java.util.Map;
 
+import earth.admin.dto.AdminQuestionDTO;
+import earth.user.dto.ReportDTO;
+
 public interface AdminService {
 
 	public Map<String, Object> getUserList(String pageNum) throws SQLException;
@@ -29,10 +32,18 @@ public interface AdminService {
 	
 	public Map<String, Object> getQuestionSearch(String pageNum, String sel, String search) throws SQLException;
 	
+	public void deleteQuestion(String num) throws SQLException;
+	// 작성자 : 이영인
+	// 1:1 문의 답변하기
+	public AdminQuestionDTO getQnAOne(int questionnum) throws SQLException;
+	public void addQnAReply(AdminQuestionDTO dto) throws SQLException;
+	
 	public Map<String, Object> getNoticeList(String pageNum) throws SQLException;
 	
 	public Map<String, Object> getNoticeSearch(String pageNum, String sel, String search) throws SQLException;
 	
+	//신고
+	//작성자 : 현호형님
 	public int insertReport(ReportDTO report) throws SQLException;
 	
 	public ReportDTO getReport(int reportnum) throws SQLException;
