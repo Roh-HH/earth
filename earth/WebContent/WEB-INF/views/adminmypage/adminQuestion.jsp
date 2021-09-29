@@ -75,9 +75,6 @@
 								<a href="/earth/adminmypage/adminUser.et">회원관리</a>
 							</li>
 							<li>
-								<a href="/earth/adminmypage/adminModify.et">운영자권한관리</a>
-							</li>
-							<li>
 								<a href="/earth/adminmypage/adminBoard.et">게시글관리</a>
 							</li>
 							<li>
@@ -85,9 +82,6 @@
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminQuestion.et">1:1문의</a>
-							</li>
-							<li>
-								<a href="/earth/adminmypage/adminNotice.et">공지사항</a>
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminReport.et">신고</a>
@@ -145,6 +139,8 @@
 				            </table>
 				            
 				            
+				            <nav class="pagination">							
+								<c:if test="${count > 0}">
 				            <%-- 페이지번호 조정, 12345/678910 5마다 세트로 묶음 --%>
 								<c:set var="pageBlock" value="3" />
 								<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
@@ -159,34 +155,38 @@
 								<%-- 검색O 페이지번호 --%>
 								<c:if test="${sel != null && search != null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminUser.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
 									</c:if>
 								</c:if>
 								
 								<%-- 검색X 페이지번호   --%> 
 								<c:if test="${sel == null || search == null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<c:if test="${pagenum == i}">
-										<h3 style="colorgray">${i}</h3>
-										</c:if>
-										<c:if test="${pagenum != i}">
-										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
-										</c:if>
+										<c:choose>
+											<c:when test="${pageNum == i }">
+												<a  class="current" href="/earth/adminmypage/adminUser.et?pageNum=${pageNum}">${i}</a>
+											</c:when>
+											<c:otherwise >
+												<a href="/earth/adminmypage/adminUser.et?pageNum=${i}" class="pageNums">${i}</a>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
 									</c:if>
 								</c:if>
-							</c:if> 
+								</c:if> 
+								</nav>
+						</c:if> 
 							
 							
 							<br /> <br />

@@ -50,9 +50,6 @@
 								<a href="/earth/adminmypage/adminUser.et">회원관리</a>
 							</li>
 							<li>
-								<a href="/earth/adminmypage/adminModify.et">운영자권한관리</a>
-							</li>
-							<li>
 								<a href="/earth/adminmypage/adminBoard.et">게시글관리</a>
 							</li>
 							<li>
@@ -60,9 +57,6 @@
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminQuestion.et">1:1문의</a>
-							</li>
-							<li>
-								<a href="/earth/adminmypage/adminNotice.et">공지사항</a>
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminReport.et">신고</a>
@@ -95,18 +89,18 @@
 				        <c:if test="${count != 0}">
 				            <table align="center">
 				            <tr>
-				            	<td align="center"><%--체크박스용--%></td>
 				            	<td align="center">구분</td>
 				            	<td align="center">ID</td> 
 				           	 	<td align="center">닉네임</td>
 				           	 	<td align="center">내용</td>
 				           	 	<td align="center">작성일</td>
+				           	 	<td align="center"><%--삭제버튼--%></td>
 				       		</tr>
 				       		
 				      		<%-- 정보 view, 옵션추가시 해당 tr onclick으로 해당 게시글 팝업 --%>
 				      		<c:forEach var="comm" items="${commentList}" varStatus="status">
 								<tr align="center">
-									<td><input type="checkbox" name="info" value="${comm.commentnum}"/>
+									
 									<td>
 									<c:if test="${comm.code == 9}">자유게시판</c:if>
 									<c:if test="${comm.code == 10}">환경일기</c:if>
@@ -116,10 +110,14 @@
 									<td>${comm.nickname}</td>
 									<td>${comm.commen}</td>
 									<td>${comm.regcomm}</td>
-								</tr>
+									<td>
+									<button onclick="window.open('/earth/adminmypage/adminCommentDeleteForm.et?num=${comm.commentnum}&code=${comm.code}','','width=500,height=300,location=no,status=no,scrollbars=no');">삭제</button>	
+									</tr>
 							</c:forEach>
 				            </table>
 				            
+				            <nav class="pagination">							
+								<c:if test="${count > 0}">
 				            <%-- 페이지번호 조정, 12345/678910 5마다 세트로 묶음 --%>
 								<c:set var="pageBlock" value="3" />
 								<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
@@ -134,34 +132,38 @@
 								<%-- 검색O 페이지번호 --%>
 								<c:if test="${sel != null && search != null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminComment.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminComment.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a href="/earth/adminmypage/adminComment.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+										<a href="/earth/adminmypage/adminComment.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminComment.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminComment.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
 									</c:if>
 								</c:if>
 								
 								<%-- 검색X 페이지번호   --%> 
 								<c:if test="${sel == null || search == null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminComment.et?pageNum=${startPage-pageBlock}" class="pageNums"> &lt; &nbsp;</a>
+										<a href="/earth/adminmypage/adminComment.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<c:if test="${pagenum == i}">
-										<h3 style="colorgray">${i}</h3>
-										</c:if>
-										<c:if test="${pagenum != i}">
-										<a href="/earth/adminmypage/adminComment.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
-										</c:if>
+										<c:choose>
+											<c:when test="${pageNum == i }">
+												<a  class="current" href="/earth/adminmypage/adminComment.et?pageNum=${pageNum}">${i}</a>
+											</c:when>
+											<c:otherwise >
+												<a href="/earth/adminmypage/adminComment.et?pageNum=${i}" class="pageNums">${i}</a>
+											</c:otherwise>
+										</c:choose>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminComment.et?pageNum=${startPage+pageBlock}" class="pageNums"> &gt; </a>
+										&nbsp; <a href="/earth/adminmypage/adminComment.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
 									</c:if>
 								</c:if>
-							</c:if> 
+								</c:if> 
+								</nav>
+						</c:if>
 							
 							
 							<br /> <br />
@@ -178,6 +180,7 @@
 							
 								<select name="sel">
 									<option value="writer">작성자</option>
+									<option value="commen">내용</option>
 								</select>
 							
 								<input class="form-control" type="text" placeholder="아이디" name="search" value="" title="search"
