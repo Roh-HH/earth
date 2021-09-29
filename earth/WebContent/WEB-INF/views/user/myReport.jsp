@@ -129,10 +129,10 @@
 											<table class="table">
 												<thead class="thead-dark">
 													<tr>
-														<th style="width:150px;">신고아이디</th>
-													    <th style="width:300px;">신고내용</th>												      
+													    <th style="width:140px;">신고아이디</th>
+													    <th style="width:280px;">신고내용</th>												      
 													    <th style="width:200px;">신고일</th>
-													    <th style="width:150px;">신고처리상태</th>
+													    <th style="width:180px;">신고처리상태</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -154,7 +154,7 @@
 															<td class='center'>
 																<c:if test="${article.process == 0}">처리중</c:if>
 																<c:if test="${article.process == 1}">처리완료</c:if>
-																<c:if test="${article.process == 2}">처리완료 - 경고 조치</c:if>
+																<c:if test="${article.process == 2}">처리완료 - 경고조치</c:if>
 																<c:if test="${article.process == 3}">처리완료 - 영구정지</c:if>
 															</td>
 														</tr>
