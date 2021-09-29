@@ -309,7 +309,145 @@ public class AdminController {
 		
 	}
 	
+	// 이하 신고 관련 메서드 - 노현호
+	// 신고 폼
+	@RequestMapping("reportForm.et")
+	public String reportForm(String id, String uri, int boardnum, Model model) throws SQLException{
+		
+		model.addAttribute("receiver", id);
+		model.addAttribute("uri", uri);
+		model.addAttribute("boardnum", boardnum);
+		
+		return "adminmypage/reportForm";
+	}
 	
+	// 신고 처리
+	@RequestMapping("reportPro.et")
+	public String reportPro(String uri, ReportDTO report, Model model, HttpSession session) throws SQLException{
+		
+		report.setId((String)session.getAttribute("sid"));
+		
+		if(uri.equals("free")) {
+			FreeDTO dto = boardService.getFreeArticle(report.getBoardnum());
+			report.setCtt(dto.getCtt());
+		}else if(uri.equals("freeComment")) {
+			FreeCommentDTO dto = boardService.getFreeComment(report.getBoardnum());
+			report.setCtt(dto.getCtt());
+		}else if(uri.equals("diary")) {
+			DiaryDTO dto = boardService.getDiaryArticle(report.getBoardnum());
+			report.setCtt(dto.getCtt());
+		}else if(uri.equals("diarycomment")) {
+			DiaryDTO dto = boardService.getDiaryComment(report.getBoardnum());
+			report.setCtt(dto.getCommen());
+		}else if(uri.equals("challengecomment")){
+			MonthDTO dto = boardService.getChallengeComment(report.getBoardnum());
+			report.setCtt(dto.getCommen());
+			
+		}
+		
+		int result = adminService.insertReport(report);
+		model.addAttribute("result", result);
+		
+		return "adminmypage/reportPro";
+	}
+	
+	// 신고 현황목록 확인
+	@RequestMapping("adminReport.et")
+	public String adminReport(String pageNum, String process, String sel, String search, Model model, HttpSession session) throws SQLException{
+		
+		if(!session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+			return "main/main.et";
+		}
+		
+		Map<String, Object> result = null;
+		
+		if(pageNum == null){ 
+			pageNum = "1";
+		}
+		
+		if(process == null){ 
+			process = "0";
+		}
+		
+		if(sel == null || search == null) {
+			result = adminService.getReportList(pageNum, process);
+		}else {
+			result = adminService.getReportSearch(pageNum, process , sel, search);
+		}
+		
+		// view 에 전달할 데이터 보내기
+		model.addAttribute("pageSize", result.get("pageSize"));
+		model.addAttribute("pageNum", result.get("pageNum"));
+		model.addAttribute("currentPage", result.get("currentPage"));
+		model.addAttribute("startRow", result.get("startRow"));
+		model.addAttribute("endRow", result.get("endRow"));
+		model.addAttribute("reportList", result.get("reportList"));
+		model.addAttribute("count", result.get("count"));
+		model.addAttribute("number", result.get("number"));
+		model.addAttribute("process", process);
+		model.addAttribute("sel", sel);
+		model.addAttribute("search", search);
+		
+		return "adminmypage/adminReport";
+	}
+	
+	// 신고 처리 폼
+	@RequestMapping("adminReportForm.et")
+	public String adminReportForm(String pageNum, int reportnum, String sel, String search, Model model, HttpSession session) throws SQLException{
+		
+		if(!session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+			return "main/main.et";
+		}
+		
+		if(pageNum == null || pageNum == ""){ 
+			pageNum = "1";
+		}
+		
+		if(sel != null && search != null) {
+			model.addAttribute("sel", sel);
+			model.addAttribute("search", search);
+		}else {
+			model.addAttribute("sel", "");
+			model.addAttribute("search", "");
+		}
+
+		ReportDTO report = adminService.getReport(reportnum);
+		
+		model.addAttribute("pageNum", pageNum);
+		model.addAttribute("report", report);
+		
+		return "adminmypage/adminReportForm";
+	}
+	
+	// 신고 처리 프로
+	@RequestMapping("adminReportPro.et")
+	public String adminReportPro(String pageNum, String id, int reportnum, int punish, String sel, String search, Model model, HttpSession session) throws SQLException{
+		
+		if(!session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+			return "main/main.et";
+		}
+		
+		if(pageNum == null){ 
+			pageNum = "1";
+		}
+		
+		int result = adminService.processReport(id, reportnum, punish);
+		
+		model.addAttribute("result", result);
+		model.addAttribute("pageNum", pageNum);
+		
+		if((sel != null && !sel.equals("")) && (search != null && !search.equals(""))) {
+			model.addAttribute("sel", sel);
+			model.addAttribute("search", search);
+		}
+		
+		return "adminmypage/adminReportPro";
+	}
+	
+	// 이상 신고 관련 메서드
 	
 	
 	
