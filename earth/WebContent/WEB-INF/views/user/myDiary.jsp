@@ -145,7 +145,7 @@
 															    <tr class="alert" role="alert">
 															      <th scope="row"><fmt:formatDate value="${article.reg}" pattern="yyyy년 MM월 dd일 E요일"/></th>
 															      <td>
-															      	<a href="/earth/board/diaryContent.et?boardnum=${article.boardnum}">											
+															        <a href="/earth/board/diaryContent.et?boardnum=${article.boardnum}&pageNum=1">			
 																		${article.subject}
 																	</a>
 																  </td>
