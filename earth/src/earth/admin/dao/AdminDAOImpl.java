@@ -278,7 +278,12 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	@Override
 	public int getReportCount(String process) throws SQLException {
-		int result = sqlSession.selectOne("admin.getReportCount", process);
+		int result = 0;
+		if(process.equals("0")) {
+			result = sqlSession.selectOne("admin.getReportCount", process);			
+		}else {
+			result = sqlSession.selectOne("admin.getReportCountProcess");
+		}
 		return result;
 	}
 	
@@ -289,7 +294,13 @@ public class AdminDAOImpl implements AdminDAO {
 		map.put("startRow", startRow);
 		map.put("endRow", endRow);
 	
-		List<ReportDTO> reportList = sqlSession.selectList("admin.getReportList", map);
+		List<ReportDTO> reportList = null;
+		if(process.equals("0")) {
+			reportList = sqlSession.selectList("admin.getReportList", map);			
+		}else {
+			reportList = sqlSession.selectList("admin.getReportListProcess", map);
+		}
+		
 		return reportList;
 	}
 	
@@ -300,7 +311,13 @@ public class AdminDAOImpl implements AdminDAO {
 		map.put("sel", sel);
 		map.put("search", search);
 		
-		int result = sqlSession.selectOne("admin.getSearchReportCount", map);
+		int result = 0;
+		if(process.equals("0")) {
+			result = sqlSession.selectOne("admin.getSearchReportCount", map);		
+		}else {
+			result = sqlSession.selectOne("admin.getSearchReportCountProcess", map);
+		}
+
 		return result;
 	}
 	
@@ -313,12 +330,18 @@ public class AdminDAOImpl implements AdminDAO {
 		map.put("sel", sel);
 		map.put("search", search);
 		
-		List<ReportDTO> reportList = sqlSession.selectList("admin.getReportSearch", map);
+		List<ReportDTO> reportList = null;
+		if(process.equals("0")) {
+			reportList = sqlSession.selectList("admin.getReportSearch", map);			
+		}else {
+			reportList = sqlSession.selectList("admin.getReportSearchProcess", map);
+		}
+		
 		return reportList;
 	}
 	
 	@Override
-	public int processReport(String id, int reportnum, int punish) throws SQLException {		
+	public int processReport(String id, int reportnum, int punish) throws SQLException {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("reportnum", reportnum);
 		
