@@ -39,20 +39,7 @@
 	</script>
 
 </head>
-<%-- 로그인 상태에서 로그인폼 접근시  check == 1
-<c:if test="${check != 0}">
-	<script>
-		alert("이미 로그인 상태입니다.");
-		window.location = "/earth/user/main.do"; 
-	</script>
-</c:if>
---%>
-
-<%-- 로그아웃 상태에서 로그인하려고 접근시 check == 0
-<c:if test="${check == 0}">
---%>
 <body>
-
      <!--================ Start header Top Area =================-->
     <section class="header-top">
         <div class="container">
@@ -60,7 +47,6 @@
                 <div class="col-6 col-lg-4">
                     <div class="float-right">
                         <ul class="header_social">
-                            
                         </ul>   
                     </div>
                 </div>
@@ -90,8 +76,8 @@
 								</c:if>
 							</li>
 				
-				<li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
-				<li><img src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
+                            <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+                            <li><img src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
                             
                         </ul>
                     </div>
@@ -101,11 +87,8 @@
        
     </section>
     <!--================ End header top Area =================-->
-
 <section class="category-page area-padding" style="float:center;">
  <div class="container">   	
-    	<!-- - 여기까지 손대지 마세요!!
-    	 -->
     	 <div id="content" class="site-content"> 
     	 <div class="maintext" align="center">
 			<form action="/earth/user/loginPro.et" method="post" style="width:300px; height:700px;" onsubmit="return check(this)">
@@ -139,7 +122,4 @@
 <script src='/earth/resources/bootstrap/js/scripts.js'></script>
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
-<%--</c:if> --%>
 </html>
-
-
