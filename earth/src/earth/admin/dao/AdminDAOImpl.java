@@ -319,16 +319,28 @@ public class AdminDAOImpl implements AdminDAO {
 	
 	@Override
 	public int processReport(String id, int reportnum, int punish) throws SQLException {		
-		switch(punish) {
-		case 1:
-			sqlSession.update("admin.processOne", id);
-			break;
-		case 2:
-			sqlSession.delete("admin.processTwo", id);
-			break;
-		}
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("reportnum", reportnum);
 		
-		int result = sqlSession.update("admin.processUpdate", reportnum);
+		int result = 0;
+		
+		switch(punish) {
+		case 0:
+			map.put("process", 1);
+			result = sqlSession.update("admin.processUpdate", map);
+			return result;
+		case 1:
+			map.put("process", 2);
+			sqlSession.update("admin.processOne", id);
+			result = sqlSession.update("admin.processUpdate", map);
+			return result;
+		case 2:
+			map.put("process", 3);
+			sqlSession.delete("admin.processTwo", id);
+			result = sqlSession.delete("admin.processUpdate", map);
+			return result;
+		}
+
 		return result;
 	}
 	
