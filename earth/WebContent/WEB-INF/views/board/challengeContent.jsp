@@ -284,8 +284,10 @@ article.dateck == 1 : 데이트 마감 안됨
 											  </p>
 		                                  <div class="d-flex justify-content-between">
 		                                      <div class="d-flex align-items-center">
+		                                   		   <h5> ${replyList.nickname}</h5> 
 		                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
-		                                      		class="btn-reply text-uppercase" style="cursor:default;"> <h5> ${replyList.nickname}</h5> </a>
+		                                      		class="btn-reply text-uppercase" style="cursor:default;"> 
+		                                      		<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
 		                                        	 <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
 		                                      <div class="reply-btn" style="width:150px;">

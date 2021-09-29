@@ -87,8 +87,10 @@ margin-right:4px;
 		</tr>
 		<tr>
 			<td width="200px"> 작성자 </td>
-			<td><img class="badgeImg" src="${pageContext.request.contextPath}/save/${badgeimg}" />
-			<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${nickname}</a>
+			<td><img class="badgeImg" src="${pageContext.request.contextPath}/save/${badgeimg}" />${nickname}
+				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+				<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+				</a>
 			</td>
 		</tr>
 		<tr>
@@ -234,8 +236,10 @@ margin-right:4px;
 											  </p>
 		                                  <div class="d-flex justify-content-between">
 		                                   <div class="d-flex align-items-center">
+		                                   		   <h5> ${replyList.nickname}</h5> 
 		                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
-		                                      		class="btn-reply text-uppercase" style="cursor:default;"> <h5> ${replyList.nickname}</h5> </a>
+		                                      		class="btn-reply text-uppercase" style="cursor:default;"> 
+		                                      		<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
 		                                        	 <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
 		                                      <div class="reply-btn" style="width:150px;">
