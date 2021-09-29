@@ -56,8 +56,9 @@
 	<select id="getSearchBoardCount" parameterType="hashmap" resultType="int">
 	<![CDATA[
 		select count(*) from (select rownum r, A.* from 
-		(select * from(select A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
-		union select A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where ${sel} like '%'||#{search}||'%' order by reg desc) A)
+		(select * from(select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
+		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)
+		order by reg desc) A where ${sel} like '%'||#{search}||'%')
 	]]>
 	</select>
 	
@@ -65,7 +66,9 @@
 	<![CDATA[
 		select * from (select rownum r, A.* from 
 		(select * from(select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
-		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where ${sel} like '%'||#{search}||'%' order by reg desc) A) where r >= ${startRow} and r <= ${endRow}
+		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)
+		order by reg desc) A where ${sel} like '%'||#{search}||'%') where r >= ${startRow} and r <= ${endRow}
+	
 	]]>
 	</select>
 	
@@ -101,23 +104,25 @@
 	
 	<select id="getSearchCommentCount" parameterType="hashmap" resultType="int">
 		<![CDATA[
-			select count(*) from (select code, commen, regcomm from diarycomment where ${sel} like '%'||#{search}||'%'
+			select count(*) from (select rownum r, A.* from (
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from diarycomment A, users B where A.writer = B.id
 			union all
-			select code, commen, regcomm from challengecomment where ${sel} like '%'||#{search}||'%'
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from challengecomment A, users B where A.writer = B.id 
 			union all
-			select code, ctt, reg from freecomment where ${sel} like '%'||#{search}||'%' order by regcomm desc)
+			select A.commentnum, A.code, A.writer, B.nickname, A.ctt, A.reg from freecomment A, users B where A.writer = B.id order by regcomm desc) A where ${sel} like '%'||#{search}||'%') 
+			
 		]]>
 		
 	</select>
 	
 	<select id="getSearchComment" parameterType="hashmap" resultType="AdminCommentDTO">
 		<![CDATA[
-		select * from (select rownum r, A.* from (
-			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from diarycomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%'
+			select * from (select rownum r, A.* from (
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from diarycomment A, users B where A.writer = B.id
 			union all
-			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from challengecomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%'
+			select A.commentnum, A.code, A.writer, B.nickname, A.commen, A.regcomm from challengecomment A, users B where A.writer = B.id 
 			union all
-			select A.commentnum, A.code, A.writer, B.nickname, A.ctt, A.reg from freecomment A, users B where A.writer = B.id and A.${sel} like '%'||#{search}||'%' order by regcomm desc) A) 
+			select A.commentnum, A.code, A.writer, B.nickname, A.ctt, A.reg from freecomment A, users B where A.writer = B.id order by regcomm desc) A where ${sel} like '%'||#{search}||'%') 
 			where r >= ${startRow} and r <= ${endRow}
 		
 		]]>
@@ -161,6 +166,20 @@
 		where r >= ${startRow} and r <= ${endRow}
 		]]>
 	</select>
+	
+	<delete id="deleteQuestion" parameterType="String" >
+		delete from question where questionnum = #{num}
+	</delete>
+	
+	<!-- 작성자 : 이영인 -->
+	<!-- 1:1 문의 답변하기 -->
+	<select id="getQnAOne" parameterType="int" resultType="AdminQuestionDTO">
+		select * from question where questionnum = #{questionnum}
+	</select>
+	<update id="addQnAReply" parameterType="AdminQuestionDTO">
+		update question set reply=1,replyctt=#{replyctt},replydate=sysdate where questionnum = #{questionnum}
+	</update>
+	
 	
 	
 	<select id="getNoticeCount" resultType="int">	
