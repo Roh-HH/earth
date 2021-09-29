@@ -70,7 +70,7 @@
 	                        	</p>
                         	</c:if>      
                       </aside>
-
+                      	<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:70px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
                       <aside class="single_sidebar_widget post_category_widget" style="text-align:left; float:left;">
                         <h4 class="widget_title">마이페이지</h4>
                         <ul class="list cat-list">
@@ -97,9 +97,6 @@
 						</li>						        
 						<li>
 						<a href="/earth/user/myBag.et">나의 에코백</a>
-						</li>
-						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>
 						</li>
 						</ul>
                          </aside>
@@ -148,7 +145,7 @@
 														</th>
 														<td>
 															<c:if test="${article.code == 9}">
-																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1">
+																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1&pageNum=1">
 																	${article.commen}
 																</a>
 															</c:if>
@@ -161,7 +158,7 @@
 																<a href="/earth/board/challengeContent.et?boardnum=${article.boardnum}&pageNum=1">
 																	${article.commen}
 																</a>
-															</c:if>>
+															</c:if>
 														</td>
 														<td>
 															<fmt:formatDate value="${article.regcomm}" pattern="yyyy/MM/dd HH:mm"/>

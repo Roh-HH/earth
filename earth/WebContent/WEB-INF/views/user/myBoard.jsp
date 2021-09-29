@@ -144,7 +144,7 @@
 																<c:if test="${article.categ == 3}">[정보공유]</c:if>
 															</td>
 															<td>
-																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1">${article.subject}</a>
+																<a href="/earth/board/freeContent.et?boardnum=${article.boardnum}&commentPageNum=1&pageNum=1">${article.subject}</a>
 															</td>
 															<td><fmt:formatDate value="${article.reg}" pattern="yyyy/MM/dd [E]"/></td>
 															<td class="center" style="color:#FFB400">${article.readcount}</td>

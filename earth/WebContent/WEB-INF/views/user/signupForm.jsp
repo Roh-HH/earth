@@ -48,7 +48,6 @@
 			   return true;
 		 }
 		 
-
 		$(document).ready(function(){
 			$("#id").change(function(){ 	// id 입력란에 변화가 있을때 동작
 				var idVal = $("#id").val(); // id 입력란에 사용자가 작성한 값을 가져오기 
@@ -118,7 +117,6 @@
 
 </head>
 <body>
-
      <!--================ Start header Top Area =================-->
     <section class="header-top">
         <div class="container">
@@ -157,7 +155,7 @@
 							</li>
 				
                             <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
-                            
+                            <li><img src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
                         </ul>
                     </div>
                 </div>
@@ -166,13 +164,8 @@
        
     </section>
     <!--================ End header top Area =================-->
-
 <section class="category-page area-padding" style="float:center;">
  <div class="container">   	
-    	<!-- - 여기까지 손대지 마세요!!
-<!--------------------------------------------------------------------------------------- #masthead 
-		여러분 여기까지는 건들거 없습니다!!!! -->
-
 	<div id="content" class="site-content"> 
      <div class="maintext" align="center">
 		<form action="/earth/user/signupPro.et" method="post" name="frm" onsubmit="return check(this)" style="width:400px; height:700px;">
@@ -227,8 +220,6 @@
 			</table>
 		</form>
 	</div> <!--  maintext  -->
-
-	<!-- 여기부터는 건들지마세용  -->
 	</div><!-- contetn  -->
 </div>
 </section>
@@ -240,5 +231,4 @@
 <script src='/earth/resources/bootstrap/js/scripts.js'></script>
 <script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
-<%--</c:if> --%>
 </html>

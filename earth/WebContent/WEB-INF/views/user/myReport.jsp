@@ -71,7 +71,7 @@
 	                        	</p>
                         	</c:if>      
                       </aside>
-
+                      	<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:70px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
                       <aside class="single_sidebar_widget post_category_widget" style="text-align:left; float:left;">
                         <h4 class="widget_title">마이페이지</h4>
                         <ul class="list cat-list">
@@ -99,10 +99,6 @@
 						<li>
 						<a href="/earth/user/myBag.et">나의 에코백</a>
 						</li>
-						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;"
-							onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
-						</li>
 						</ul>
                       </aside>
 					</div>
@@ -129,7 +125,7 @@
 											<table class="table">
 												<thead class="thead-dark">
 													<tr>
-													    <th style="width:140px;">신고아이디</th>
+														<th style="width:140px;">신고닉네임</th>
 													    <th style="width:280px;">신고내용</th>												      
 													    <th style="width:200px;">신고일</th>
 													    <th style="width:180px;">신고처리상태</th>
@@ -138,7 +134,7 @@
 												<tbody>
 													<c:forEach var="article" items="${rpArticleList}">
 														<tr>
-															<td>${article.receiver}</td>
+															<td>${article.nickname}</td>
 															<td>
 																<c:if test="${article.condition == 1}">영리목적/홍보성</c:if>
 																<c:if test="${article.condition == 2}">불법정보</c:if>
@@ -151,11 +147,11 @@
 																<c:if test="${article.condition == 9}">기타</c:if>
 															</td>
 															<td><fmt:formatDate value="${article.reg}" pattern="yyyy.MM.dd HH:mm"/></td>
-															<td class='center'>
+															<td class='center' style="color:red;">
 																<c:if test="${article.process == 0}">처리중</c:if>
-																<c:if test="${article.process == 1}">처리완료</c:if>
-																<c:if test="${article.process == 2}">처리완료 - 경고조치</c:if>
-																<c:if test="${article.process == 3}">처리완료 - 영구정지</c:if>
+				                                                <c:if test="${article.process == 1}">처리완료</c:if>
+				                                                <c:if test="${article.process == 2}">처리완료 - 경고조치</c:if>
+				                                                <c:if test="${article.process == 3}">처리완료 - 영구정지</c:if>
 															</td>
 														</tr>
 													</c:forEach>

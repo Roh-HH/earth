@@ -80,7 +80,7 @@
 	                        	</p>
                         	</c:if>      
                       </aside>
-
+                      	<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:70px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
                       <aside class="single_sidebar_widget post_category_widget" style="text-align:left; float:left;">
                         <h4 class="widget_title">마이페이지</h4>
                         <ul class="list cat-list">
@@ -107,9 +107,6 @@
 						</li>						        
 						<li>
 						<a href="/earth/user/myBag.et">나의 에코백</a>
-						</li>
-						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
 						</li>
 						</ul>
                       </aside>
@@ -160,9 +157,9 @@
 										<img src='/earth/resources/bootstrap/imgs/warn_icon.png' height='50px' width='50px'/>																
 									</td>
 									<td colspan="2" style="color:red;">
-										경고 1회 <br/>
-										경고 2회 : 1달간 활동 금지 <br/>
-										경고 3회 : 관리자 통보 후 영구탈퇴
+										${user.name}님은 ${user.warncount}회의 경고를 받으셨습니다.<br/>
+										건강한 커뮤니티를 활동을 준수해주세요.<br/>
+										경고 3회 누적시, 관리자 통보 후 영구탈퇴됩니다.
 									</td>									
 								</tr>
 							</table> 					

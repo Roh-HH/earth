@@ -19,9 +19,20 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
 <style>
-	 .heading-section{
+	.alert{
+		color:#212529;
+	}
+	 .center, .silchun, .heading-section{
      	text-align:center;
      	vertical-align:middle;
+     }
+     .center_ {
+     	text-align:center; 
+     	width:800px;
+     }
+     .right_side, .blog_details{
+     	width:800px;
+     	height:1200px;
      }
 </style> 
 <body>
@@ -58,7 +69,7 @@
 	                        	</p>
                         	</c:if>      
                       </aside>
-
+                      	<button type="button" style="float:left; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:70px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
                       <aside class="single_sidebar_widget post_category_widget" style="text-align:left; float:left;">
                         <h4 class="widget_title">마이페이지</h4>
                         <ul class="list cat-list">
@@ -85,9 +96,6 @@
 						</li>						        
 						<li>
 						<a href="/earth/user/myBag.et">나의 에코백</a>
-						</li>
-						<li>
-						<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; float:left;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button><br><br>	
 						</li>
 						</ul>
                       </aside>
