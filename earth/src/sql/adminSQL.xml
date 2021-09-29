@@ -32,6 +32,10 @@
 		a where r >= ${startRow} and r <= ${endRow}
 	]]>
 	</select>
+		
+	<delete id="deleteUser" parameterType="String" >
+		delete from Users where id = #{id}
+	</delete>
 	
 	<select id="getBoardCount" resultType="int">
 	<![CDATA[
@@ -61,12 +65,16 @@
 	<![CDATA[
 		select * from (select rownum r, A.* from 
 		(select * from(select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from free A, users B where A.id = B.id
-		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where A.${sel} like '%'||#{search}||'%' order by reg desc) A) where r >= ${startRow} and r <= ${endRow}
+		union select A.boardnum, A.code, B.nickname, A.id, A.subject, A.reg from diary A, users B where A.id = B.id)where ${sel} like '%'||#{search}||'%' order by reg desc) A) where r >= ${startRow} and r <= ${endRow}
 	]]>
 	</select>
 	
-	<delete id="deleteUser" parameterType="String" >
-		delete from Users where id = ${id}
+	<delete id="deleteFree" parameterType="String" >
+		delete from Free where boardnum = #{num}
+	</delete>
+	
+	<delete id="deleteDiary" parameterType="String" >
+		delete from Diary where boardnum = #{num}
 	</delete>
 	
 	<select id="getCommentCount" resultType="int">
@@ -114,6 +122,18 @@
 		
 		]]>
 	</select>
+	
+	<delete id="deleteFreeC" parameterType="String" >
+		delete from freecomment where commentnum = #{num}
+	</delete>
+	
+	<delete id="deleteDiaryC" parameterType="String" >
+		delete from diarycomment where commentnum = #{num}
+	</delete>
+	
+	<delete id="deleteChallengeC" parameterType="String" >
+		delete from challengecomment where commentnum = #{num}
+	</delete>
 	
 	<select id="getQuestionCount" resultType="int">	
 			select count(*) from question
@@ -166,71 +186,7 @@
 		]]>
 	</select>
 	
-	<!-- 신고 시작 -->
-	<insert id="insertReport" parameterType="reportDTO">
-		insert into report values(report_seq.nextval, #{id}, #{receiver}, sysdate, #{ctt}, #{condition}, #{boardnum}, 0, #{reportctt})
-	</insert>
 	
-	<select id="getReport" resultType="reportDTO" parameterType="int">
-		select * from report where reportnum = #{value}
-	</select>
-	
-	<select id="getReportCount" resultType="int">
-		select count(*) from report where process = #{value} 
-	</select>
-	
-	<select id="getReportCountProcess" resultType="int">
-		select count(*) from report where process != 0 
-	</select>
-	
-	<select id="getSearchReportCount" resultType="int">
-		select count(*) from report where process = ${process} and ${sel} like '%'||#{search}||'%'
-	</select>
-	
-	<select id="getSearchReportCountProcess" resultType="int">
-		select count(*) from report where process != 0 and ${sel} like '%'||#{search}||'%'
-	</select>
-	
-	<select id="getReportList" parameterType="hashmap" resultType="reportDTO">
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from report where process = ${process} order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
-		]]>
-	</select>
-	
-	<select id="getReportListProcess" parameterType="hashmap" resultType="reportDTO">
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from report where process != 0 order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
-		]]>
-	</select>
-	
-	<select id="getReportSearch" parameterType="hashmap" resultType="reportDTO">
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from report where process = ${process} and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
-		]]>
-	</select>
-	
-	<select id="getReportSearchProcess" parameterType="hashmap" resultType="reportDTO">
-		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from report where process != 0 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
-		]]>
-	</select>
-	
-	<update id="processUpdate" parameterType="hashmap">
-		update report set process = #{process} where reportnum = #{reportnum}
-	</update>
-	
-	<update id="processOne" parameterType="string">
-		update users set reportcount = reportcount + 1 where id = #{value}
-	</update>
-	
-	<delete id="processTwo" parameterType="string">
-		delete from users where id = #{value}
-	</delete>
-	
-	<update id="updateReportCount">
-		update users set warncount = floor(reportcount/3) where reportcount != 0
-	</update>
-	<!-- 신고 끝 -->
 	
 	
 </mapper>
