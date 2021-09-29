@@ -28,6 +28,9 @@ public class AdminController {
 	@Autowired
 	private AdminServiceImpl adminService = null;
 	
+	@Autowired
+	private BoardServiceImpl boardService = null;
+	
 	//adminUserForm
 	
 	@RequestMapping("adminUser.et")
