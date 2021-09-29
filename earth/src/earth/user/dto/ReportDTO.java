@@ -12,6 +12,7 @@ public class ReportDTO {
 	private Integer boardnum;
 	private Integer process;
 	private String reportctt;
+	private String nickname;
 	
 	public String getReportctt() {
 		return reportctt;
@@ -67,6 +68,11 @@ public class ReportDTO {
 	public void setProcess(Integer process) {
 		this.process = process;
 	}
+	public String getNickname() {
+		return nickname;
+	}
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
 	
-
 }
