@@ -71,7 +71,7 @@
 	                        	</p>
                         	</c:if>      
                       </aside>
-                      	<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:60px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
+                      	<button type="button" style="float:right; background-color:#1E88E5; color:#ffffff; border-radius:5px; margin-right:70px;" onclick="window.location='/earth/user/myCheck.et'">출석체크하기</button>						
                       <aside class="single_sidebar_widget post_category_widget" style="text-align:left; float:left;">
                         <h4 class="widget_title">마이페이지</h4>
                         <ul class="list cat-list">
