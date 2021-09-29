@@ -24,7 +24,26 @@
     <script type="text/javascript" src="/earth/resources/ckeditor/ckeditor.js"></script>
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
-
+<script type="text/javascript">
+	<%-- 유효성검사 --%>
+	function sendIt(){
+		if (n.subject.value == "") {
+			alert("제목을 입력하지 않았습니다.")
+			n.subject.focus();
+			return false;
+		}
+		if (n.pw.value == "") {
+			alert("비밀번호를 입력하지 않았습니다.")
+			n.pw.focus();
+			return false;
+		}
+		if (n.ctt.value == "") {
+			alert("내용을 입력하지 않았습니다.")
+			n.ctt.focus();
+			return false;
+		}
+	}
+</script>
 <body>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
