@@ -133,7 +133,7 @@
 												<tr>
 													<td>1:1 문의 제목</td>
 													<td>
-														<input type="text" value="${question.subject}" width="400px;" name="subject" style="width:450px; height:40px;"/> 
+														<input type="text" value="${question.subject}" width="400px;" name="subject" style="width:450px; height:40px;" autofocus="autofocus"/> 
 													</td>
 												</tr>
 												<tr>

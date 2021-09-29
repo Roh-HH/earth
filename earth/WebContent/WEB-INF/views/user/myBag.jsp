@@ -126,7 +126,7 @@
 					        			<div class="col-lg-6 col-md-4 col-sm-6 brand manipul design print" style="width:100px;">
 					        				<div class="h_gallery_item" style="align:center;">
 					        					<div class="g_img_item" style="float:center;">
-													<img src='/earth/resources/bootstrap/imgs/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
+													<img src='/earth/save/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
 					        						<a class="light" onclick="window.location='/earth/user/equipBadge.et?badgenum=${article.badgenum}'" style="color:#ffffff;">
 					        							<button type="button"  style="background-color:#343a40; border:none; color:#fff;" >착용하기</button>								
 					        						</a>
