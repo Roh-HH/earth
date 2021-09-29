@@ -80,6 +80,7 @@
 <body>
 	<%-- 앵커태그(위치이동/지우지말것) --%>
 	<a href="#list"></a>
+	<a href="#upload"></a>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
 	<section class="category-page area-padding">
@@ -196,32 +197,34 @@
 				</nav>
 			</div>
 			<br /> <br />
-			<div class="single-element-widget">
-				<h4 class="mb-30 title_color">오늘의 실천 작성하기 </h4>
-				<form name="f" action="/earth/board/uploadTodayChallenge.et#list" method="post" onsubmit="return sendIt();"
-			 	class="form-contact comment_form" action="#" id="commentForm">
-               		<div class="row">
-                   		<div class="col-12" >
-							<input type="radio" name="condition" value="1"/> 텀블러 들고다니기<br/>
-							<input type="radio" name="condition" value="2"/> 샴푸 대신 샴푸바 / 손세정제 대신 비누<br/>				
-							<input type="radio" name="condition" value="3"/> 일회용 빨대 사용하지말기<br/>
-							<input type="radio" name="condition" value="4"/> 배달음식 그릇에 테이크아웃 해오기<br/>
-							<input type="radio" name="condition" value="5"/> 장바구니 들고다니기<br/>
-							<input type="radio" name="condition" value="6"/> 배달음식 시킬떄 일회용품 거절하기<br/>
-							<input type="radio" name="condition" value="7"/> 손수건 챙기기<br/>
-							<input type="radio" name="condition" value="8"/> 페트병에 라벨 제거하고 분리수거하기<br/>
-							<input type="radio" name="condition" value="9"/> 스탠, 유리제품 사용하기<br/>
-							<input type="radio" name="condition" value="10"/> 이면지 사용하기<br/>
+			<c:if test="${sessionScope.sid != null}">
+				<div id="upload" class="single-element-widget">
+					<h4 class="mb-30 title_color">오늘의 실천 작성하기 </h4>
+					<form name="f" action="/earth/board/uploadTodayChallenge.et#list" method="post" onsubmit="return sendIt();"
+				 	class="form-contact comment_form" action="#" id="commentForm">
+	               		<div class="row">
+	                   		<div class="col-12" >
+								<input type="radio" name="condition" value="1"/> 텀블러 들고다니기<br/>
+								<input type="radio" name="condition" value="2"/> 샴푸 대신 샴푸바 / 손세정제 대신 비누<br/>				
+								<input type="radio" name="condition" value="3"/> 일회용 빨대 사용하지말기<br/>
+								<input type="radio" name="condition" value="4"/> 배달음식 그릇에 테이크아웃 해오기<br/>
+								<input type="radio" name="condition" value="5"/> 장바구니 들고다니기<br/>
+								<input type="radio" name="condition" value="6"/> 배달음식 시킬떄 일회용품 거절하기<br/>
+								<input type="radio" name="condition" value="7"/> 손수건 챙기기<br/>
+								<input type="radio" name="condition" value="8"/> 페트병에 라벨 제거하고 분리수거하기<br/>
+								<input type="radio" name="condition" value="9"/> 스탠, 유리제품 사용하기<br/>
+								<input type="radio" name="condition" value="10"/> 이면지 사용하기<br/>
+							</div>
 						</div>
-					</div>
-					<div class="comment-form">
-						<input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
-						<br/>
-						<input type="submit" value="공유하기" 
-                  			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right; color:#fff;"/>
-					</div>
-				</form>
-			</div>
+						<div class="comment-form">
+							<input class="form-control" name="ctt" id="ctt" type="text" placeholder="오늘의 실천내용을 작성해주세요!"/>
+							<br/>
+							<input type="submit" value="공유하기" 
+	                  			style="width:150px; height:45px; background-color:#1E88E5; border-radius:8px; border:none;float:right; color:#fff;"/>
+						</div>
+					</form>
+				</div>
+			</c:if>
 			<br /> <br /> <br /> <br />
 		</div>
 		<!-- #container -->
