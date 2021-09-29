@@ -94,9 +94,11 @@
 			<td>
 				<img class="badgeImg" src='${pageContext.request.contextPath}/save/${article.badgeimg}' />
 				${article.nickname}
-				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;"> 
-				<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
-				</a>
+				<c:if test="${sessionScope.sid != null}">
+				    <a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;"> 
+				    <img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+				    </a>
+                </c:if>
 				
 			</td>
 			<td>
@@ -150,8 +152,10 @@
 				                  <div class="d-flex justify-content-between">
 				                    <div class="d-flex align-items-center">
 				                    	${comment.nickname}
-				                    	<a onclick="msgSend('${comment.writer}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
-											<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
+				                        <c:if test="${sessionScope.sid != null}">
+				                    	    <a onclick="msgSend('${comment.writer}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+											    <img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
+                                        </c:if>
 										<p class="date"><fmt:formatDate value="${comment.reg}" pattern="YY-MM-dd HH : mm"/></p>
 									</div>
 				                  <div class="reply-btn" style="width:150px;">

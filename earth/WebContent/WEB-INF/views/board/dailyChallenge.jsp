@@ -140,9 +140,11 @@
 										<div class="d-flex justify-content-between">
 											<div class="d-flex align-items-center">
 												${article.nickname}
-												<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
-												<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
-												</a>
+												<c:if test="${sessionScope.sid != null}">
+												    <a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+												    <img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+												    </a>
+                                                </c:if>
 												<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>
 												
 												<%-- 신고 : 본인 외 표시 --%>

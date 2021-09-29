@@ -88,9 +88,11 @@ margin-right:4px;
 		<tr>
 			<td width="200px"> 작성자 </td>
 			<td><img class="badgeImg" src="${pageContext.request.contextPath}/save/${badgeimg}" />${nickname}
-				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
-				<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
-				</a>
+				<c:if test="${sessionScope.sid != null}">
+					<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+					<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+					</a>
+				</c:if>
 			</td>
 		</tr>
 		<tr>
@@ -237,9 +239,11 @@ margin-right:4px;
 		                                  <div class="d-flex justify-content-between">
 		                                   <div class="d-flex align-items-center">
 		                                   		   <h5> ${replyList.nickname}</h5> 
-		                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
-		                                      		class="btn-reply text-uppercase" style="cursor:default;"> 
-		                                      		<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
+		                                   		   	<c:if test="${sessionScope.sid != null}">
+			                                      		<a onclick="msgSend('${replyList.writer}'); return false;" 
+			                                      		class="btn-reply text-uppercase" style="cursor:default;"> 
+			                                      		<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
+		                                      		</c:if>
 		                                        	 <p class="date"><fmt:formatDate value="${replyList.regcomm}" pattern="YY-MM-dd HH:mm"/></p>
 		                                      </div>
 		                                      <div class="reply-btn" style="width:150px;">
