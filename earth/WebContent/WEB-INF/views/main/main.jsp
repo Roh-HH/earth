@@ -139,7 +139,7 @@ margin-right:4px;
         				<div class="feature_item">
         				    <a href="/earth/board/dailyChallenge.et">
                            		<img class="img-fluid" src="/earth/resources/bootstrap/imgs/bear.gif" alt="" style="width:280px; height:200px;">
-        					<h5>우리가 북극곰의 집을 빼앗고 있어요</h4></a>
+        					<h4>우리가 북극곰의 집을 빼앗고 있어요</h4></a>
                             <p>빠르게 증가하는 지구 온도로 인해 빙하가 녹고있어요. 우리의 작은 실천이 북극곰을 살립니다. 함께해주세요! </p>
                             <a href="/earth/board/dailyChallenge.et">>오늘의 실천 함께하기</a>
         				</div>
