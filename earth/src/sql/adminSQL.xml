@@ -176,11 +176,19 @@
 	</select>
 	
 	<select id="getReportCount" resultType="int">
-		select count(*) from report where process = #{value}
+		select count(*) from report where process = #{value} 
+	</select>
+	
+	<select id="getReportCountProcess" resultType="int">
+		select count(*) from report where process != 0 
 	</select>
 	
 	<select id="getSearchReportCount" resultType="int">
 		select count(*) from report where process = ${process} and ${sel} like '%'||#{search}||'%'
+	</select>
+	
+	<select id="getSearchReportCountProcess" resultType="int">
+		select count(*) from report where process != 0 and ${sel} like '%'||#{search}||'%'
 	</select>
 	
 	<select id="getReportList" parameterType="hashmap" resultType="reportDTO">
@@ -189,9 +197,21 @@
 		]]>
 	</select>
 	
+	<select id="getReportListProcess" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process != 0 order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
 	<select id="getReportSearch" parameterType="hashmap" resultType="reportDTO">
 		<![CDATA[
 			select B.* from (select A.*, rownum r from (select * from report where process = ${process} and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
+		]]>
+	</select>
+	
+	<select id="getReportSearchProcess" parameterType="hashmap" resultType="reportDTO">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from report where process != 0 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{startRow} and r <= #{endRow}
 		]]>
 	</select>
 	
