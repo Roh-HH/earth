@@ -73,6 +73,11 @@ public class MainController {
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
 				
+				if(session.getAttribute("sid")==null) {
+					System.out.println("비로그인 상태로 쪽지함에 접근함");
+					return "user/loginForm";
+				}
+				
 				int code = 1;
 				String id = (String)session.getAttribute("sid");
 				model.addAttribute("id", id);
@@ -115,6 +120,11 @@ public class MainController {
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
 				
+				if(session.getAttribute("sid")==null) {
+					System.out.println("비로그인 상태로 쪽지함에 접근함");
+					return "user/loginForm";
+				}
+				
 				int code = 2;
 				String id = (String)session.getAttribute("sid");
 				
@@ -155,6 +165,11 @@ public class MainController {
 				// 받은 쪽지함 : 1
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
+				
+				if(session.getAttribute("sid")==null) {
+					System.out.println("비로그인 상태로 쪽지함에 접근함");
+					return "user/loginForm";
+				}
 				
 				int code = 3;
 				String id = "java";
