@@ -19,7 +19,7 @@
                 </div>
                 <div class="col-6 col-lg-4 col-md-6 col-sm-6 logo-wrapper">
                     <a href="/earth/main/main.et" class="logo">
-                        <img src="/earth/resources/bootstrap/imgs/logo.png" style="width:300px;" alt="">
+                        <img src="/earth/resources/bootstrap/imgs/logo.png" style="width:200px;" alt="">
                     </a>
                     <p> 지구를 살리는 작은 실천</p>
                 </div>
@@ -45,13 +45,15 @@
 									<a href="/earth/adminmypage/adminUser.et">관리자페이지</a>&ensp;
 								</c:if>
 							</li>
-				<c:if test="${sessionScope.sid != null}">
-	                            <li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
-				</c:if>
-				<c:if test="${sessionScope.sid == null }">
-					<li><img onclick="window.location='/earth/user/loginForm.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
-				</c:if>
-                            
+							<c:if test="${sessionScope.sid != null}">
+				                            <li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+							</c:if>
+							<c:if test="${sessionScope.sid == null }">
+								<li><img onclick="window.location='/earth/user/loginForm.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+							</c:if>
+				           	<li>
+				           		<img onclick="window.location='/earth/board/dailyChallenge.et#upload'" src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px">
+				           	</li>
                         </ul>
                     </div>
                 </div>
