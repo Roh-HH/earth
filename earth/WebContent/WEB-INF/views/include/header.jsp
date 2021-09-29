@@ -41,12 +41,14 @@
 								<c:if test="${sessionScope.sid != null and sessionScope.sid != 'admin' }">
 									<a href="/earth/user/myToday.et">마이페이지</a>&ensp;
 								</c:if>
-								<c:if test="${sessionScope.sid eq  'admin'}">
+								<c:if test="${sessionScope.sid eq 'admin'}">
 									<a href="/earth/adminmypage/adminUserForm.et">관리자페이지</a>&ensp;
 								</c:if>
 							</li>
-				
-                            <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				<c:if test="${sessionScope.sid != null}">
+	                            <li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				</c:if>
+				<li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
                             
                         </ul>
                     </div>
