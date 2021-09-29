@@ -31,6 +31,14 @@
 		window.open(popUrl,"",popOption);
 	}
 </script>
+<style>
+	.badgeImg{
+		width:20px; 
+		height:20px; 
+		margin-bottom:2px;
+		margin-right:4px;
+	}
+</style>
 <body>
 	<!--================ Start header Top Area =================-->
     <%@ include file = "../include/header.jsp" %>
@@ -44,7 +52,9 @@
 				</tr>
 				<tr>
 					<td> 작성자 </td>
-					<td> 관리자 </td>
+					<td>
+						<img class="badgeImg" src="${pageContext.request.contextPath}/save/admin.png"/>관리자
+					</td>
 					<td>
 						<fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/>
 					</td>
