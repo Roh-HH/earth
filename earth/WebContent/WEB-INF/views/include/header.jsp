@@ -42,7 +42,7 @@
 									<a href="/earth/user/myToday.et">마이페이지</a>&ensp;
 								</c:if>
 								<c:if test="${sessionScope.sid eq 'admin'}">
-									<a href="/earth/adminmypage/adminUserForm.et">관리자페이지</a>&ensp;
+									<a href="/earth/adminmypage/adminUser.et">관리자페이지</a>&ensp;
 								</c:if>
 							</li>
 				<c:if test="${sessionScope.sid != null}">
