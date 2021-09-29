@@ -12,7 +12,8 @@ import earth.admin.dao.AdminDAOImpl;
 import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
-import earth.admin.dto.NoticeDTO;
+import earth.board.dto.NoticeDTO;
+import earth.user.dto.ReportDTO;
 import earth.user.dto.UserDTO;
 
 @Service
