@@ -3,6 +3,7 @@ package earth.badge.controller;
 import java.io.File;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.UUID;
 
@@ -41,27 +42,20 @@ public class BadgeController {
 			filter = "basic";
 		}
 		
-		
-		Map<String, Object> result;
-		
-		// 뱃지 목록 가져오기 (필터 값있으면 필터 값 넘겨주기)
-		result = badgeService.getBadgeList(pageNum,filter);
-
+		// 상점 뱃지 목록 가져오기 (필터 값있으면 필터 값 넘겨주기)
+		Map<String, Object> BadgeList;
+		BadgeList = badgeService.getBadgeList(pageNum,filter);
 		
 		// view 에 전달할 데이터 보내기
-		model.addAttribute("pageSize", result.get("pageSize"));
-		model.addAttribute("pageNum", result.get("pageNum"));
-		model.addAttribute("currentPage", result.get("currentPage"));
-		model.addAttribute("startRow", result.get("startRow"));
-		model.addAttribute("endRow", result.get("endRow"));
-		model.addAttribute("articleList", result.get("articleList"));
-		model.addAttribute("count", result.get("count"));
-		model.addAttribute("number", result.get("number"));
+		model.addAttribute("pageSize", BadgeList.get("pageSize"));
+		model.addAttribute("pageNum", BadgeList.get("pageNum"));
+		model.addAttribute("currentPage", BadgeList.get("currentPage"));
+		model.addAttribute("startRow", BadgeList.get("startRow"));
+		model.addAttribute("endRow", BadgeList.get("endRow"));
+		model.addAttribute("articleList", BadgeList.get("articleList"));
+		model.addAttribute("count", BadgeList.get("count"));
+		model.addAttribute("number", BadgeList.get("number"));
 		model.addAttribute("filter", filter);
-
-		// 세션에 sid 관리자 저장 (임시)
-		String id = "admin";
-		session.setAttribute("sid", id);
 		
 		return "badge/badgeShop";
 	}
@@ -72,23 +66,30 @@ public class BadgeController {
 	public String buyBadge(int num, Model model,HttpSession session) throws SQLException{
 		System.out.println("뱃지 구매 페이지 요청");
 		
-		// 세션에서 유저 아이디 불러오기 
-		//String id = (String)session.getAttribute("sid");
+		//세션에서 유저 아이디 불러오기 
+		String id = (String)session.getAttribute("sid");
 		
+		// 테스트용 아이디 설정
+		// String uid = "testuser2";
+
+		// 세션에 sid 관리자 저장 (임시)
+		//String id = "admin";
+		//session.setAttribute("sid", id);
+
 		// 뱃지 하나 불러오기
 		BadgeDTO result = badgeService.getBadge(num);
+
+		// 이미 보유중인지 파악하기
+		int check = badgeService.checkBadge(num,id);
+
+		// 유저 포인트 불러오기  
+		int point = badgeService.getPoint(id);
 		
-		// (임시) 유저 포인트 불러오기 (!!세션처리 되면 id로 받아오기) 
-		String uid = "test01";
-		int point = badgeService.getPoint(uid);
-		
-		// model로 넘겨주기
+		// view 에 전달할 데이터 보내기
 		model.addAttribute("result",result);
 		model.addAttribute("point",point);
+		model.addAttribute("check",check);
 		
-		// 세션에 sid 관리자 저장 (임시)
-		String id = "admin";
-		session.setAttribute("sid", id);
 		
 		return "badge/buyBadge";
 	}
@@ -98,22 +99,19 @@ public class BadgeController {
 	public String buyComplete(@RequestParam("num") int num, MybagDTO dto, Model model, HttpSession session) throws SQLException{
 		System.out.println("뱃지 구매 완료 페이지 요청");
 
+		// ( 임시 )
+		// dto.setId("testuser2");																				
 		
-		// sid와 뱃지 고유번호 불러오기 ( 임시 )
-		//dto.setId((String)session.getAttribute("sid"));
-		dto.setId("testuser");																				
+		// 세션아이디와 뱃지 고유번호 불러와서 dto 저장 
+		dto.setId((String)session.getAttribute("sid"));
 		dto.setBadgenum(num);		
-				
-	
-		// 포인트 차감 서비스
 		
+		String id = dto.getId();
 		
-		// mybag에 컬럼 추가
+		// 구매완료 - 나의에코백에 뱃지추가 & 포인트차감 & 판매횟수+1
+		int result = badgeService.buyBadge(dto,id);
 		
-		int result = badgeService.buyBadge(dto);
-		System.out.println("구매 성공 여부 : " + result);
-		// result = 0 실패 // result = 1 성공
-		
+		// view 에 전달할 데이터 보내기
 		model.addAttribute("result",result);
 		
 		return "badge/buyComplete";
@@ -123,10 +121,6 @@ public class BadgeController {
 	@RequestMapping("addBadgeForm.et")	
 	public String addBadgeForm(Model model) throws SQLException{
 		System.out.println("뱃지 추가 form 페이지 요청");
-
-		// 관리자만 접속 가능
-		
-		
 		
 		return "badge/addBadgeForm";
 	}
@@ -189,8 +183,7 @@ public class BadgeController {
 	@RequestMapping("badgeFAQ.et")	
 	public String badgeFAQ(String pageNum, String sel, String search, Model model) throws SQLException{
 		System.out.println("뱃지샵 FAQ 페이지 요청");
-
-		
+	
 		return "badge/badgeFAQ";
 	}
 }
