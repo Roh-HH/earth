@@ -195,8 +195,8 @@
 		]]>
 	</select>
 	
-	<update id="processUpdate" parameterType="int">
-		update report set process = 1 where reportnum = #{value}
+	<update id="processUpdate" parameterType="hashmap">
+		update report set process = #{process} where reportnum = #{reportnum}
 	</update>
 	
 	<update id="processOne" parameterType="string">
