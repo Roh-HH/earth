@@ -48,7 +48,9 @@
 				<c:if test="${sessionScope.sid != null}">
 	                            <li><img onclick="window.location='/earth/main/messageReceiveList.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
 				</c:if>
-				<li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				<c:if test="${sessionScope.sid == null }">
+					<li><img onclick="window.location='/earth/user/loginForm.et'" src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				</c:if>
                             
                         </ul>
                     </div>
