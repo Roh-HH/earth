@@ -175,9 +175,9 @@
 	<!-- 마이페이지 : 신고내역 목록 가져오기 -->
 	<select id="getMyReport" parameterType="hashmap" resultType="reportDTO">
 		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from report order by reg desc) A where id = #{id}) B where r >= #{start} and r <= #{end}
+			select * from (select rownum r, A.* from (select * from(select A.*, B.nickname from report A, users B where A.id = #{id} and A.receiver = B.id)order by reg desc) A) where r >= #{start} and r <= #{end}
 		]]>	
-	</select>	
+	</select>
 
 	<!-- 작성자 : 김예찬 -->
 	<!-- 마이페이지 : 나의 에코백 -->	
