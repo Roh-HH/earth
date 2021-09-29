@@ -31,6 +31,11 @@
 <이하 홍재 작성>
 # admin
 adminBoard - 끝
+
 adminComment - 기능 수정중
+
 adminQuestion - 답변하기 기능 제작중
-adminUser - 
+
+adminUser - 끝
+
+
