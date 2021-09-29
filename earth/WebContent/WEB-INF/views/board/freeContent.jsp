@@ -92,8 +92,12 @@
 		<tr>
 			<td> 작성자 </td>
 			<td>
-				<img class="badgeImg" src='${pageContext.request.contextPath}/save/${article.badgeimg}' style="width:40px; height:40px;"/>
-				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${article.nickname}</a>
+				<img class="badgeImg" src='${pageContext.request.contextPath}/save/${article.badgeimg}' />
+				${article.nickname}
+				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;"> 
+				<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+				</a>
+				
 			</td>
 			<td>
 				<fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH : mm"/>
@@ -145,7 +149,9 @@
 								 </p>
 				                  <div class="d-flex justify-content-between">
 				                    <div class="d-flex align-items-center">
-				                    	<a onclick="msgSend('${comment.writer}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${comment.nickname}</a>
+				                    	${comment.nickname}
+				                    	<a onclick="msgSend('${comment.writer}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+											<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" /> </a>
 										<p class="date"><fmt:formatDate value="${comment.reg}" pattern="YY-MM-dd HH : mm"/></p>
 									</div>
 				                  <div class="reply-btn" style="width:150px;">
