@@ -88,10 +88,10 @@ margin-right:4px;
 		                        	<h4 style="height:60px;"> ${article.subject}</h4></a>
 	                           	<div class="meta-bottom d-flex">
 	                           		<c:if test="${article.idCheck != 1}">	
-	                           			<a href="#"style="color: red;"> ♡ ${article.recommend} like</a>
+	                           			<a href="#"style="color: #Ff7a7f;"> ♡ ${article.recommend} like</a>
 	                           		</c:if>
 	                           		<c:if test="${article.idCheck == 1}">	
-                                		<a href="#" style="color: red;"> ♥ ${article.recommend} like</a>
+                                		<a href="#" style="color: #Ff7a7f;"> ♥ ${article.recommend} like</a>
                                 	</c:if>                    
 	                            </div>
 								<p><fmt:formatDate value="${article.reg}" pattern="YYYY-MM-dd HH:mm"/></p>
