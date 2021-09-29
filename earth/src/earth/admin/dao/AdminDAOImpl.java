@@ -13,7 +13,7 @@ import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
 
 import earth.board.dto.NoticeDTO;
-
+import earth.user.dto.ReportDTO;
 import earth.user.dto.UserDTO;
 
 @Repository
@@ -106,7 +106,7 @@ public class AdminDAOImpl implements AdminDAO {
 		map.put("sel", sel);
 		map.put("search", search);
 		
-		int result = sqlSession.selectOne("admin.getSearchBoardCount");
+		int result = sqlSession.selectOne("admin.getSearchBoardCount", map);
 		
 		return result;
 	}
@@ -186,11 +186,13 @@ public class AdminDAOImpl implements AdminDAO {
 	@Override
 	public void deleteComment(String num, String code) throws SQLException {
 		
-		if(code == "9") {
+		int i = Integer.parseInt(code);
+		
+		if(i == 9) {
 			sqlSession.delete("admin.deleteFreeC", num);
-		}else if(code == "10"){
+		}else if(i == 10){
 			sqlSession.delete("admin.deleteDiaryC", num);
-		}else if(code == "11") {
+		}else if(i == 11) {
 			sqlSession.delete("admin.deleteChallengeC", num);
 		}
 		
@@ -243,6 +245,29 @@ public class AdminDAOImpl implements AdminDAO {
 		return questionList;
 		
 	}
+	
+	@Override
+	public void deleteQuestion(String num) throws SQLException {
+		
+		
+		sqlSession.delete("admin.deleteQuestion", num);
+		
+		
+	}
+	
+	// 작성자 : 이영인
+	// 1:1 문의 답변하기
+	@Override
+	public AdminQuestionDTO getQnAOne(int questionnum) throws SQLException {
+		AdminQuestionDTO question = sqlSession.selectOne("admin.getQnAOne", questionnum);
+		return question;
+	}
+
+	@Override
+	public void addQnAReply(AdminQuestionDTO dto) throws SQLException {
+		sqlSession.update("admin.addQnAReply", dto);
+	}
+	
 	
 	
 	@Override
