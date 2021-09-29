@@ -71,7 +71,7 @@
 						<tr>
 							<td> ${article.boardnum} </td>
 							<td>
-								<img class="badgeImg" src="/earth/resources/bootstrap/imgs/logo.png" alt="">${article.nickname}
+								<img class="badgeImg" src='${pageContext.request.contextPath}/save/${article.badgeimg}' style="width:40px; height:40px;"/>${article.nickname}
 							</td>
 							<td>
 								<a href="/earth/board/freeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}&commentPageNum=1">(${article.categStr}) ${article.subject} <c:if test="${article.refCount != 0}">(${article.refCount})</c:if></a>
