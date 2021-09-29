@@ -13,17 +13,16 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>다이어리 게시글 삭제</title>
+	<title>관리자 일반회원 삭제</title>
 </head>
 <body>
 	<br/><br/><br/><br/>
 	<div style="margin:auto;">
-		<form action="/earth/adminmypage/adminCommentDeletePro.et">
+		<form action="/earth/adminmypage/adminQuestionDeletePro.et">
 			
-				<h3 style="margin:auto; text-align: center;">해당 댓글을 삭제하시겠습니까?</h3>
+				<h3 style="margin:auto; text-align: center;">해당 문의를 삭제하시겠습니까?</h3>
 				<br /><br />
 				<input type="hidden" name="num" value="${num}"/>
-				<input type="hidden" name="code" value="${code}"/>
 				
 				<input type="submit" value="확인" style="float:left; margin:10%; width:20%"/>
 				<input type="button" value="취소" onclick="window.close()" style="float:right; margin:10%; width:20%; "/>

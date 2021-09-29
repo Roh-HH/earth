@@ -7,11 +7,11 @@
 	<title></title>
 </head>
 <script>
-	opener.parent.location='/earth/adminmypage/adminComment.et';
+	opener.parent.location='/earth/adminmypage/adminQuestion.et';
 </script>
 <body>
 	<script>
-		alert("댓글삭제가 정상 처리 되었습니다.");
+		alert("문의 삭제가 정상 처리 되었습니다.");
 		window.close();
 	</script>
 </body>

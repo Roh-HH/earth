@@ -179,22 +179,22 @@
 							
 							
 							<br /> 
-							<c:if test="${sel != null && search != null}">
-								<button onclick="window.location='/earth/adminmypage/adminBoard.et'">초기화</button> <br />
-							</c:if>
-							 <%-- 작성자/내용 검색 --%>
-		            	<div class="text-align:right;">
-							<form style="float:right;height:60px;" class="woocommerce-ordering" method="get" action="/earth/adminmypage/adminBoard.et" >
-							
-								<select name="sel">
-									<option value="subject">제목</option>
-									<option value="writer">작성자</option>
+							<%-- 작성자/내용 검색 --%>
+							<form action="/earth/adminmypage/adminBoard.et" >								
+								<select style="boder:none;" name="sel">
+     								<option value="subject">제목</option>
+									<option value="id">작성자</option>
+									<option value="nickname">닉네임</option>
 								</select>
-							
-								<input class="form-control" type="text" placeholder="아이디" name="search" value="" title="search"
-									style="border-top:none; border-left:none; border-right:none;width:150px;height:50px;"/>
+								<input type="text" placeholder="검색" name="search" value="" title="search"
+									style="border-top:none; border-left:none; border-right:none;width:130px;height:30px; font-size:11px;"/>
+								<input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px; margin-right:100px;">
+								
+								
+								<c:if test="${sel != null && search != null}">
+									<button onclick="window.location='/earth/adminmypage/adminBoard.et?'">초기화</button> <br />
+								</c:if>
 							</form>
-						</div>
 									
 							
 							

@@ -39,9 +39,6 @@
         <div class="container">
         <div class="row" style="width:1000px;">
         		
-        		
-        		
-        		<!--홍재야 여기 사이드 바라서 경로 잘못됐거나 바꿔야되면 여기서 바꾸면돼!!!! -->
 		
 		      <div class="col-lg-30" style="text-align:left; width:200px;">
                   <div class="blog_right_sidebar" style="text-align:left">

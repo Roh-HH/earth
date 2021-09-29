@@ -26,7 +26,6 @@
 <body>
 
      <%@ include file = "../include/header.jsp" %>
-     
 	<section class="category-page area-padding">
     
 		<!--------------------------------------------------------------------------------------- #masthead 
@@ -93,7 +92,6 @@
 				            	<td align="center">ID</td> 
 				           	 	<td align="center">닉네임</td>
 				           	 	<td align="center">내용</td>
-				           	 	<td align="center">작성일</td>
 				           	 	<td align="center"><%--삭제버튼--%></td>
 				       		</tr>
 				       		
@@ -109,7 +107,6 @@
 									<td>${comm.writer}</td>
 									<td>${comm.nickname}</td>
 									<td>${comm.commen}</td>
-									<td>${comm.regcomm}</td>
 									<td>
 									<button onclick="window.open('/earth/adminmypage/adminCommentDeleteForm.et?num=${comm.commentnum}&code=${comm.code}','','width=500,height=300,location=no,status=no,scrollbars=no');">삭제</button>	
 									</tr>
@@ -171,22 +168,22 @@
 							
 							
 							<br /> 
-							<c:if test="${sel != null && search != null}">
-								<button onclick="window.location='/earth/adminmypage/adminComment.et'">초기화</button> <br />
-							</c:if>
-							 <%-- 작성자/내용 검색 --%>
-		            	<div class="text-align:right;">
-							<form style="float:right;height:60px;" class="woocommerce-ordering" method="get" action="/earth/adminmypage/adminComment.et" >
-							
-								<select name="sel">
+							<%-- 작성자/내용 검색 --%>
+							<form action="/earth/adminmypage/adminComment.et" >								
+								<select style="boder:none;" name="sel">
 									<option value="writer">작성자</option>
 									<option value="commen">내용</option>
+									<option value="nickname">닉네임</option>
 								</select>
-							
-								<input class="form-control" type="text" placeholder="아이디" name="search" value="" title="search"
-									style="border-top:none; border-left:none; border-right:none;width:150px;height:50px;"/>
+								<input type="text" placeholder="검색" name="search" value="" title="search"
+									style="border-top:none; border-left:none; border-right:none;width:130px;height:30px; font-size:11px;"/>
+								<input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px; margin-right:100px;">
+								
+								
+								<c:if test="${sel != null && search != null}">
+									<button onclick="window.location='/earth/adminmypage/adminComment.et?'">초기화</button> <br />
+								</c:if>
 							</form>
-						</div>
 									
 							
 							

@@ -22,31 +22,6 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-	<script>
-		function chkUser() {
-			obj = document.getElementsByName("info");	
-			
-			var cnt = 0;
-			for(var i = 0; i < obj.length; i++) {
-                if (obj[i].checked) {
-                    cnt++;
-                }
-            }
-			if(cnt == 0){
-				alert("선택된 회원 정보가 없습니다.");
-				return;
-			}else{
-				var frm = document.frmUserInfo		
-				var url ="adminUserDelete.et";
-				window.open('','userdelete','width=500,height=300,location=no,status=no,scrollbars=yes');
-				
-				frmUserInfo.action = url;
-				frmUserInfo.target = 'userdelete'
-				frmUserInfo.submit();
-			}			
-		}
-	</script>
-	
 	
 </head>
 <body>
@@ -114,25 +89,27 @@
 				        <c:if test="${count != 0}">
 				            <table align="center">
 				            <tr>
-					            <td align="center"><%--체크박스용--%></td>
 					            <td align="center">ID</td>
 					            <td align="center">닉네임</td> 
 					            <td align="center">제목</td>
 					            <td align="center">작성일</td>
 					            <td align="center">답변상태</td>
+					            <td align="center"></td>
 				       		</tr>
 				       
 				       		<%-- 유저정보 view, 옵션추가시 해당 tr onclick으로 유저 세부정보 팝업창 호출 --%>
 				      		<c:forEach var="question" items="${questionList}" varStatus="status">
 								<tr align="center">
-									<td><input type="checkbox" name="info" value="${question.questionnum}"/>
 									<td>${question.id}</td>
 									<td>${question.nickname}</td>
 									<td>${question.subject}</td>
 									<td>${question.reg}</td>
 									<td>
-									<c:if test="${question.reply == 0}"><button onclick="">답변하기</button></c:if>
+									<c:if test="${question.reply == 0}"><button onclick="window.location='/earth/adminmypage/adminQuestionReply.et?questionnum=${question.questionnum}'">답변하기</button></c:if>
 									<c:if test="${question.reply == 1}">답변완료</c:if>
+									</td>
+									<td>
+										<button onclick="window.open('/earth/adminmypage/adminQuestionDeleteForm.et?num=${question.questionnum}','','width=500,height=300,location=no,status=no,scrollbars=no');">삭제</button>	
 									</td>
 								</tr>
 							</c:forEach>
@@ -155,33 +132,33 @@
 								<%-- 검색O 페이지번호 --%>
 								<c:if test="${sel != null && search != null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}&sel=${sel}&search=${search}" class="pageNums">${i}</a>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
+										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Back</a>
 									</c:if>
 								</c:if>
 								
 								<%-- 검색X 페이지번호   --%> 
 								<c:if test="${sel == null || search == null}">
 									<c:if test="${startPage > pageBlock}">
-										<a href="/earth/adminmypage/adminUser.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
+										<a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage-pageBlock}" class="pageNums">Back</a>
 									</c:if>
 									<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
 										<c:choose>
 											<c:when test="${pageNum == i }">
-												<a  class="current" href="/earth/adminmypage/adminUser.et?pageNum=${pageNum}">${i}</a>
+												<a  class="current" href="/earth/adminmypage/adminQuestion.et?pageNum=${pageNum}">${i}</a>
 											</c:when>
 											<c:otherwise >
-												<a href="/earth/adminmypage/adminUser.et?pageNum=${i}" class="pageNums">${i}</a>
+												<a href="/earth/adminmypage/adminQuestion.et?pageNum=${i}" class="pageNums">${i}</a>
 											</c:otherwise>
 										</c:choose>
 									</c:forEach>
 									<c:if test="${endPage < pageCount}">
-										&nbsp; <a href="/earth/adminmypage/adminUser.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
+										&nbsp; <a href="/earth/adminmypage/adminQuestion.et?pageNum=${startPage+pageBlock}" class="pageNums">Next</a>
 									</c:if>
 								</c:if>
 								</c:if> 
@@ -198,7 +175,7 @@
 							<form action="/earth/adminmypage/adminQuestion.et" >								
 								<select style="boder:none;" name="sel">
      								<option value="id">아이디 </option>
-									<option value="subject">내용</option>
+									<option value="subject">제목</option>
 								</select>
 								<input type="text" placeholder="검색" name="search" value="" title="search"
 									style="border-top:none; border-left:none; border-right:none;width:130px;height:30px; font-size:11px;"/>
