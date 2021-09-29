@@ -30,6 +30,14 @@
 		if (hash) $('.your-css-selector a[href$="'+hash+'"]').trigger('click');
 	});
 </script>
+<style>
+	.badgeImg{
+		width:18px; 
+		height:18px; 
+		margin-top:4px; 
+		margin-right:4px;
+	}
+</style>
 <body>
 	<%-- 앵커태그(위치이동/지우지말것) --%>
 	<a href="#list"></a>
@@ -62,7 +70,9 @@
 					<c:forEach var="article" items="${articleList}">
 						<tr>
 							<td> ${article.boardnum} </td>
-							<td> 관리자 </td>
+							<td>
+								<img class="badgeImg" src="${pageContext.request.contextPath}/save/admin.png"/>관리자
+							</td>
 							<td>
 								<a href="/earth/board/noticeContent.et?pageNum=${pageNum}&boardnum=${article.boardnum}">${article.subject}</a>
 							</td>
