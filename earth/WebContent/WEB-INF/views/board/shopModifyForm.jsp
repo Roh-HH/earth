@@ -13,11 +13,6 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
@@ -54,6 +49,19 @@ function readURL(input) {
    	}
 }
 </script>
+<script>
+//유효성검사 
+function checkForm() {
+    var hyperlink = document.getElementById('hyperlink');
+    // 내용 입력 유무 체크
+    if(document.shop.hyperlink.value == ''){
+        alert('상점링크를 입력해주세요.');
+        document.shop.hyperlink.focus();
+        return false;
+    }
+    
+}
+</script>
 <body>
 <%@ include file="../include/header.jsp" %>
 <section class="category-page area-padding">
@@ -63,7 +71,7 @@ function readURL(input) {
 				<main id="main" class="site-main" role="main">
 				<div id="container">
 					<div id="content" role="main">
-						<form action="/earth/board/shopModifyPro.et?boardnum=${article.boardnum}" method="post" enctype="multipart/form-data">
+						<form action="/earth/board/shopModifyPro.et?boardnum=${article.boardnum}" method="post" enctype="multipart/form-data" name="shop" id="shop" onsubmit="return checkForm();">
 						<input type="hidden" name="boardnum" value="${article.boardnum}" /> 
 							<table>
 								<tr>
@@ -71,26 +79,26 @@ function readURL(input) {
 									<td align="left">${article.id} </td>
 								</tr>
 								<tr>
-									<td>상점이름</td>
+									<td>상점이름 *</td>
 									<td align="left">
-										<input type="text" name="subject" style="width:700px;" value="${article.subject}" />
+										<input type="text" name="subject" style="width:700px;" value="${article.subject}"   required/>
 									</td>
 								</tr>
 								<tr>
-									<td>비밀번호</td>
+									<td>비밀번호 *</td>
 									<td align="left">
-										<input type="password" name="pw" style="width:700px;"/>
+										<input type="password" name="pw" style="width:700px;"   required/>
 									</td>
 								</tr>
 							
 								<tr>
-									<td>상점링크</td>
-									<td align="left"><input type="text" name="hyperlink" style="width:700px;" value="${article.hyperlink}"/></td>
+									<td>상점링크 *</td>
+									<td align="left"><input type="text" name="hyperlink" style="width:700px;" value="${article.hyperlink}"  required/></td>
 								</tr>
 								
 								<tr>
-									<td>대표 이미지</td>
-									<td align="left"><input type="file" name="uploadFile"onchange="readURL(this)" /><br>
+									<td>대표 이미지 *</td>
+									<td align="left"><input type="file" name="uploadFile"onchange="readURL(this)" accept="image/jpeg, image/png, image/jpg"/><br>
 										<img src="" id="thumbnail"/> 
 									</td>
 								</tr>

@@ -13,12 +13,6 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
@@ -56,6 +50,18 @@ function readURL(input) {
    	}
 }
 </script>
+<script>
+//유효성검사 
+function checkForm() {
+    var ctt = document.getElementById('ctt');
+    // 내용 입력 유무 체크
+    if(document.tip.ctt.value == ''){
+        alert('내용을 입력해주세요.');
+        document.tip.ctt.focus();
+        return false;
+    }
+}
+</script>
 <body>
     <%@ include file = "../include/header.jsp" %>
 <section class="category-page area-padding">
@@ -76,20 +82,20 @@ function readURL(input) {
 								<tr>
 									<td>제 목</td>
 									<td align="left">
-										<input type="text" name="subject" style="width:700px;" value="${ article.subject}" />
+										<input type="text" name="subject" style="width:700px;" value="${ article.subject}"  required />
 									</td>
 								</tr>
 								<tr>
 									<td>비밀번호</td>
 									<td align="left">
-										<input type="password" name="pw" style="width:700px;"/>
+										<input type="password" name="pw" style="width:700px;"  required/>
 									</td>
 								</tr>
 								  
 								<tr>
 									<td>행사날짜</td>
 									<td align="left">
-									<p><input type="date" name = "sch" value="${article.sch }"> -<input type="date" name="schend" value="${article.schend }"></p>
+									<p><input type="date" name = "sch" value="${article.sch }"   required> -<input type="date" name="schend" value="${article.schend }"></p>
 										
 									</td>
 								</tr>
@@ -104,7 +110,7 @@ function readURL(input) {
 								</tr>
 								<tr>
 									<td>대표 이미지</td>
-									<td align="left"><input type="file" name="uploadFile" onchange="readURL(this)" /><br>
+									<td align="left"><input type="file" name="uploadFile" onchange="readURL(this)"accept="image/jpeg, image/png, image/jpg" /><br>
 										<img src="" id="thumbnail"/> 
 									</td>
 								</tr>

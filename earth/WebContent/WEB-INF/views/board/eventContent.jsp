@@ -24,11 +24,16 @@ height:20px;
 margin-bottom:2px;
 margin-right:4px;
 }
+.single-post-area .navigation-area .nav-right
+{
+text-align:right;
+}
 </style>
 <body>
-<%@ include file="../include/header.jsp" %>
+     <!--================ Start header Top Area =================-->
+<%@ include file = "../include/header.jsp" %>
 <section class="category-page area-padding">
-        <div class="container">   					
+        <div class="container">   	
 				<table>
 					<tr>
 						<td width="200px"> 제목 </td>
@@ -37,9 +42,13 @@ margin-right:4px;
 						<td>${article.readcount} </td>
 					</tr>
 					<tr>
+						<td width="200px"> 행사일정 </td>
+						<td><b> ${article.sch} </b> </td>
+					</tr>
+					<tr>
 						<td width="200px"> 작성자 </td>
-						<td> 
-							<img class="badgeImg" src="${pageContext.request.contextPath}/save/admin.png"/>		                        					
+						<td>
+							<img class="badgeImg" src="${pageContext.request.contextPath}/save/admin.png"/>		                         
 							${article.nickname} 
 						</td>
 					</tr>
@@ -60,10 +69,14 @@ margin-right:4px;
 					<tr>
 						<td colspan="6" align="right"> 
 							<c:if test="${sid eq 'admin'}">
-								<input type="submit" value="수정" style="background-color:#1E88E5; color:#ffffff; float:right; border:none; " onclick="window.location='/earth/board/tipModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'" /> 
-								<input type="submit" value="삭제" style="background-color:#ffffff; color:#1E88E5; float:right; border:none; " onclick="" />		
+								<button onclick="window.location='/earth/board/eventModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
+								style="background-color:#1E88E5; color:#ffffff; border:none;float:right;">수 정</button>
+								<button onclick=""
+								style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
 							</c:if>
-							<input type="button" value="목록으로" onclick="window.location='/earth/board/tip.et?pageNum=${pageNum}'" style="background-color:#ffffff; border:none; color:#1E88E5; " />
+							
+							<button onclick="window.location='/earth/board/event.et?pageNum=${pageNum}'"
+								style="background-color:#ffffff; color:#1E88E5; border:none;">목록으로</button>
 						</td>
 					</tr>
 				</table>
@@ -78,7 +91,7 @@ margin-right:4px;
 							</c:if>
 							<c:if test="${next.nextnum != null }">
 								<a
-									href="/earth/board/tipContent.et?pageNum=${pageNum}&boardnum=${next.nextnum}">
+									href="/earth/board/eventContent.et?pageNum=${pageNum}&boardnum=${next.nextnum}">
 									<p>< 이전글</p>
 									<h4>${next.nextsub}</h4>
 								</a>
@@ -95,16 +108,16 @@ margin-right:4px;
 							</c:if>
 							<c:if test="${prev.prevnum != null }">
 								<a
-									href="/earth/board/tipContent.et?pageNum=${pageNum}&boardnum=${prev.prevnum}">
+									href="/earth/board/eventContent.et?pageNum=${pageNum}&boardnum=${prev.prevnum}">
 									<p>다음글 ></p>
 									<h4>${prev.prevsub}</h4>
 								</a>
 							</c:if>
 						</div>
 					</div>
-				</div>			
-			</div>
+				</div>
+		</div>
 	</section>
-<%@ include file="../include/footer.jsp" %>
+	<%@ include file = "../include/footer.jsp" %>
 </body>
 </html>
