@@ -64,7 +64,7 @@ public class BoardController {
 			public String noticeWriteForm(HttpServletRequest request, Model model, HttpSession session) throws SQLException{
 				System.out.println("noticeWriteForm.et");
 				
-				if(!session.getAttribute("sid").equals("admin")) {
+				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
@@ -78,6 +78,11 @@ public class BoardController {
 			@RequestMapping("noticeWritePro.et")
 			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
 				System.out.println("noticeWritePro.et");
+				
+				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+					return "main/main.et";
+				}
 				
 				dto.setId((String)session.getAttribute("sid"));
 				dto.setCode(1);
@@ -1245,8 +1250,8 @@ public class BoardController {
 			public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model, HttpSession session) throws SQLException {
 				System.out.println("noticeModifyForm.et");
 				
-				if(!session.getAttribute("sid").equals("admin")) {
-					System.out.println("관리자가 아닌 사람이 공지사항 수정에 접근함");
+				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
 				
@@ -1259,8 +1264,13 @@ public class BoardController {
 			
 			// 공지사항 게시글 수정 처리(비밀번호 체크 기능 포함)
 			@RequestMapping("noticeModifyPro.et")
-			public String noticeModifyPro(NoticeDTO dto, Model model, MultipartHttpServletRequest request) throws SQLException, IOException {
+			public String noticeModifyPro(NoticeDTO dto, Model model, MultipartHttpServletRequest request, HttpSession session) throws SQLException, IOException {
 				System.out.println("noticeModifyPro.et");
+				
+				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
+					return "main/main.et";
+				}
 				
 				int code = 1;
 				String hashedPassword = boardService.getPw(dto.getBoardnum(), code);
@@ -1282,7 +1292,7 @@ public class BoardController {
 			// 자유게시판 게시글 수정
 			@RequestMapping("freeModifyForm.et")
 			public String freeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model) throws SQLException {
-				System.out.println("공지사항 게시글 수정 요청");
+				System.out.println("자유게시판 게시글 수정 요청");
 				
 				List<BracketsDTO> Brackets = boardService.getBrackets();
 				model.addAttribute("Brackets", Brackets);
@@ -1296,7 +1306,7 @@ public class BoardController {
 			// 자유게시판 게시글 수정 처리(비밀번호 체크 기능 포함)
 			@RequestMapping("freeModifyPro.et")
 			public String freeModifyPro(FreeDTO dto, Model model) throws SQLException, IOException {
-				System.out.println("공지사항 게시글 수정 처리 요청");
+				System.out.println("자유게시판 게시글 수정 처리 요청");
 				
 				int code = 2;
 				String hashedPassword = boardService.getPw(dto.getBoardnum(), code);
