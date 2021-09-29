@@ -11,8 +11,9 @@ import org.springframework.stereotype.Repository;
 import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
+
 import earth.board.dto.NoticeDTO;
-import earth.user.dto.ReportDTO;
+
 import earth.user.dto.UserDTO;
 
 @Repository
@@ -72,6 +73,13 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
+	public void deleteUser(String id) throws SQLException {
+		
+		sqlSession.delete("admin.deleteUser", id);
+		
+	}
+	
+	@Override
 	public int getBoardCount() throws SQLException {
 		
 		int result = sqlSession.selectOne("admin.getBoardCount");
@@ -118,12 +126,19 @@ public class AdminDAOImpl implements AdminDAO {
 	}
 
 	@Override
-	public void deleteUser(String id) throws SQLException {
+	public void deleteFree(String num) throws SQLException {
 		
-		sqlSession.delete("admin.deleteUser", id);
+		sqlSession.delete("admin.deleteFree", num);
 		
 	}
-
+	
+	@Override
+	public void deleteDiary(String num) throws SQLException {
+		
+		sqlSession.delete("admin.deleteDiary", num);
+		
+	}
+	
 	@Override
 	public int getCommentCount() throws SQLException {
 		int result = sqlSession.selectOne("admin.getCommentCount");
@@ -167,6 +182,20 @@ public class AdminDAOImpl implements AdminDAO {
 		
 		return commentList;
 	}
+	
+	@Override
+	public void deleteComment(String num, String code) throws SQLException {
+		
+		if(code == "9") {
+			sqlSession.delete("admin.deleteFreeC", num);
+		}else if(code == "10"){
+			sqlSession.delete("admin.deleteDiaryC", num);
+		}else if(code == "11") {
+			sqlSession.delete("admin.deleteChallengeC", num);
+		}
+		
+	}
+	
 
 	@Override
 	public int getQuestionCount() throws SQLException {
@@ -263,108 +292,6 @@ public class AdminDAOImpl implements AdminDAO {
 		
 	}
 
-	// 신고
-	@Override
-	public int insertReport(ReportDTO report) throws SQLException {
-		int result = sqlSession.insert("admin.insertReport", report);
-		return result;
-	}
 	
-	@Override
-	public ReportDTO getReport(int reportnum) throws SQLException {
-		ReportDTO report = sqlSession.selectOne("admin.getReport", reportnum);
-		return report;
-	}
-	
-	@Override
-	public int getReportCount(String process) throws SQLException {
-		int result = 0;
-		if(process.equals("0")) {
-			result = sqlSession.selectOne("admin.getReportCount", process);			
-		}else {
-			result = sqlSession.selectOne("admin.getReportCountProcess");
-		}
-		return result;
-	}
-	
-	@Override
-	public List<ReportDTO> getReport(String process, int startRow, int endRow) throws SQLException {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("process", process);
-		map.put("startRow", startRow);
-		map.put("endRow", endRow);
-	
-		List<ReportDTO> reportList = null;
-		if(process.equals("0")) {
-			reportList = sqlSession.selectList("admin.getReportList", map);			
-		}else {
-			reportList = sqlSession.selectList("admin.getReportListProcess", map);
-		}
-		
-		return reportList;
-	}
-	
-	@Override
-	public int getSearchReportCount(String process, String sel, String search) throws SQLException {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("process", process);
-		map.put("sel", sel);
-		map.put("search", search);
-		
-		int result = 0;
-		if(process.equals("0")) {
-			result = sqlSession.selectOne("admin.getSearchReportCount", map);		
-		}else {
-			result = sqlSession.selectOne("admin.getSearchReportCountProcess", map);
-		}
-
-		return result;
-	}
-	
-	@Override
-	public List<ReportDTO> getReportSearch(String process, int startRow, int endRow, String sel, String search) throws SQLException {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("process", process);
-		map.put("startRow", startRow);
-		map.put("endRow", endRow);
-		map.put("sel", sel);
-		map.put("search", search);
-		
-		List<ReportDTO> reportList = null;
-		if(process.equals("0")) {
-			reportList = sqlSession.selectList("admin.getReportSearch", map);			
-		}else {
-			reportList = sqlSession.selectList("admin.getReportSearchProcess", map);
-		}
-		
-		return reportList;
-	}
-	
-	@Override
-	public int processReport(String id, int reportnum, int punish) throws SQLException {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		map.put("reportnum", reportnum);
-		
-		int result = 0;
-		
-		switch(punish) {
-		case 0:
-			map.put("process", 1);
-			result = sqlSession.update("admin.processUpdate", map);
-			return result;
-		case 1:
-			map.put("process", 2);
-			sqlSession.update("admin.processOne", id);
-			result = sqlSession.update("admin.processUpdate", map);
-			return result;
-		case 2:
-			map.put("process", 3);
-			sqlSession.delete("admin.processTwo", id);
-			result = sqlSession.delete("admin.processUpdate", map);
-			return result;
-		}
-
-		return result;
-	}
 	
 }
