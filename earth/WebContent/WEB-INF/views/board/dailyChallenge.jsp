@@ -139,7 +139,10 @@
 										<p class="comment" style=" width:800px;">${article.ctt}</p>
 										<div class="d-flex justify-content-between">
 											<div class="d-flex align-items-center">
-												<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${article.nickname}</a>
+												${article.nickname}
+												<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">
+												<img class="badgeImg" src="${pageContext.request.contextPath}/save/msg.png" />
+												</a>
 												<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>
 												
 												<%-- 신고 : 본인 외 표시 --%>
