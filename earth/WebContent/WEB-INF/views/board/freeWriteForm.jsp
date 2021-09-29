@@ -63,7 +63,8 @@
 										<tr>
 											<td>제  목</td>
 											<td align="left">
-												<select name="categ" style="border:none;">
+												<select name="categ" style="border:3px solid #1E88E5; width:85px;height:38px; text-align:center;">
+														<option> 카테고리 선택 </option>
 													<c:forEach var="Brackets" items="${Brackets}">
 													    <option value="${Brackets.num}">${Brackets.name}</option>
 												    </c:forEach>
