@@ -7,6 +7,7 @@ import earth.admin.dto.AdminBoardDTO;
 import earth.admin.dto.AdminCommentDTO;
 import earth.admin.dto.AdminQuestionDTO;
 import earth.board.dto.NoticeDTO;
+import earth.user.dto.ReportDTO;
 import earth.user.dto.UserDTO;
 
 public interface AdminDAO {
@@ -52,6 +53,12 @@ public interface AdminDAO {
 	
 	public List<AdminQuestionDTO> getSearchQuestion(int startRow, int endRow, String sel, String search) throws SQLException;
 	
+	public void deleteQuestion(String num) throws SQLException;
+	
+	//작성자 이영인, Question 답변
+	public AdminQuestionDTO getQnAOne(int questionnum) throws SQLException;
+	public void addQnAReply(AdminQuestionDTO dto) throws SQLException;
+	
 	public int getNoticeCount() throws SQLException;
 	
 	public List<NoticeDTO> getNotice(int startRow, int endRow) throws SQLException;
@@ -60,6 +67,7 @@ public interface AdminDAO {
 	
 	public List<NoticeDTO> getSearchNotice(int startRow, int endRow, String sel, String search) throws SQLException;
 	
+	//작성자 현호형님
 	public int insertReport(ReportDTO report) throws SQLException;
 	
 	public ReportDTO getReport(int reportnum) throws SQLException;
