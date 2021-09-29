@@ -109,7 +109,13 @@
 										<td><button onclick="adminReportForm(${report.reportnum})">내용 확인</button></td>
 									</c:if>
 									<c:if test="${report.process == 1}">
-										<td>처리 완료</td>
+										<td>보류</td>
+									</c:if>
+									<c:if test="${report.process == 2}">
+										<td>경고</td>
+									</c:if>
+									<c:if test="${report.process == 3}">
+										<td>영구정지</td>
 									</c:if>
 								</tr>
 							</c:forEach>
