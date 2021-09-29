@@ -66,7 +66,7 @@ public class BoardController {
 				
 				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
-					return "main/main.et";
+					return "main/main";
 				}
 				
 				model.addAttribute("id", session.getAttribute("sid"));
@@ -81,7 +81,7 @@ public class BoardController {
 				
 				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
-					return "main/main.et";
+					return "main/main";
 				}
 				
 				dto.setId((String)session.getAttribute("sid"));
@@ -1256,7 +1256,7 @@ public class BoardController {
 				
 				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
-					return "main/main.et";
+					return "main/main";
 				}
 				
 				NoticeDTO article = boardService.getNoticeArticle(boardnum);
@@ -1273,7 +1273,7 @@ public class BoardController {
 				
 				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
-					return "main/main.et";
+					return "main/main";
 				}
 				
 				int code = 1;
