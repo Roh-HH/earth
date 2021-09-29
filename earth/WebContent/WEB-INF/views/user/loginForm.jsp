@@ -90,7 +90,8 @@
 								</c:if>
 							</li>
 				
-                            <li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				<li><img src="/earth/resources/bootstrap/imgs/message1.png" style="width:20px"></li>
+				<li><img src="/earth/resources/bootstrap/imgs/silchun.png" style="width:20px"></li>
                             
                         </ul>
                     </div>
