@@ -18,18 +18,23 @@
 <title>Insert title here</title>
 </head>
 
+
 <script language="javascript">
+
 	function moveClose(num) {
 		opener.location.href="/earth/badge/buyComplete.et?num=" + num;
 	  	self.close();
-	  	
-	  	
 	}
 	
-	function buyCheck() {
-		if()
-	}
 </script>
+
+<c:if test="${check eq 1}">
+	<script language="javascript">
+		alert("이미 소지하고 있는 뱃지입니다.");
+		self.close();
+	</script>
+</c:if>
+
 <body >
 	<p style="text-align:center; font-size:18px; font-weight:bold; color:#111111;">뱃지 구매하기</p>
 	<div style="text-align : center;">

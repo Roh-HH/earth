@@ -60,7 +60,8 @@
         			<div class="col-lg-4 col-md-4 col-sm-6 brand manipul design print" style="width:100px;">
         				<div class="h_gallery_item" style="align:center;">
         					<div class="g_img_item" style="float:center;">
-								<img src='/earth/resources/bootstrap/imgs/${article.badgeimg}' style="width:140px; height:140px;align:center;"/>
+								<img src='/earth/save/${article.badgeimg}' style="width:140px; height:140px;align:center;"/>
+								<c:if test="${mybadge}"></c:if>
         						<a class="light" onclick="showPopup(${article.badgenum}); return false;" style="color:#ffffff;">
         						<img src="/earth/resources/bootstrap/imgs/badge_buy.png" alt=""></a>
         					</div>
@@ -89,35 +90,39 @@
         
         	<%-- 페이지 번호 --%>
 				<div align="center" class="col-12 text-center">
-				<nav class="pagination" style="float:center;">
-				
-				<c:if test="${count > 0}">
-					<c:set var="pageBlock" value="5" />
-					<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
-					<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
-					<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
-					<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
-					<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
-					<c:if test="${endPage > pageCount}">
-						<c:set var="endPage" value="${pageCount}" /> 
-					</c:if>
-					
-					<%-- 검색 안했을때 페이지번호들   --%> 
-					<c:if test="${sel == null || search == null}">
-						<c:if test="${startPage > pageBlock}">
-							<a class="back page-numbers" href="/earth/badge/badgeShop.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back»</a>
-						</c:if>
-
-						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a class="page-numbers" href="/earth/badge/badgeShop.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
-						</c:forEach>
-						
-						<c:if test="${endPage < pageCount}">
-							<a class="next page-numbers" href="/earth/badge/badgeShop.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»&gt; </a>
-						</c:if>
-					</c:if>
-					
-				</c:if> <%-- end:count > 0 --%>
+					<nav class="pagination" style="float:center;">
+						<c:if test="${count > 0}">
+							<c:set var="pageBlock" value="5" />
+							<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
+							<c:set var="pageCount" value="${res + (count % pageSize == 0 ? 0 : 1)}" />
+							<fmt:parseNumber var="result" value="${(currentPage-1)/pageBlock}" integerOnly="true" />
+							<fmt:parseNumber var="startPage" value="${result * pageBlock + 1}"/>
+							<fmt:parseNumber var="endPage" value="${startPage + pageBlock -1}" />
+							<c:if test="${endPage > pageCount}">
+								<c:set var="endPage" value="${pageCount}" /> 
+							</c:if>
+							
+							<c:if test="${startPage > pageBlock}">
+								<a class="back page-numbers" href="/earth/badge/badgeShop.et?pageNum=${startPage-pageBlock}&filter=${filter}" class="pageNums">«back</a>
+							</c:if>
+		
+							<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
+								<c:choose>
+									<c:when test="${pageNum eq i}">
+										<a class="current" href="/earth/badge/badgeShop.et?pageNum=${pageNum}&filter=${filter}">${i}</a>
+									</c:when>
+									<c:otherwise>
+										<a class="page-numbers" href="/earth/badge/badgeShop.et?pageNum=${i}&filter=${filter}" class="pageNums">${i}</a>
+									</c:otherwise>
+								</c:choose>
+							</c:forEach>
+							
+							<c:if test="${endPage < pageCount}">
+								<a class="next page-numbers" href="/earth/badge/badgeShop.et?pageNum=${startPage+pageBlock}&filter=${filter}" class="pageNums">Next»</a>
+							</c:if>
+		
+							
+						</c:if> <%-- end:count > 0 --%>
 				</nav>
 				</div>
 	<%@ include file = "../include/footer.jsp" %>
