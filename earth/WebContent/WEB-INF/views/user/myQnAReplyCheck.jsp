@@ -127,13 +127,14 @@
 												${question.replyctt}
 											</td>
 										</tr>
-										<!-- 테투리 안보이게 하고싶어요.. -->
+									</tbody>
+									<tfoot>
 										<tr>
 											<td style="border:none; color:blue; float:right;">
 												답변일 : <fmt:formatDate value="${question.replydate}" pattern="yyyy.MM.dd HH:mm"/>
 											</td>
 										</tr>
-									</tbody>
+									</tfoot>
 								</table>
 							<br/>
 							<input type="button" onclick="window.location='http://localhost:8080/earth/user/myOnetoOne.et'" value="돌아가기" /> 
