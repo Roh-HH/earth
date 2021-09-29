@@ -154,6 +154,8 @@
 															<td class='center'>
 																<c:if test="${article.process == 0}">처리중</c:if>
 																<c:if test="${article.process == 1}">처리완료</c:if>
+																<c:if test="${article.process == 2}">처리완료 - 경고 조치</c:if>
+																<c:if test="${article.process == 3}">처리완료 - 영구정지</c:if>
 															</td>
 														</tr>
 													</c:forEach>
