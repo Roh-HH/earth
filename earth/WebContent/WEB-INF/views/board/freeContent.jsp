@@ -92,6 +92,7 @@
 		<tr>
 			<td> 작성자 </td>
 			<td>
+				<img class="badgeImg" src='${pageContext.request.contextPath}/save/${article.badgeimg}' style="width:40px; height:40px;"/>
 				<a onclick="msgSend('${article.id}'); return false;" class="btn-reply text-uppercase" style="cursor:default;">${article.nickname}</a>
 			</td>
 			<td>
@@ -136,7 +137,7 @@
 						 <div class="single-comment justify-content-between d-flex">
 			                 <div class="user justify-content-between d-flex">
 			                    <div class="thumb">
-			                    	<img src="/earth/resources/bootstrap/imgs/logo.png" alt="">
+			                    	<img class="badgeImg" src='${pageContext.request.contextPath}/save/${comment.badgeimg}' style="width:40px; height:40px;"/>
 			                    </div>
 				                <div class="desc">
 					              <p class="comment" style="width:800px;">
