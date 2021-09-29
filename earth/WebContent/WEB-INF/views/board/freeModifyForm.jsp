@@ -66,16 +66,17 @@
 									<tr>
 										<td>제  목</td>
 										<td align="left">
-											<select name="categ"  style="border:none;">
-												<c:forEach var="Brackets" items="${Brackets}">
-													<c:if test="${Brackets.num == article.categ}">
-														<option value="${Brackets.num}" selected>${Brackets.name}</option>
-													</c:if>
-													<c:if test="${Brackets.num != article.categ}">
-													    <option value="${Brackets.num}">${Brackets.name}</option>													
-													</c:if>
-											    </c:forEach>
-											</select>
+										<select name="categ" style="border:3px solid #1E88E5; width:85px;height:38px; text-align:center;">
+											<option> 카테고리 선택 </option>
+											<c:forEach var="Brackets" items="${Brackets}">
+												<c:if test="${Brackets.num == article.categ}">
+													<option value="${Brackets.num}" selected>${Brackets.name}</option>
+												</c:if>
+												<c:if test="${Brackets.num != article.categ}">
+												    <option value="${Brackets.num}">${Brackets.name}</option>													
+												</c:if>
+										    	</c:forEach>
+										</select>
 											<input type="text" name="subject" value="${article.subject}" style="width:700px;" />
 										</td>
 									</tr>
