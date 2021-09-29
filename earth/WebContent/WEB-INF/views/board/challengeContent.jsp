@@ -58,7 +58,7 @@
 		</script>
 	<script>
 		function popupOpen(){
-			var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=3&uri=/earth/board/challengeList.et&pageNum=${pageNum}";
+			var popUrl = "/earth/board/popupForm.et?boardnum=${article.boardnum}&code=4&uri=/earth/board/challengeList.et&pageNum=${pageNum}";
 			var popOption = "width=500, height=200, resizable=no, scrollbars=no, status=no;";
 			window.open(popUrl,"",popOption);
 		}
