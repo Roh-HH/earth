@@ -64,7 +64,7 @@ public class BoardController {
 			public String noticeWriteForm(HttpServletRequest request, Model model, HttpSession session) throws SQLException{
 				System.out.println("noticeWriteForm.et");
 				
-				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
@@ -79,7 +79,7 @@ public class BoardController {
 			public String noticeWritePro(NoticeDTO dto, HttpSession session, MultipartHttpServletRequest request, Model model) throws SQLException, IOException {
 				System.out.println("noticeWritePro.et");
 				
-				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
@@ -1250,7 +1250,7 @@ public class BoardController {
 			public String noticeModifyForm(@ModelAttribute("pageNum") String pageNum, @ModelAttribute("boardnum") int boardnum, Model model, HttpSession session) throws SQLException {
 				System.out.println("noticeModifyForm.et");
 				
-				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
@@ -1267,7 +1267,7 @@ public class BoardController {
 			public String noticeModifyPro(NoticeDTO dto, Model model, MultipartHttpServletRequest request, HttpSession session) throws SQLException, IOException {
 				System.out.println("noticeModifyPro.et");
 				
-				if(!(session.getAttribute("sid")==null) || !session.getAttribute("sid").equals("admin")) {
+				if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 					System.out.println("관리자가 아닌 사람이 공지사항 작성에 접근함");
 					return "main/main.et";
 				}
