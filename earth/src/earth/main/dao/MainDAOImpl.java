@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 
 import earth.board.dto.DiaryDTO;
 import earth.board.dto.MonthDTO;
+import earth.board.dto.TipDTO;
 import earth.main.dto.MessageDTO;
 
 @Repository
@@ -230,4 +231,5 @@ public class MainDAOImpl implements MainDAO {
 			String badgeimg = sqlSession.selectOne("board.getBadgeimg", id);
 			return badgeimg;
 		}
+				
 }
