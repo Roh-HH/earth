@@ -142,7 +142,7 @@
 												<fmt:formatDate value="${article.reg}" pattern="HH시 mm분"/><br/>
 												
 												<%-- 신고 : 본인 외 표시 --%>
-												<c:if test="${sessionScope.sid != comment.writer && sesseionScope.sid != null}">					
+												<c:if test="${sessionScope.sid != comment.writer && (sesseionScope.sid != null || sessionScope.sid != '')}">					
 													<button onclick="reportComment(${article.boardnum}, '${article.id}'); return false;"
 														style="background-color:#ffffff;color:#111; border:none;">신고</button>
 												</c:if>
