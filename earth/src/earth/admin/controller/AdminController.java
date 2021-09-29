@@ -3,12 +3,22 @@ package earth.admin.controller;
 import java.sql.SQLException;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import earth.admin.dto.AdminQuestionDTO;
 import earth.admin.service.AdminServiceImpl;
+import earth.board.dto.DiaryDTO;
+import earth.board.dto.FreeCommentDTO;
+import earth.board.dto.FreeDTO;
+import earth.board.dto.MonthDTO;
+import earth.user.dto.ReportDTO;
 
 @Controller
 @RequestMapping("/adminmypage/*")
@@ -278,35 +288,37 @@ public class AdminController {
 		
 	}
 	
-	@RequestMapping("adminNotice.et")
-	public String adminNotice(String pageNum, String sel, String search, Model model) throws SQLException{
+	@RequestMapping("adminQuestionDeleteForm.et")
+	public String adminQuestionDelete(String num, Model model) throws SQLException{
+		
+		model.addAttribute("num", num);
+		
+		return "adminmypage/adminQuestionDeleteForm";
+		
+	}
 	
+	@RequestMapping("adminQuestionDeletePro.et")
+	public String adminQuestionDeletePro(String num, Model model) throws SQLException{
 		
-		Map<String, Object> result = null;
+		adminService.deleteQuestion(num);		
 		
-		if(pageNum == null){ 
-			pageNum = "1";
-		}
+		return "adminmypage/adminQuestionDeletePro";
 		
-		if(sel == null || search == null) {
-			result = adminService.getNoticeList(pageNum);
-		}else {
-			result = adminService.getNoticeSearch(pageNum, sel, search);
-		}
+	}
+	
+	
+	
+	@RequestMapping("adminQuestionReply.et")
+	public String adminQuestionReply(@RequestParam("questionnum") int questionnum, Model model) throws SQLException {
+		AdminQuestionDTO question = adminService.getQnAOne(questionnum);	// 1:1 문의글 고유번호로 문의글 한개의 정보 가져오기
+		model.addAttribute("question", question);
 		
-		model.addAttribute("pageSize", result.get("pageSize"));
-		model.addAttribute("pageNum", result.get("pageNum"));
-		model.addAttribute("currentPage", result.get("currentPage"));
-		model.addAttribute("startRow", result.get("startRow"));
-		model.addAttribute("endRow", result.get("endRow"));
-		model.addAttribute("noticeList", result.get("noticeList"));
-		model.addAttribute("count", result.get("count"));
-		model.addAttribute("number", result.get("number"));
-		model.addAttribute("sel", sel);
-		model.addAttribute("search", search);
-		
-		return "adminmypage/adminNotice";
-		
+		return "adminmypage/adminQuestionReply";
+	}
+	@RequestMapping("adminQuestionReplyPro.et")
+	public String adminQuestionReplyPro(AdminQuestionDTO dto, Model model) throws SQLException {
+		adminService.addQnAReply(dto);
+		return "redirect:/adminmypage/adminQuestion.et";
 	}
 	
 	// 이하 신고 관련 메서드 - 노현호
