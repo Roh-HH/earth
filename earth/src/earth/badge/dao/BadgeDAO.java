@@ -18,11 +18,14 @@ public interface BadgeDAO {
 	public BadgeDTO getBadge(int num) throws SQLException;
 	
 	// 뱃지 구매 완료
-	public int buyBadge(MybagDTO dto) throws SQLException;
+	public int buyBadge(MybagDTO dto,String id) throws SQLException;
 	
 	// 뱃지 등록
 	public void addBadge(BadgeDTO dto) throws SQLException;
 	
 	// 포인트 불러오기
-	public int getPoint(String uid) throws SQLException;
+	public int getPoint(String id) throws SQLException;
+	
+	// 뱃지 중복 체크
+	public int checkBadge(int num,String id) throws SQLException;
 }

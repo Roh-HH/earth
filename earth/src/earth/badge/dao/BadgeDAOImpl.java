@@ -31,11 +31,12 @@ public class BadgeDAOImpl implements BadgeDAO{
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		List<BadgeDTO> badgeList;
 
+		map.put("start", startRow);
+		map.put("end", endRow);
+		
 		String pop = "popul";
 		String pri = "price";
 		
-		map.put("start", startRow);
-		map.put("end", endRow);
 		
 		System.out.println(filter);
 		
@@ -61,14 +62,28 @@ public class BadgeDAOImpl implements BadgeDAO{
 		return badge;
 	}
 	
+	// 뱃지 구매
 	@Override
-	public int buyBadge(MybagDTO dto) throws SQLException {
+	public int buyBadge(MybagDTO dto,String id) throws SQLException {
 	
+		// 뱃지 구매 완료
 		int result = sqlSession.insert("badge.buyBadge",dto);
+	
+		// 포인트 사용
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		int num = dto.getBadgenum();
+		map.put("num", num);
+		map.put("id", id);
+		
+		sqlSession.update("badge.usePoint",map);
+		
+		// 구매 횟수 +1
+		sqlSession.update("badge.countUp",num);
 		
 		return result;
 	}
 	
+	// 뱃지 추가
 	@Override
 	public void addBadge(BadgeDTO dto) throws SQLException {
 		
@@ -78,10 +93,27 @@ public class BadgeDAOImpl implements BadgeDAO{
 	
 	// 뱃지 포인트 불러오기
 	@Override
-	public int getPoint(String uid) throws SQLException {
+	public int getPoint(String id) throws SQLException {
 	
-		int point = sqlSession.selectOne("badge.getPoint", uid);
+		int point = sqlSession.selectOne("badge.getPoint", id);
 		
 		return point;
+	}
+	
+	// 뱃지 중복체크
+	@Override
+	public int checkBadge(int num,String id) throws SQLException {
+
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("num",num);
+		map.put("uid",id);
+		
+		int result = 0;
+		int check = sqlSession.selectOne("badge.checkBadge", map);
+		
+		if(check >= 1) {
+			result = 1;
+		}
+		return result;
 	}
 }

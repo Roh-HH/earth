@@ -12,13 +12,13 @@ import earth.badge.dao.BadgeDAOImpl;
 import earth.badge.dto.BadgeDTO;
 import earth.user.dto.MybagDTO;
 
-
 @Service
 public class BadgeServiceImpl implements BadgeService {
 
 	@Autowired
 	private BadgeDAOImpl badgeDAO = null;
 	
+	// 뱃지샵 목록 불러오기
 	@Override
 	public Map<String, Object> getBadgeList(String pageNum, String filter) throws SQLException {
 		
@@ -61,6 +61,7 @@ public class BadgeServiceImpl implements BadgeService {
 		return result;
 	}
 	
+	// 뱃지 하나 DTO 불러오기
 	@Override
 	public BadgeDTO getBadge(int num) throws SQLException {
 		
@@ -69,14 +70,16 @@ public class BadgeServiceImpl implements BadgeService {
 		return result;
 	}
 	
+	// 뱃지 구매 완료
 	@Override
-	public int buyBadge(MybagDTO dto) throws SQLException {
+	public int buyBadge(MybagDTO dto,String id) throws SQLException {
 		
-		int result = badgeDAO.buyBadge(dto); 
+		int result = badgeDAO.buyBadge(dto,id); 
 		
 		return result;
 	}
 	
+	// 뱃지 추가 (관리자)
 	@Override
 	public void addBadge(BadgeDTO dto) throws SQLException {
 	
@@ -86,14 +89,21 @@ public class BadgeServiceImpl implements BadgeService {
 	
 	// 뱃지 포인트 불러오기
 	@Override
-	public int getPoint(String uid) throws SQLException {
+	public int getPoint(String id) throws SQLException {
 	
-		int point = badgeDAO.getPoint(uid);
+		int point = badgeDAO.getPoint(id);
 		
 		return point;
 	}
 	
-	
+	// 뱃지 중복체크
+	@Override
+	public int checkBadge(int num, String id) throws SQLException {
+		
+		int result = badgeDAO.checkBadge(num,id);
+		
+		return result;
+	}
 	
 	
 }

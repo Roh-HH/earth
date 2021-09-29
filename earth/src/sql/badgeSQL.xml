@@ -10,19 +10,19 @@
 	
 	<select id="getBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
 		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from badge order by reg desc) A) B where r >= #{start} and r <= #{end}
+			select B.* from (select A.*, rownum r from (select * from badge where badgenum != 1 order by reg desc) A) B where r >= #{start} and r <= #{end}
 		]]>
 	</select>
 	
 	<select id="getPopulBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
 		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from badge order by sellnum desc) A) B where r >= #{start} and r <= #{end}
+			select B.* from (select A.*, rownum r from (select * from badge where badgenum != 1 order by sellnum desc) A) B where r >= #{start} and r <= #{end}
 		]]>
 	</select>
 	
 	<select id="getPriceBadgeArticles" parameterType="hashmap" resultType="badgeDTO">		
 		<![CDATA[
-			select B.* from (select A.*, rownum r from (select * from badge order by badgeprice desc) A) B where r >= #{start} and r <= #{end}
+			select B.* from (select A.*, rownum r from (select * from badge where badgenum != 1 order by badgeprice desc) A) B where r >= #{start} and r <= #{end}
 		]]>
 	</select>
 	
@@ -39,7 +39,21 @@
 	</insert>
 	
 	<select id="getPoint" parameterType="String" resultType="int">
-		select point from point where id = #{uid}
+		select point from point where id = #{id}
 	</select>
+	
+	<select id="checkBadge" parameterType="hashmap" resultType="int">
+		select count(*) from mybag where id = #{id} and badgenum = #{num}
+	</select>
+	
+	<update id="usePoint" parameterType="hashmap" >
+		update point set point = point - (select badgeprice from badge where badgenum=#{num}) where id=#{id}
+	</update>
+	
+	<update id="countUp" parameterType="int" >
+		update badge set sellnum = sellnum + 1 where badgenum=#{num}
+	</update>
+	
+	
 	
 </mapper>
