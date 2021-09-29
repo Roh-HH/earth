@@ -209,6 +209,11 @@ public class MainController {
 			public String messageWriteForm(String receiver, String pageNum, String uri, Model model, HttpSession session) {
 				System.out.println("messageWriteForm.et");
 				
+				if(session.getAttribute("sid")==null) {
+					System.out.println("비로그인 상태로 쪽지함에 접근함");
+					return "user/loginForm";
+				}
+				
 				String id = (String)session.getAttribute("sid");
 				
 				model.addAttribute("id", id);
