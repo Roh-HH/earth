@@ -559,6 +559,9 @@ public class UserController {
 			// 내 적용된 뱃지 가져오기
 			BadgeDTO mybadge = userService.getMyBadge(id);
 			
+			// 내 포인트 가져오기
+			int point = userService.getPoint(id);
+			
 			// view 에 전달할 데이터 보내기
 			model.addAttribute("pageSize", result.get("pageSize"));
 			model.addAttribute("pageNum", result.get("pageNum"));
