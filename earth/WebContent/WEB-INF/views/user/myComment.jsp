@@ -49,7 +49,7 @@
                             <div class="form-group">
                               <div class="input-group mb-3">
 								<!-- 사용자 착용벳지 이미지 -->
-								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
+								<img src='${pageContext.request.contextPath}/save/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	

@@ -37,7 +37,7 @@
                             <div class="form-group">
                               <div class="input-group mb-3">
 								<!-- 사용자 착용벳지 이미지 -->
-								<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
+								<img src='${pageContext.request.contextPath}/save/${mybadge}' style="width:70px; height:70px; align:center;"/><br>
                               </div>
                             </div>
                         	<h4>${user.nickname}</h4>                      	
@@ -106,7 +106,7 @@
                  			<p style="color:blue;">보유 포인트 : ${point} point</p>
                  		</c:if><br>
                    			착용중인 뱃지<br>
-                   			<img src='/earth/resources/bootstrap/imgs/${mybadge}' style="width:140px; height:140px;align:center;"/>
+                   			<img src='${pageContext.request.contextPath}/save/${mybadge}' style="width:140px; height:140px;align:center;"/>
                    			<br>
                    			<p style="color:green;">- ${badgeName} -</p>
                    			<c:if test="${mybadge ne '새싹.png'}">
@@ -126,7 +126,7 @@
 					        			<div class="col-lg-6 col-md-4 col-sm-6 brand manipul design print" style="width:100px;">
 					        				<div class="h_gallery_item" style="align:center;">
 					        					<div class="g_img_item" style="float:center;">
-													<img src='/earth/save/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
+													<img src='${pageContext.request.contextPath}/save/${article.badgeimg}' style="width:100px; height:100px;align:center;"/><br/>
 					        						<a class="light" onclick="window.location='/earth/user/equipBadge.et?badgenum=${article.badgenum}'" style="color:#ffffff;">
 					        							<button type="button"  style="background-color:#343a40; border:none; color:#fff;" >착용하기</button>								
 					        						</a>
