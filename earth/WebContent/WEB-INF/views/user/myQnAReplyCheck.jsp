@@ -110,7 +110,7 @@
                    <div class="blog_details">                       
 						<div class="row justify-content-center">
 							<div class="col-md-6 text-center mb-5">
-								<h2 class="heading-section">'${question.subject}'에 대한 문의 답변</h2>
+								<h2 class="heading-section">'${question.subject}'<br>문의 답변</h2>
 							</div>
 						</div>
 						<div class="center_">
