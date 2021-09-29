@@ -780,7 +780,21 @@ public class BoardDAOImpl implements BoardDAO {
 			int result = sqlSession.update("board.updateTipArticleImg", dto);
 			return result;
 		}
-		
+	
+		//꿀팁 이전글 -김하영
+		@Override
+		public TipDTO prevTipBoard(int boardnum) throws SQLException {
+			TipDTO prev = sqlSession.selectOne("board.prevTipBoard", boardnum); 
+
+			return prev;
+		}
+		//꿀팁 다음글-김하영
+		@Override
+		public TipDTO nextTipBoard(int boardnum) throws SQLException {
+			TipDTO next = sqlSession.selectOne("board.nextTipBoard", boardnum); 
+
+			return next;
+		}
 	
 	// 9. 자유게시판 댓글
 		// 자유게시판 댓글 업로드 - 노현호
