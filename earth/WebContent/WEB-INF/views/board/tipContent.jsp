@@ -9,16 +9,9 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="img/favicon.png" type="image/png">
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
@@ -31,21 +24,11 @@ height:20px;
 margin-bottom:2px;
 margin-right:4px;
 }
-.singo{
- float:right; 
- background-color:#f3f3f3; 
- border:none; 
- border-radius:3px;
- margin-bottom:15px;
- }
 </style>
 <body>
 <%@ include file="../include/header.jsp" %>
 <section class="category-page area-padding">
-        <div class="container">   	
-    		<h1 align="center"> </h1>	
-				<button class="singo"> 👎🏻 신고
-				</button>				
+        <div class="container">   					
 				<table>
 					<tr>
 						<td width="200px"> 제목 </td>
@@ -83,7 +66,43 @@ margin-right:4px;
 							<input type="button" value="목록으로" onclick="window.location='/earth/board/tip.et?pageNum=${pageNum}'" style="background-color:#ffffff; border:none; color:#1E88E5; " />
 						</td>
 					</tr>
-				</table>			
+				</table>
+				<div class="navigation-area">
+					<div style="display: inline-block">
+						<div class="details">
+							<c:if test="${next.nextnum == null }">
+								<a href="">
+									<p>< 이전글</p>
+									<h4>가장 최신글입니다.</h4>
+								</a>
+							</c:if>
+							<c:if test="${next.nextnum != null }">
+								<a
+									href="/earth/board/tipContent.et?pageNum=${pageNum}&boardnum=${next.nextnum}">
+									<p>< 이전글</p>
+									<h4>${next.nextsub}</h4>
+								</a>
+							</c:if>
+						</div>
+					</div>
+					<div style="display: inline-block; float: right; text-align: right">
+						<div class="detials">
+							<c:if test="${prev.prevnum == null }">
+								<a href="">
+									<p>다음글 ></p>
+									<h4>가장 마지막글입니다.</h4>
+								</a>
+							</c:if>
+							<c:if test="${prev.prevnum != null }">
+								<a
+									href="/earth/board/tipContent.et?pageNum=${pageNum}&boardnum=${prev.prevnum}">
+									<p>다음글 ></p>
+									<h4>${prev.prevsub}</h4>
+								</a>
+							</c:if>
+						</div>
+					</div>
+				</div>			
 			</div>
 	</section>
 <%@ include file="../include/footer.jsp" %>

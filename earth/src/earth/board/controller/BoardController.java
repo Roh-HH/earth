@@ -1215,7 +1215,11 @@ public class BoardController {
 				
 				TipDTO article = boardService.getTipArticle(boardnum);
 				System.out.println(article.getBoardnum());
-
+				TipDTO prev = boardService.prevTipBoard(boardnum);
+				model.addAttribute("prev", prev);
+				TipDTO next = boardService.nextTipBoard(boardnum);
+				model.addAttribute("next", next);
+				
 				//닉네임이랑 뱃지이미지 추가. 
 				article.setNickname(boardService.getNickname(article.getId()));
 				article.setBadgeimg(boardService.getBadgeimg(article.getId()));	

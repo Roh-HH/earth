@@ -163,6 +163,7 @@ public interface BoardDAO {
 			public EventDTO prevBoard(int boardnum)throws SQLException;
 			//행사일정 이전글 -김하영
 			public EventDTO nextBoard(int boardnum)throws SQLException;
+	
 		// 8. 꿀팁
 			// 꿀팁 게시글 업로드 - 김하영
 			public int insertTip(TipDTO dto) throws SQLException;
@@ -178,7 +179,11 @@ public interface BoardDAO {
 			public int updateTipArticle(TipDTO dto) throws SQLException;
 			// 꿀팁 글 수정처리(이미지포함) - 김하영 
 			public int updateTipArticleImg(TipDTO dto) throws SQLException;
-			
+			// 행사일정 이전글 -김하영
+			public EventDTO prevBoard(int boardnum)throws SQLException;
+			// 행사일정 이전글 -김하영
+			public EventDTO nextBoard(int boardnum)throws SQLException;
+	
 		// 9. 자유게시판 댓글
 			// 자유게시판 댓글 업로드 - 노현호
 			public int uploadFreeComment(FreeCommentDTO dto) throws SQLException;

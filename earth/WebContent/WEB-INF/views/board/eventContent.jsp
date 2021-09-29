@@ -9,19 +9,12 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link rel="icon" href="img/favicon.png" type="image/png">
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
-    
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
 <style>
@@ -31,13 +24,16 @@ height:20px;
 margin-bottom:2px;
 margin-right:4px;
 }
+.single-post-area .navigation-area .nav-right
+{
+text-align:right;
+}
 </style>
 <body>
      <!--================ Start header Top Area =================-->
 <%@ include file = "../include/header.jsp" %>
 <section class="category-page area-padding">
         <div class="container">   	
-			<h1 align="center"> </h1>
 				<table>
 					<tr>
 						<td width="200px"> 제목 </td>
@@ -75,7 +71,7 @@ margin-right:4px;
 							<c:if test="${sid eq 'admin'}">
 								<button onclick="window.location='/earth/board/eventModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
 								style="background-color:#1E88E5; color:#ffffff; border:none;float:right;">수 정</button>
-								<button onclick="""
+								<button onclick=""
 								style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
 							</c:if>
 							
@@ -84,7 +80,43 @@ margin-right:4px;
 						</td>
 					</tr>
 				</table>
-			</div>
+				<div class="navigation-area">
+					<div style="display: inline-block">
+						<div class="details">
+							<c:if test="${next.nextnum == null }">
+								<a href="">
+									<p>< 이전글</p>
+									<h4>가장 최신글입니다.</h4>
+								</a>
+							</c:if>
+							<c:if test="${next.nextnum != null }">
+								<a
+									href="/earth/board/eventContent.et?pageNum=${pageNum}&boardnum=${next.nextnum}">
+									<p>< 이전글</p>
+									<h4>${next.nextsub}</h4>
+								</a>
+							</c:if>
+						</div>
+					</div>
+					<div style="display: inline-block; float: right; text-align: right">
+						<div class="detials">
+							<c:if test="${prev.prevnum == null }">
+								<a href="">
+									<p>다음글 ></p>
+									<h4>가장 마지막글입니다.</h4>
+								</a>
+							</c:if>
+							<c:if test="${prev.prevnum != null }">
+								<a
+									href="/earth/board/eventContent.et?pageNum=${pageNum}&boardnum=${prev.prevnum}">
+									<p>다음글 ></p>
+									<h4>${prev.prevsub}</h4>
+								</a>
+							</c:if>
+						</div>
+					</div>
+				</div>
+		</div>
 	</section>
 	<%@ include file = "../include/footer.jsp" %>
 </body>

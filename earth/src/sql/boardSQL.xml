@@ -467,6 +467,26 @@
 			<select id="tipCount" parameterType="hashmap" resultType="int">
 				select count(*) from tip where ${sel} like '%'||#{search}||'%'
 			</select>
+			<select id="prevTipBoard" resultType="tipDTO">
+				<![CDATA[	
+					select * from (
+					SELECT boardnum, subject,
+					  	   LAG(subject,1) OVER(ORDER BY boardnum) as prevsub,
+					       LAG(boardnum,1) OVER (ORDER BY boardnum) as prevnum
+					  FROM tip)
+					  where boardnum =#{boardnum}
+				]]>
+			</select>
+			<select id="nextTipBoard" resultType="tipDTO">
+				<![CDATA[	
+					select * from (	
+					SELECT boardnum, subject,
+					  	   LEAD(subject,1) OVER(ORDER BY boardnum) as nextsub,
+					       LEAD(boardnum,1) OVER (ORDER BY boardnum) as nextnum
+					  FROM tip) 
+					  where boardnum =#{boardnum}
+				]]>
+			</select>			
 			<update id="addReadCountTip" parameterType="int">
 				<![CDATA[
 					update tip set readcount=readcount+1 where boardnum = #{value}

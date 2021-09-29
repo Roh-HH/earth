@@ -13,16 +13,10 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
+
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
-    
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
 <style>
 .badgeImg{
@@ -46,6 +40,7 @@ margin-right:4px;
 						</select>
                         <input type="text" class="form-control" name="search" placeholder="행사 검색" style="border-top:none; border-left:none; border-right:none; height:30px;" onfocus="this.placeholder = '행사 검색'" onblur="this.placeholder = '행사 검색'">
                         <input type="image" src="/earth/resources/bootstrap/imgs/icon.png" style="width:18px; height:18px;">
+                        
                 	</div>
                 </form>        	
 			<br><br><br>
@@ -91,12 +86,9 @@ margin-right:4px;
                 	</div>
 				</c:if>
             </div>
-        </div>
-    </section>
-    		<%-- 페이지 번호 --%>
-			<div align="center">
-				<div class="isotope_fillter">
-        		<ul class="gallery_filter list">
+        
+   <%-- 페이지 번호 --%>
+			<nav class="pagination" style="float:center;">	
 				<c:if test="${count > 0}">
 					<c:set var="pageBlock" value="5" />
 					<fmt:parseNumber var="res" value="${count / pageSize}" integerOnly="true" />
@@ -107,40 +99,61 @@ margin-right:4px;
 					<c:if test="${endPage > pageCount}">
 						<c:set var="endPage" value="${pageCount}" /> 
 					</c:if>
-					
-					<%-- 검색했을때 페이지번호들 --%>
+		
+					<%-- 검색했을때 페이지번호 --%>
 					<c:if test="${sel != null && search != null}">
 						<c:if test="${startPage > pageBlock}">
-							<a class="back page-numbers"  href="/earth/board/event.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «back</a>
+							<a class="back page-numbers"
+								href="/earth/board/event?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"
+								class="pageNums">«Back</a>
 						</c:if>
 						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a class="" href="/earth/board/event.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums"> &nbsp; ${i} &nbsp; </a>
+								<c:if test="${pageNum eq i}">
+									<a class="current"
+										href="/earth/board/event.et?pageNum=${pageNum}&sel=${sel}&search=${search}">${i}</a>
+								</c:if>
+								<c:if test="${pageNum ne i}">
+									<a class="page-numbers"
+										href="/earth/board/event.et?pageNum=${i}&sel=${sel}&search=${search}"
+										class="pageNums">${i}</a>
+								</c:if>
 						</c:forEach>
 						<c:if test="${endPage < pageCount}">
-							<a class="next page-numbers" href="/earth/board/event.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> Next»</a>
+							<a class="next page-numbers"
+								href="/earth/board/event.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}"
+								class="pageNums">Next»</a>
 						</c:if>
 					</c:if>
-					<%-- 검색 안했을때 페이지번호들   --%> 
-					<c:if test="${sel == null || search == null}">
+				<%-- 검색 안했을때 페이지번호  --%>
+					<c:if test="${sell ==  null || search == null}">
 						<c:if test="${startPage > pageBlock}">
-							<a class="back page-numbers" href="/earth/board/event.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back»</a>
+							<a class="back page-numbers"
+								href="/earth/board/event.et?pageNum=${startPage-pageBlock}"
+								class="pageNums">«Back</a>
 						</c:if>
-
 						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a class="page-numbers" href="/earth/board/event.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+								<c:if test="${pageNum eq i}">
+									<a class="current"
+										href="/earth/board/event.et?pageNum=${ pageNum ? "current":""}">${i}</a>
+								</c:if>
+								<c:if test="${pageNum ne i }">
+									<a class="page-numbers"
+										href="/earth/board/event.et?pageNum=${i}" class="pageNums">${i}</a>
+								</c:if>
 						</c:forEach>
-						
 						<c:if test="${endPage < pageCount}">
-							<a class="next page-numbers" href="/earth/board/event.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»&gt; </a>
+							<a class="next page-numbers"
+								href="/earth/board/event.et?pageNum=${startPage+pageBlock}"
+								class="pageNums">Next»</a>
 						</c:if>
 					</c:if>
-					
-				</c:if> <%-- end:count > 0 --%>
-				</ul>
-        		</div> 
-				<p style="color:grey"> 현재페이지 : ${pageNum} </p> 
-				
+
+
+
+		</c:if> <%-- end:count > 0 --%>
+			</nav>
 			</div>
- <%@ include file="../include/footer.jsp"%>
+    </section>
+<%@ include file="../include/footer.jsp"%>
 </body>
 </html>

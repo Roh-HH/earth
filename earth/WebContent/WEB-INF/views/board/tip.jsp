@@ -109,27 +109,40 @@ margin-right:4px;
 					<%-- 검색했을때 페이지번호들 --%>
 					<c:if test="${sel != null && search != null}">
 						<c:if test="${startPage > pageBlock}">
-							<a class="back page-numbers"  href="/earth/board/tip.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums"> «back</a>
+							<a class="back page-numbers"  href="/earth/board/tip.et?pageNum=${startPage-pageBlock}&sel=${sel}&search=${search}"  class="pageNums">«Back</a>
 						</c:if>
 						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a class="page-numbers" href="/earth/board/tip.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums"> &nbsp; ${i} &nbsp; </a>
+							<c:choose>
+								<c:when test="${pageNum eq i}">								
+									<a class="current" href="/earth/board/tip.et?pageNum=${pageNum}&sel=${sel}&search=${search}">${i}</a>
+								</c:when>
+								<c:otherwise>
+									<a class="page-numbers" href="/earth/board/tip.et?pageNum=${i}&sel=${sel}&search=${search}"  class="pageNums">${i}</a>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 						<c:if test="${endPage < pageCount}">
-							<a class="next page-numbers" href="/earth/board/tip.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums"> Next»</a>
+							<a class="next page-numbers" href="/earth/board/tip.et?pageNum=${startPage+pageBlock}&sel=${sel}&search=${search}" class="pageNums">Next»</a>
 						</c:if>
 					</c:if>
 					<%-- 검색 안했을때 페이지번호들   --%> 
 					<c:if test="${sel == null || search == null}">
 						<c:if test="${startPage > pageBlock}">
-							<a class="back page-numbers" href="/earth/board/tip.et?pageNum=${startPage-pageBlock}" class="pageNums"> «back»</a>
+							<a class="back page-numbers" href="/earth/board/tip.et?pageNum=${startPage-pageBlock}" class="pageNums">«Back</a>
 						</c:if>
-
 						<c:forEach var="i" begin="${startPage}" end="${endPage}" step="1">
-							<a class="page-numbers" href="/earth/board/tip.et?pageNum=${i}" class="pageNums"> &nbsp; ${i} &nbsp; </a>
+							<c:choose>
+								<c:when test="${pageNum eq i}">	
+									<a class="current" href="/earth/board/tip.et?pageNum=${pageNum}">${i}</a>
+								</c:when>
+								<c:otherwise>
+									<a class="page-numbers" href="/earth/board/tip.et?pageNum=${i}" class="pageNums">${i}</a>
+								</c:otherwise>
+							</c:choose>
 						</c:forEach>
 						
 						<c:if test="${endPage < pageCount}">
-							<a class="next page-numbers" href="/earth/board/tip.et?pageNum=${startPage+pageBlock}" class="pageNums"> Next»&gt; </a>
+							<a class="next page-numbers" href="/earth/board/tip.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
 						</c:if>
 					</c:if>
 					

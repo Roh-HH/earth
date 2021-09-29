@@ -52,7 +52,48 @@ function readURL(input) {
        };
        reader.readAsDataURL(input.files[0]);
 
-   	}
+   	}	
+}
+</script>
+<script>
+//유효성검사 
+function checkForm() {
+    var subject = document.event.subject;
+    // 제목 입력 유무 체크
+    if(subject.value == '' ){
+        window.alert("제목을 입력해주세요");
+        document.event.subject.focus();
+        return false; 
+    }
+    var pw = document.getElementById('pw');
+    // 암호 입력 유무 체크
+    if(document.event.pw.value == ''){
+        alert('비밀번호를 입력해주세요.');
+        document.event.pw.focus();
+        return false;
+    }
+    var ctt = document.getElementById('ctt');
+    // 내용 입력 유무 체크
+    if(document.event.ctt.value == ''){
+        alert('내용을 입력해주세요.');
+        document.event.ctt.focus();
+        return false;
+    }
+    
+    var image = document.getElementById('uploadFile');
+    // 이미지 입력 유무 체크 (jpeg, jpg, png만 가능 )
+    if(document.event.uploadFile.value == ''){
+        alert('이미지는 필수입니다.');
+        document.event.uploadFile.focus();
+        return false;
+    }
+    var sch = document.getElementById('sch');
+    // 이미지 입력 유무 체크 (jpeg, jpg, png만 가능 )
+    if(document.event.sch.value == ''){
+        alert('행사날짜는 필수입니다.');
+        document.event.sch.focus();
+        return false;
+    }
 }
 </script>
 <body>
@@ -64,7 +105,7 @@ function readURL(input) {
 				<main id="main" class="site-main" role="main">
 				<div id="container">
 					<div id="content" role="main">
-						<form action="/earth/board/writeEventPro.et" method="post" enctype="multipart/form-data">
+						<form name="event" action="/earth/board/writeEventPro.et" method="post" enctype="multipart/form-data" name="event" id="event" onsubmit="return checkForm();">
 							<table>
 								<tr>
 									<td>작성자</td>
@@ -73,26 +114,27 @@ function readURL(input) {
 								<tr>
 									<td>제 목</td>
 									<td align="left">
-										<input type="text" name="subject" style="width:700px;" />
+										<input type="text" name="subject" style="width:700px;" class="check" autocomplete="off"  required/>
+										<p><p>
 									</td>
 								</tr>
 								<tr>
 									<td>비밀번호</td>
 									<td align="left">
-										<input type="password" name="pw" style="width:700px;"/>
+										<input type="password" name="pw" style="width:700px;"  required/>
 									</td>
 								</tr>
 								<tr>
 									<td>행사날짜</td>
 									<td align="left">
-     									 <p><input type="date" name = "sch"> -<input type="date" name="schend"></p>
+     									 <p><input type="date" name = "sch"   required> -<input type="date" name="schend"></p>
 										<%--<input type="text" name="sch" style="width:700px;" placeholder="ex)2021.09.05 - 2021.09.21" />--%>
 									</td>
 								</tr>
 								<tr>
 									<td>내 용</td>
 									<td align="left">
-										<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'></textarea>
+										<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'   required></textarea>
 										<script type="text/javascript">
 											CKEDITOR.replace('p_content', {filebrowserUploadUrl:'${pageContext.request.contextPath}/fileupload.et'});
 										</script>
@@ -100,7 +142,7 @@ function readURL(input) {
 								</tr>
 								<tr>
 									<td>대표 이미지</td>
-									<td align="left" ><input type="file" name="uploadFile" onchange="readURL(this)" /><br>
+									<td align="left" ><input type="file" name="uploadFile" onchange="readURL(this)" accept="image/jpeg, image/png, image/jpg" required /><br>
 										<img src="" id="thumbnail"/> 
 									</td>
 								</tr>
