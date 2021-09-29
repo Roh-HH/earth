@@ -12,17 +12,12 @@
     <title>어뜨 - 지구를 살리는 작은 실천 </title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/bootstrap.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/style1.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/responsive.css">
 </head>
 <style>
-
 .feature_item{
  	padding: 50px 21px;
     border-radius: 10px ;
@@ -262,7 +257,7 @@ margin-right:4px;
             </article>
         </div>
     </div>
-    <!--================ 이달의 챌린지 section end =================--> 
- <%@ include file="../include/footer.jsp"%>
+    <!--================ 이달의 챌린지 section end =================--> 	
+	<%@ include file="../include/footer.jsp"%>
 </body>
 </html>
