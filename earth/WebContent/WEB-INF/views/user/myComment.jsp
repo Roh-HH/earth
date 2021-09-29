@@ -153,15 +153,15 @@
 																</a>
 															</c:if>
 															<c:if test="${article.code == 10}">
-																<a href="/earth/board/diaryContent.et?boardnum=${article.boardnum}">
+																<a href="/earth/board/diaryContent.et?boardnum=${article.boardnum}&pageNum=1">
 																	${article.commen}
 																</a>
 															</c:if>
 															<c:if test="${article.code == 11}">
-																<a href="/earth/board/challengeContent.et?boardnum=${article.boardnum}">
+																<a href="/earth/board/challengeContent.et?boardnum=${article.boardnum}&pageNum=1">
 																	${article.commen}
 																</a>
-															</c:if>
+															</c:if>>
 														</td>
 														<td>
 															<fmt:formatDate value="${article.regcomm}" pattern="yyyy/MM/dd HH:mm"/>
