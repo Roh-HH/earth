@@ -172,8 +172,7 @@ public class MainController {
 				}
 				
 				int code = 3;
-				String id = "java";
-				//String id = (String)session.getAttribute("sid");
+				String id = (String)session.getAttribute("sid");
 				
 				// message 테이블에서 receiver가 id인 데이터 전부 가져오기
 				Map<String, Object> result = null;
