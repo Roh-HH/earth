@@ -80,7 +80,7 @@ margin-right:4px;
                <!--어드민만 글쓰기 버튼이 활성화됩니다. -->
 				<c:if test="${sid eq 'admin'}">
 				   <div class="col-12 text-center">
-					<button type="button"class="main_btn" style="width:80px; height:50px; text-align:center;"
+					<button type="button"class="main_btn" style="width:100px; height:50px; text-align:center;"
 						onclick="window.location='/earth/board/writeEventForm.et'">글쓰기
 					</button>	
                 	</div>
