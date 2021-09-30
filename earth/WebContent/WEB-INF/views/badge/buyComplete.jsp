@@ -58,7 +58,7 @@
 					계속 쇼핑하기 
 			</button>
 			
-			<button onclick="window.location='/earth/user/myEchoBag.et'"
+			<button onclick="window.location='/earth/user/myBag.et'"
 					style="background-color:#ffffff; color:#1E88E5;  border:none;"> 
 					나의 에코백 </button>
 						<br><br>
