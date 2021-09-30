@@ -77,7 +77,12 @@
 	<%@ include file = "../include/header.jsp" %>
 
 	<section class="category-page area-padding">
-	<div class="container">   	
+	<div class="container">  
+				<c:if test="${sessionScope.sid != null}">
+        		<c:if test="${sessionScope.sid != article.id and sessionScope.sid != 'admin'}">
+					<button onclick="reportArticle(${article.boardnum}); return false;" class="singo"> 👎🏻 신고</button>
+				</c:if>	
+			</c:if> 	
     
 	<h1 align="center"> 자유게시판 </h1>
 	
@@ -111,17 +116,17 @@
 		</tr>
 		<tr>
 			<td colspan="4" align="right"> 
+			 <c:if test="${sessionScope.sid == article.id}">
 				<button onclick="window.location='/earth/board/freeModifyForm.et?boardnum=${article.boardnum}&pageNum=${pageNum}'"
 						style="background-color:#1E88E5; color:#ffffff; border:none;float:right;">수 정</button>
 				<%-- 관리자 접근 시
 				<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=2&uri=/earth/board/freeList.et&pageNum=${pageNum}'">삭제</button>
 				 --%>
+			</c:if>
+			<c:if test="${sessionScope.sid == article.id or sessionScope.sid == 'admin'}">
 				<button onclick="popupOpen()"
 						style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
-				<c:if test="${sessionScope.sid != article.id}">
-					<button onclick="reportArticle(${article.boardnum}); return false;"
-							class="singo">신고</button>
-				</c:if>
+			</c:if>
 				<button onclick="window.location='/earth/board/freeList.et?pageNum=${pageNum}'"
 						style="background-color:#ffffff; color:#1E88E5; border:none;">목록으로</button>
 			</td>
@@ -160,13 +165,14 @@
 									</div>
 				                  <div class="reply-btn" style="width:150px;">
 									<%-- 신고버튼 : 본인 외 표시, 삭제버튼 : 작성자 본인 또는 관리자 표시 --%>
-									<c:if test="${sessionScope.sid != comment.writer && sesseionScope.sid != null}">
-					                    <button onclick="reportComment(${comment.commentnum}, '${comment.writer}'); return false;"
-											style="background-color:#ffffff; color:#111; float:right; border:none">신고</button>
+									 <c:if test="${sessionScope.sid != null}">
+		                                 <c:if test="${sessionScope.sid != comment.writer and sessionScope.sid != 'admin'}">
+					                   		 <button onclick="reportComment(${comment.commentnum}, '${comment.writer}'); return false;"
+												style="background-color:#ffffff; color:#111; float:right; border:none">신고</button>
+										</c:if>
 									</c:if>
-
 									<%-- 삭제버튼 : 접속 아이디(${sessionScope.sid})와 댓글 작성자(${comment.writer})가 일치하는  경우 또는 접속자가 관리자인 경우 삭제버튼 표시(${article.boardnum} 파라미터로 보내기) --%>
-									<c:if test="${sessionScope.sid == comment.writer || sessionScope.sid == 'admin'}">
+							   	 		<c:if test="${sessionScope.sid == comment.writer or sessionScope.sid == 'admin'}">
 										<button onclick="window.location='/earth/board/delete.et?boardnum=${comment.commentnum}&code=9&uri=/earth/board/freeContent.et&pageNum=${pageNum}&boardNum=${article.boardnum}'"
 										style="background-color:#ffffff; color:#111; float:right; border:none">삭제</button>
 									</c:if>
