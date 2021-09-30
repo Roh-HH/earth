@@ -74,7 +74,7 @@
                </c:if>
                	<c:if test="${sid eq 'admin'}">
 				   <div class="col-12 text-center">
-					<button type="button"class="main_btn" style="width:80px; height:50px; text-align:center;"
+					<button type="button"class="main_btn" style="width:100px; height:50px; text-align:center;"
 						onclick="window.location='/earth/board/writeShopForm.et'">글쓰기
 					</button>	
                 	</div>
