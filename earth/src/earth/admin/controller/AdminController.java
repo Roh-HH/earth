@@ -18,6 +18,7 @@ import earth.board.dto.DiaryDTO;
 import earth.board.dto.FreeCommentDTO;
 import earth.board.dto.FreeDTO;
 import earth.board.dto.MonthDTO;
+import earth.board.service.BoardServiceImpl;
 import earth.user.dto.ReportDTO;
 
 @Controller
