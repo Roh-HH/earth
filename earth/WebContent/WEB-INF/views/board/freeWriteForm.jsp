@@ -37,11 +37,7 @@
 			n.pw.focus();
 			return false;
 		}
-		if (n.ctt.value == "") {
-			alert("내용을 입력하지 않았습니다.")
-			n.ctt.focus();
-			return false;
-		}
+		 
 	}
 </script>
 <body>
