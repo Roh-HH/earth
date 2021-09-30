@@ -72,14 +72,6 @@ function checkForm() {
         document.event.pw.focus();
         return false;
     }
-    var ctt = document.getElementById('ctt');
-    // 내용 입력 유무 체크
-    if(document.event.ctt.value == ''){
-        alert('내용을 입력해주세요.');
-        document.event.ctt.focus();
-        return false;
-    }
-    
     var image = document.getElementById('uploadFile');
     // 이미지 입력 유무 체크 (jpeg, jpg, png만 가능 )
     if(document.event.uploadFile.value == ''){
@@ -88,7 +80,7 @@ function checkForm() {
         return false;
     }
     var sch = document.getElementById('sch');
-    // 이미지 입력 유무 체크 (jpeg, jpg, png만 가능 )
+    // 날짜 입력 유무 체크 (jpeg, jpg, png만 가능 )
     if(document.event.sch.value == ''){
         alert('행사날짜는 필수입니다.');
         document.event.sch.focus();
@@ -134,7 +126,7 @@ function checkForm() {
 								<tr>
 									<td>내 용</td>
 									<td align="left">
-										<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'   required></textarea>
+										<textarea class="form-control" id="p_content" name="ctt" style='IME-MODE: active'></textarea>
 										<script type="text/javascript">
 											CKEDITOR.replace('p_content', {filebrowserUploadUrl:'${pageContext.request.contextPath}/fileupload.et'});
 										</script>
