@@ -57,6 +57,27 @@ function readURL(input) {
    	}
 }
 </script>
+<script type="text/javascript">
+	<%-- 유효성검사 --%>
+	function sendIt(){
+		if (n.subject.value == "") {
+			alert("제목을 입력하지 않았습니다.")
+			n.subject.focus();
+			return false;
+		}
+		if (n.pw.value == "") {
+			alert("비밀번호를 입력하지 않았습니다.")
+			n.pw.focus();
+			return false;
+		}
+		if (n.ctt.value == "") {
+			alert("내용을 입력하지 않았습니다.")
+			n.ctt.focus();
+			return false;
+		}
+	}
+</script>
+
 <body>
 <%@ include file = "../include/header.jsp" %>
 <section class="category-page area-padding">
@@ -69,7 +90,7 @@ function readURL(input) {
 					<div id="container">
 						<div id="content" role="main">
 							<h1 align="center"> 환경일기 쓰기 </h1>
-							<form action="/earth/board/diaryWritePro.et" method="post" enctype="multipart/form-data">
+								<form name="n" action="/earth/board/diaryWritePro.et" method="post" enctype="multipart/form-data" onsubmit="return sendIt();">
 								<table>
 									<tr>
 										<td>작성자</td>
