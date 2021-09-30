@@ -68,14 +68,7 @@ function checkForm() {
         document.tip.pw.focus();
         return false;
     }
-    var ctt = document.getElementById('ctt');
-    // 내용 입력 유무 체크
-    if(document.tip.ctt.value == ''){
-        alert('내용을 입력해주세요.');
-        document.tip.ctt.focus();
-        return false;
-    }
-    
+  
     var image = document.getElementById('uploadFile');
     // 이미지 입력 유무 체크 (jpeg, jpg, png만 가능 )
     if(document.tip.uploadFile.value == ''){
