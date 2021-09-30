@@ -34,10 +34,15 @@ public class AdminController {
 	//adminUserForm
 	
 	@RequestMapping("adminUser.et")
-	public String adminUser(String pageNum, String sel, String search, Model model) throws SQLException{
+	public String adminUser(String pageNum, String sel, String search, Model model, HttpSession session) throws SQLException{
 	
 		
 		Map<String, Object> result = null;
+		
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
+			return "main/main.et";
+		}
 		
 		if(pageNum == null){
 			pageNum = "1";
@@ -111,9 +116,14 @@ public class AdminController {
 	
 	
 	@RequestMapping("adminBoard.et")
-	public String adminBoard(String pageNum, String sel, String search, Model model) throws SQLException{
+	public String adminBoard(String pageNum, String sel, String search, Model model, HttpSession session) throws SQLException{
 		
 		Map<String, Object> result = null;
+		
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
+			return "main/main.et";
+		}
 		
 		if(pageNum == null){ 
 			pageNum = "1";
@@ -211,8 +221,12 @@ public class AdminController {
 	}
 	*/
 	@RequestMapping("adminComment.et")
-	public String adminComment(String pageNum, String sel, String search, Model model) throws SQLException{
+	public String adminComment(String pageNum, String sel, String search, Model model, HttpSession session) throws SQLException{
 	
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
+			return "main/main.et";
+		}
 		
 		Map<String, Object> result = null;
 		
@@ -261,8 +275,12 @@ public class AdminController {
 	}
 	
 	@RequestMapping("adminQuestion.et")
-	public String adminQuestion(String pageNum, String sel, String search, Model model) throws SQLException{
+	public String adminQuestion(String pageNum, String sel, String search, Model model, HttpSession session) throws SQLException{
 	
+		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
+			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
+			return "main/main.et";
+		}
 		
 		Map<String, Object> result = null;
 		
@@ -335,7 +353,7 @@ public class AdminController {
 		
 		return "adminmypage/reportForm";
 	}
-	
+	/*
 	// 신고 처리
 	@RequestMapping("reportPro.et")
 	public String reportPro(String uri, ReportDTO report, Model model, HttpSession session) throws SQLException{
@@ -365,7 +383,7 @@ public class AdminController {
 		
 		return "adminmypage/reportPro";
 	}
-	
+	*/
 	// 신고 현황목록 확인
 	@RequestMapping("adminReport.et")
 	public String adminReport(String pageNum, String process, String sel, String search, Model model, HttpSession session) throws SQLException{
@@ -463,6 +481,7 @@ public class AdminController {
 	}
 	
 	// 이상 신고 관련 메서드
+	
 	
 	
 	
