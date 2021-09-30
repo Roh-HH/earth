@@ -43,10 +43,10 @@
 	function checkPhone(phone) {
 		if (!checkExistData(phone, "전화번호를"))
 			return false;
-		
-		var phoneRegExp = /^[0-9]*$/
+		var phoneRegExp = /^[0-9]{2,3}[0-9]{3,4}[0-9]{4}$/;
 		if (!phoneRegExp.test(phone)) {
-			alert("전화번호는 숫자만 입력해주세요.");
+			alert("전화번호 형식이 올바르지 않습니다.");
+			 frm.phone.value = "";
 			 frm.phone.focus();
 			return false;
 		}
