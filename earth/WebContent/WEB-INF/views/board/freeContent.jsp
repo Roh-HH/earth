@@ -123,8 +123,12 @@
 				<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=2&uri=/earth/board/freeList.et&pageNum=${pageNum}'">삭제</button>
 				 --%>
 			</c:if>
-			<c:if test="${sessionScope.sid == article.id or sessionScope.sid == 'admin'}">
+			<c:if test="${sessionScope.sid == article.id}">
 				<button onclick="popupOpen()"
+						style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
+			</c:if>
+			<c:if test="${sessionScope.sid == 'admin'}">
+				<button onclick="window.location='/earth/board/delete.et?boardnum=${article.boardnum}&code=2&uri=/earth/board/freeList.et&pageNum=${pageNum}'"
 						style="background-color:#ffffff; color:#1E88E5; border:none;float:right;">삭제</button>
 			</c:if>
 				<button onclick="window.location='/earth/board/freeList.et?pageNum=${pageNum}'"
