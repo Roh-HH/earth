@@ -249,7 +249,7 @@
 		               </div>
 		               <div class="form-group">
 		                   <input type="submit" class="button button-contactForm" value="댓글달기"
-		                          style="width:150px; border-radius:5px;height:45px; background-color:#1E88E5; border:none;float:right;"
+		                          style="width:150px; border-radius:5px;height:45px; color:fff; background-color:#1E88E5; border:none;float:right;"
 		                   />
 						</div>				
 					</form>
