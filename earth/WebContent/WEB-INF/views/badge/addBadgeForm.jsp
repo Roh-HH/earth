@@ -69,7 +69,7 @@ function readURL(input) {
 
 	
 
-	<img src="/earth/resources/bootstrap/imgs/default_original.png" style="border: 2px dotted black; float:center; " id="thumbnail"/> 
+	<img src="/earth/resources/bootstrap/imgs/admin.png" style="border: 2px dotted black; float:center; " id="thumbnail"/> 
 
 	<form action="/earth/badge/addBadgePro.et" method="post" enctype="multipart/form-data">
 		<table>
