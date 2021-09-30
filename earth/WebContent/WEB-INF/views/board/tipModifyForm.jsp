@@ -50,18 +50,6 @@ function readURL(input) {
    	}
 }
 </script>
-<script>
-//유효성검사 
-function checkForm() {
-    var ctt = document.getElementById('ctt');
-    // 내용 입력 유무 체크
-    if(document.tip.ctt.value == ''){
-        alert('내용을 입력해주세요.');
-        document.tip.ctt.focus();
-        return false;
-    }
-}
-</script>
 <body>
 <%@ include file="../include/header.jsp" %>
 <section class="category-page area-padding">
