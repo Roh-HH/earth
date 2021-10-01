@@ -34,7 +34,7 @@ public class EarthTask {
 	}
 	
 	//매일 00시에 포인트 0 으로 업데이트
-	//@Scheduled(cron = "0 0 0 * * *") 
+	@Scheduled(cron = "0 0 0 * * *") 
 	public void pointupdate() throws SQLException {
 		System.out.println("=======> Quartz 실행, 매일 00시에 포인트 카운트 3개 0으로 업데이트 ");
 		sqlSession.update("user.updatePoint");
