@@ -91,19 +91,19 @@
 				            <table align="center">
 				            <tr>
 				            	<td align="center">분류</td>
-				            	<td align="center">닉네임</td> 
-				           	 	<td align="center">ID</td>
-				           	 	<td align="center">제목</td>
-				           	 	<td align="center"></td>
-				       		</tr>
+				            	<td align="center">ID</td> 
+				           	 <td align="center">닉네임</td>
+				           	 <td align="center">제목</td>
+				           	 <td align="center"></td>
+				       	</tr>
 				      		<c:forEach var="Board" items="${BoardList}" varStatus="status">
 								<tr align="center">
 									<td>
 										<c:if test="${Board.code == 2}">자유게시판</c:if>
 										<c:if test="${Board.code == 3}">환경일기</c:if>
 									</td>
-									<td>${Board.nickname}</td>
 									<td>${Board.ID}</td>
+									<td>${Board.nickname</td>
 									<td>
 										<c:if test="${Board.code == 2}">
 											<a href="/earth/board/freeContent.et?boardnum=${Board.boardnum}&commentPageNum=1">
