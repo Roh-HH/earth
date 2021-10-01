@@ -41,7 +41,7 @@ public class AdminController {
 		
 		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
-			return "main/main.et";
+			return "main/main";
 		}
 		
 		if(pageNum == null){
@@ -122,7 +122,7 @@ public class AdminController {
 		
 		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
-			return "main/main.et";
+			return "main/main";
 		}
 		
 		if(pageNum == null){ 
@@ -225,7 +225,7 @@ public class AdminController {
 	
 		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
-			return "main/main.et";
+			return "main/main";
 		}
 		
 		Map<String, Object> result = null;
@@ -279,7 +279,7 @@ public class AdminController {
 	
 		if(session.getAttribute("sid")==null || !session.getAttribute("sid").equals("admin")) {
 			System.out.println("관리자가 아닌 사람이 관리자페이지에 접근함");
-			return "main/main.et";
+			return "main/main";
 		}
 		
 		Map<String, Object> result = null;
