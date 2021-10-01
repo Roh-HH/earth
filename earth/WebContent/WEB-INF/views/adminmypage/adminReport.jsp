@@ -53,9 +53,6 @@
 								<a href="/earth/adminmypage/adminUser.et">회원관리</a>
 							</li>
 							<li>
-								<a href="/earth/adminmypage/adminModify.et">운영자권한관리</a>
-							</li>
-							<li>
 								<a href="/earth/adminmypage/adminBoard.et">게시글관리</a>
 							</li>
 							<li>
@@ -63,9 +60,6 @@
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminQuestion.et">1:1문의</a>
-							</li>
-							<li>
-								<a href="/earth/adminmypage/adminNotice.et">공지사항</a>
 							</li>
 							<li>
 								<a href="/earth/adminmypage/adminReport.et">신고</a>
