@@ -29,6 +29,12 @@
 	<select id="messageCountSearchRemind" parameterType="hashmap" resultType="int">
 		select count(*) from message where receiver = #{id} and deletereceiver = 0 and remind = 1 and ${sel} like '%'||#{search}||'%' 
 	</select>
+	<select id="messageCountDelete" resultType="int" parameterType="string">
+		select count(*) from message where receiver = #{value} and deletereceiver = 1
+	</select>
+	<select id="messageCountSearchDelete" parameterType="hashmap" resultType="int">
+		select count(*) from message where receiver = #{id} and deletereceiver = 1 and ${sel} like '%'||#{search}||'%' 
+	</select>
 
 	<!-- 보관함 종류별 쪽지 목록 가져오기 -->
 	<select id="getReceiveMessages" resultType="messageDTO" parameterType="hashmap">
@@ -61,6 +67,16 @@
 			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 0 and remind = 1 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
 		]]>
 	</select>
+	<select id="getDeleteMessages" resultType="messageDTO" parameterType="hashmap">
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 1 order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
+	<select id="getDeleteMessagesSearch" resultType="messageDTO" parameterType="hashmap">	
+		<![CDATA[
+			select B.* from (select A.*, rownum r from (select * from message where receiver = #{id} and deletereceiver = 1 and ${sel} like '%'||#{search}||'%' order by reg desc) A) B where r >= #{start} and r <= #{end}
+		]]>
+	</select>
 	
 	<!-- 쪽지 조회 -->
 	<select id="getMessage" resultType="messageDTO" parameterType="int">
@@ -84,13 +100,27 @@
 		update message set deletewriter = 1 where messagenum = #{value}
 	</update>
 	
-	<!-- 쪽지 삭제 Quartz : 매일 오전 04시 자동 실행 -->
-	<delete id="">
-		delete from message where deletereceiver = 1 and deletewriter = 1
+	<!-- 휴지통 비우기(받은쪽지 영구삭제용) -->
+	<update id="deleteMessage" parameterType="string">
+		update message set deletereceiver = 2 where receiver = #{value} and deletereceiver = 1
+	</update>
+	
+	<!-- 휴지통 복구(휴지통 -> 받은쪽지함 이동) -->
+	<update id="reviveMessage" parameterType="int">
+		update message set deletereceiver = 0 where messagenum = #{value}
+	</update>
+	
+	<!-- 쪽지 삭제 Quartz용 : 매일 오전 04시 자동 실행 -->
+	<!-- 
+		쪽지 삭제 절차
+		1. 수신자가 받은 쪽지 삭제 : deletereceiver : 0 에서 1로 변경, 받은쪽지함에서 표시하지 않음, 휴지통에 표시
+		2. 발신자가 보낸 쪽지 삭제 : deletewriter : 0 에서 1로 변경, 보낸쪽지함에서 표시하지 않음
+		3. 수신자가 휴지통 비우기 : deletereceiver : 1에서 2로 변경, 휴지통에서 표시하지 않음
+		4. 수신자가 삭제 후 휴지통에서 비우고(deletereceiver : 2), 발신자도 삭제한 쪽지(deletewriter : 1) 영구 제거 
+	 -->
+	<delete id="deleteMessageTask">
+		delete from message where deletereceiver = 2 and deletewriter = 1
 	</delete>
-	
-	
-	
 	
 	
 	<!-- 메인에서 이달의챌린지 1개만 받아올게요. 김하영  -->
@@ -105,10 +135,5 @@
 		from (select * from diary order by recommend desc) A) B where r >= 1 and r <= 3
 		]]>
 	</select>
-	
-	
-	
-	
-	
 	
 </mapper>
