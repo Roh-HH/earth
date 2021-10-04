@@ -24,9 +24,11 @@ public class MainServiceImpl implements MainService {
 		@Override
 		public Map<String, Object> getMessageList(String id, int code, String pageNum) throws SQLException {
 			
+			// code 분류
 			// 받은 쪽지함 : 1
 			// 보낸 쪽지함 : 2
 			// 쪽지 보관함 : 3
+			// 휴지통 : 4
 			
 			// 한페이지에 보여줄 쪽지의 수 
 			int pageSize = 10; 
@@ -52,6 +54,7 @@ public class MainServiceImpl implements MainService {
 			int countReceive = mainDAO.getMessageCount(id, 1);
 			int countSend = mainDAO.getMessageCount(id, 2);
 			int countRemind = mainDAO.getMessageCount(id, 3);
+			int countDelete = mainDAO.getMessageCount(id, 4);
 			
 			// 글이 하나라도 있으면 글들을 다시 가져오기
 			switch(code) {
@@ -76,6 +79,13 @@ public class MainServiceImpl implements MainService {
 					result.put("messageList", messageList);
 				}
 				break;
+			case 4:
+				// 휴지통 - 노현호
+				if(count > 0){
+					List<MessageDTO> messageList = mainDAO.getDeleteMessages(startRow, endRow, id); 
+					result.put("messageList", messageList);
+				}
+				break;
 			}
 				
 			// Controller 에게 전달
@@ -90,6 +100,7 @@ public class MainServiceImpl implements MainService {
 			result.put("countReceive", countReceive);
 			result.put("countSend", countSend);
 			result.put("countRemind", countRemind);
+			result.put("countDelete", countDelete);
 			
 			return result;
 		}
@@ -125,6 +136,7 @@ public class MainServiceImpl implements MainService {
 			int countReceive = mainDAO.getMessageCount(id, 1);
 			int countSend = mainDAO.getMessageCount(id, 2);
 			int countRemind = mainDAO.getMessageCount(id, 3);
+			int countDelete = mainDAO.getMessageCount(id, 4);
 			
 			// 글이 하나라도 있으면 글들을 다시 가져오기
 			switch(code) {
@@ -149,6 +161,13 @@ public class MainServiceImpl implements MainService {
 					result.put("messageList", messageList);
 				}
 				break;
+			case 4:
+				// 휴지통 - 노현호
+				if(count > 0){
+					List<MessageDTO> messageList = mainDAO.getDeleteMessages(startRow, endRow, id); 
+					result.put("messageList", messageList);
+				}
+				break;
 			}
 				
 			// Controller 에게 전달
@@ -163,6 +182,7 @@ public class MainServiceImpl implements MainService {
 			result.put("countReceive", countReceive);
 			result.put("countSend", countSend);
 			result.put("countRemind", countRemind);
+			result.put("countDelete", countDelete);
 			
 			return result;
 		}
@@ -193,16 +213,28 @@ public class MainServiceImpl implements MainService {
 			mainDAO.delRemind(messagenum);
 		}
 		
+		// 받은 쪽지 삭제(미표시 처리) - 노현호
+		@Override
+		public void deleteReceiveMessage(int messagenum) throws SQLException {
+			mainDAO.deleteReceiveMessage(messagenum);
+		}
+		
 		// 보낸 쪽지 삭제(미표시 처리) - 노현호
 		@Override
 		public void deleteSendMessage(int messagenum) throws SQLException {
 			mainDAO.deleteSendMessage(messagenum);
 		}
 		
-		// 받은 쪽지 삭제(미표시 처리) - 노현호
+		// 휴지통 비우기 - 노현호
 		@Override
-		public void deleteReceiveMessage(int messagenum) throws SQLException {
-			mainDAO.deleteReceiveMessage(messagenum);
+		public void deleteMessage(String id) throws SQLException{
+			mainDAO.deleteMessage(id);
+		}
+		
+		// 휴지통 복구 - 노현호
+		@Override
+		public void reviveMessage(int messagenum) throws SQLException{
+			mainDAO.reviveMessage(messagenum);
 		}
 
 		
