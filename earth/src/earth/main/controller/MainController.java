@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import earth.board.dto.DiaryDTO;
-import earth.board.service.BoardServiceImpl;
 import earth.main.dto.MessageDTO;
 import earth.main.service.MainServiceImpl;
 
@@ -23,7 +22,6 @@ public class MainController {
 	
 		@Autowired
 		private MainServiceImpl mainService = null;
-	    
 		
 		// 메인페이지 - 김하영
 		@RequestMapping("main.et")
@@ -38,6 +36,7 @@ public class MainController {
 			
 			// 리스트 아이디 닉네임으로 변경, 리스트 뱃지이미지 
 			if (article.get("diaryList") != null) {
+				@SuppressWarnings("unchecked")
 				List<DiaryDTO> diaryList = (List<DiaryDTO>)article.get("diaryList");
 				for(int i=0; i<diaryList.size(); i++) {
 					diaryList.get(i).setNickname(mainService.getNickname(diaryList.get(i).getId()));
@@ -56,10 +55,6 @@ public class MainController {
 			model.addAttribute("number", result.get("number"));
 			model.addAttribute("diaryList", article.get("diaryList"));
 			
-			
-			
-			
-			
 			return "main/main";
 		}
 
@@ -69,9 +64,11 @@ public class MainController {
 			public String messageReceiveList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageReceiveList.et");
 				
+				// code 분류
 				// 받은 쪽지함 : 1
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
+				// 휴지통 : 4
 				
 				if(session.getAttribute("sid")==null) {
 					System.out.println("비로그인 상태로 쪽지함에 접근함");
@@ -107,6 +104,7 @@ public class MainController {
 				model.addAttribute("countReceive", result.get("countReceive"));
 				model.addAttribute("countSend", result.get("countSend"));
 				model.addAttribute("countRemind", result.get("countRemind"));
+				model.addAttribute("countDelete", result.get("countDelete"));
 				
 				return "main/messageReceiveList";
 			}
@@ -116,9 +114,11 @@ public class MainController {
 			public String messageSendList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageSendList.et");
 				
+				// code 분류
 				// 받은 쪽지함 : 1
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
+				// 휴지통 : 4
 				
 				if(session.getAttribute("sid")==null) {
 					System.out.println("비로그인 상태로 쪽지함에 접근함");
@@ -153,6 +153,7 @@ public class MainController {
 				model.addAttribute("countReceive", result.get("countReceive"));
 				model.addAttribute("countSend", result.get("countSend"));
 				model.addAttribute("countRemind", result.get("countRemind"));
+				model.addAttribute("countDelete", result.get("countDelete"));
 				
 				return "main/messageSendList";
 			}
@@ -162,9 +163,11 @@ public class MainController {
 			public String messageRemindList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
 				System.out.println("messageRemindList.et");
 				
+				// code 분류
 				// 받은 쪽지함 : 1
 				// 보낸 쪽지함 : 2
 				// 쪽지 보관함 : 3
+				// 휴지통 : 4
 				
 				if(session.getAttribute("sid")==null) {
 					System.out.println("비로그인 상태로 쪽지함에 접근함");
@@ -199,8 +202,58 @@ public class MainController {
 				model.addAttribute("countReceive", result.get("countReceive"));
 				model.addAttribute("countSend", result.get("countSend"));
 				model.addAttribute("countRemind", result.get("countRemind"));
+				model.addAttribute("countDelete", result.get("countDelete"));
 				
 				return "main/messageRemindList";
+			}
+			
+			// 휴지통 요청
+			@RequestMapping("messageDeleteList.et")
+			public String messageDeleteList(String pageNum, Model model, HttpSession session, String sel, String search) throws SQLException {
+				System.out.println("messageRemindList.et");
+				
+				// code 분류
+				// 받은 쪽지함 : 1
+				// 보낸 쪽지함 : 2
+				// 쪽지 보관함 : 3
+				// 휴지통 : 4
+				
+				if(session.getAttribute("sid")==null) {
+					System.out.println("비로그인 상태로 쪽지함에 접근함");
+					return "user/loginForm";
+				}
+				
+				int code = 4;
+				String id = (String)session.getAttribute("sid");
+				
+				// message 테이블에서 receiver가 id인 데이터 전부 가져오기
+				Map<String, Object> result = null;
+				if(sel == null || search == null) {
+					// 검색하지 않은 경우
+					result = mainService.getMessageList(id, code, pageNum);
+				}else {
+					// 검색한 경우
+					result = mainService.getMessageListSearch(id, code, pageNum, sel, search);		
+				}
+				
+				// view 에 전달할 데이터 보내기
+				model.addAttribute("pageSize", result.get("pageSize"));
+				model.addAttribute("pageNum", result.get("pageNum"));
+				model.addAttribute("currentPage", result.get("currentPage"));
+				model.addAttribute("startRow", result.get("startRow"));
+				model.addAttribute("endRow", result.get("endRow"));
+				model.addAttribute("messageList", result.get("messageList"));
+				model.addAttribute("count", result.get("count"));
+				model.addAttribute("number", result.get("number"));
+				model.addAttribute("sel", sel);
+				model.addAttribute("search", search);
+				
+				model.addAttribute("countReceive", result.get("countReceive"));
+				model.addAttribute("countSend", result.get("countSend"));
+				model.addAttribute("countRemind", result.get("countRemind"));
+				model.addAttribute("countDelete", result.get("countDelete"));
+				
+				return "main/messageDeleteList";
 			}
 			
 			// 쪽지 쓰기 - 노현호
@@ -282,6 +335,28 @@ public class MainController {
 				redirect += uri + "?pageNum" + pageNum;
 
 				return redirect;
+			}
+			
+			// 쪽지 복구 처리 - 노현호
+			@RequestMapping("messageRevive.et")
+			public String messageRevive(String pageNum, int messagenum) throws SQLException{
+				System.out.println("messageRevive.et");
+				
+				mainService.reviveMessage(messagenum);
+				
+				return "redirect:/main/messageDeleteList.et?pageNum" + pageNum;
+			}
+			
+			// 휴지통 비우기 - 노현호
+			@RequestMapping("messageClearing.et")
+			public String messageClearing(String pageNum, HttpSession session) throws SQLException {
+				System.out.println("messageClearing.et");
+				
+				String id = (String)session.getAttribute("sid");
+				
+				mainService.deleteMessage(id);
+				
+				return "redirect:/main/messageDeleteList.et?pageNum" + pageNum;
 			}
 			
 			// 쪽지 내용 조회 - 노현호
