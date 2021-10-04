@@ -12,19 +12,18 @@
 
 ## 사용 기술
   - FrontEnd
-    HTML / CSS / JavaScript / ajax
+    - HTML / CSS / JavaScript / ajax 
     
   - BackEnd
-    JDK 1.8
+    - JDK 1.8
     
   - DataBase
-    Oracle 1.9c
+    - Oracle 1.9c
    
 ## 개발 환경
   - Eclipse IDE
   - Oracle SQL Develpoer
   
-
 ## 종강 후 추가 업데이트
   - (20.10.04) 쪽지-휴지통 기능 추가
     - 모든 유저는 받은 쪽지/보관된 쪽지를 삭제했을 때 삭제한 쪽지를 휴지통에서 확인할 수 있습니다
