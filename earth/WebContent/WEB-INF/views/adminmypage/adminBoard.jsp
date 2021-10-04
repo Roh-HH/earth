@@ -103,7 +103,7 @@
 										<c:if test="${Board.code == 3}">환경일기</c:if>
 									</td>
 									<td>${Board.ID}</td>
-									<td>${Board.nickname</td>
+									<td>${Board.nickname}</td>
 									<td>
 										<c:if test="${Board.code == 2}">
 											<a href="/earth/board/freeContent.et?boardnum=${Board.boardnum}&commentPageNum=1">
