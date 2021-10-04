@@ -19,10 +19,14 @@ public interface MainService {
 	public void regRemind(int messagenum) throws SQLException;
 	// 쪽지 보관함 등록 해제 - 노현호
 	public void delRemind(int messagenum) throws SQLException;
-	// 보낸 쪽지 삭제(미표시 처리) - 노현호
-	public void deleteSendMessage(int messagenum) throws SQLException;
 	// 받은 쪽지 삭제(미표시 처리) - 노현호
 	public void deleteReceiveMessage(int messagenum) throws SQLException;
+	// 보낸 쪽지 삭제(미표시 처리) - 노현호
+	public void deleteSendMessage(int messagenum) throws SQLException;
+	// 휴지통 비우기 - 노현호
+	public void deleteMessage(String id) throws SQLException;
+	// 휴지통 복구 - 노현호
+	public void reviveMessage(int messagenum) throws SQLException;
 	
 	//게시글 닉네임 가져오기 
 	public String getNickname(String id) throws SQLException;
