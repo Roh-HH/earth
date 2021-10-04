@@ -76,6 +76,9 @@ button{
 									<a href="/earth/main/messageRemindList.et">쪽지보관함 (${countRemind})</a>
 								</li>
 								<li>
+									<a href="/earth/main/messageDeleteList.et">휴지통 (${countDelete})</a>
+								</li>
+								<li>
 									<button type="button" style="float:right; background-color:#1E88E5; border:none; color:#ffffff; border-radius:5px; float:left; width:100px; height:50px;"
 									onclick="popupOpen()">쪽지보내기</button><br>	<br>							
 								</li>
@@ -119,12 +122,11 @@ button{
 														<button onclick="window.location='/earth/main/messageRemind.et?pageNum=${pageNum}&messagenum=${message.messagenum}&uri=/main/messageRemindList.et'"
 																style="background-color:#1E88E5; border:none; color:#ffffff">보관 취소</button>
 														<button onclick="" style="background-color:#fff; border:none; color:#1E88E5">신고</button>
-														<button type="button" class="delete_btn" onclick="window.location='/earth/main/messageDelete.et?pageNum=${pageNum}&messagenum=${message.messagenum}&uri=/main/messageReceiveList.et#anc'">삭제</button>
+														<button type="button" class="delete_btn" onclick="window.location='/earth/main/messageDelete.et?pageNum=${pageNum}&messagenum=${message.messagenum}&uri=/main/messageRemindList.et#anc'">삭제</button>
 													</td>
 												</tr>
 											</c:forEach>
 										</table>
-										<br />
 										
 										<%-- 페이지 번호 --%>
 										<div align="center" class="col-12 text-center">
@@ -176,7 +178,7 @@ button{
 															</c:choose>
 														</c:forEach>
 														<c:if test="${endPage < pageCount}">
-															<a class="next page-numbers" href="/earth/main/messageRemindList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
+															<a class="next page-numbers" href="/earth/main/messageRemindList.et?pageNum=${startPage+pageBlock}#anc" class="pageNums">Next»</a>
 														</c:if>
 													</c:if>
 													
