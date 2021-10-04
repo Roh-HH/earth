@@ -76,6 +76,9 @@ button{
 									<a href="/earth/main/messageRemindList.et">쪽지보관함 (${countRemind})</a>
 								</li>
 								<li>
+									<a href="/earth/main/messageDeleteList.et">휴지통 (${countDelete})</a>
+								</li>
+								<li>
 									<button type="button" style="float:right; background-color:#1E88E5; border:none; color:#ffffff; border-radius:5px; float:left; width:100px; height:50px;"
 									onclick="popupOpen()">쪽지보내기</button><br>	<br>							
 								</li>
@@ -121,7 +124,6 @@ button{
 												</tr>
 											</c:forEach>
 										</table>
-										<br />
 										
 										<%-- 페이지 번호 --%>
 										<div align="center" class="col-12 text-center">
@@ -173,7 +175,7 @@ button{
 															</c:choose>
 														</c:forEach>
 														<c:if test="${endPage < pageCount}">
-															<a class="next page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}" class="pageNums">Next»</a>
+															<a class="next page-numbers" href="/earth/main/messageSendList.et?pageNum=${startPage+pageBlock}#anc" class="pageNums">Next»</a>
 														</c:if>
 													</c:if>
 												</c:if> <%-- end:count > 0 --%>
