@@ -49,6 +49,41 @@ public class UserServiceImpl implements UserService {
 			int result = userDAO.nickCheck(dto);
 			return result;
 		}
+		// 문자 전송 및 6자리 인증 코드(vcode) 생성
+		// API 회원가입 : https://developer.coolsms.co.kr/JAVA_SDK_Start_here
+		// API 예제 : https://developer.coolsms.co.kr/JAVA_SDK_EXAMPLE_Message
+		@Override
+		public String verifyPhone(String phone) {
+			// 키 정보 : 노현호
+			String api_key = "NCSAAXZTPCHBQ6CL";
+			String api_secret = "L4QQU1YVBFJOFZRVYYYJ1ZYBQVK9TSFB";
+			Message coolsms = new Message(api_key, api_secret);
+			
+			// 발송할 코드 생성
+			String vcode = (int)(Math.random() * 1000000) + "";
+			if(vcode.length() < 6) {
+				while(vcode.length() < 6) {
+					vcode += "0";			
+				}
+			}
+			
+		    // 4 params(to, from, type, text) are mandatory. must be filled
+		    HashMap<String, String> params = new HashMap<String, String>();
+		    params.put("to", phone);
+		    params.put("from", "01097648728");	// 발신자 전화번호
+		    params.put("type", "SMS");
+		    params.put("text", "[어뜨]본인확인 인증 코드를 입력해주세요\n인증코드 : " + vcode);
+		    params.put("app_version", "test app 1.2"); // application name and version
+		    System.out.println("params : " + params);
+		    try {
+		    	JSONObject obj = (JSONObject) coolsms.send(params);
+		    	System.out.println(obj.toString());
+		    } catch (CoolsmsException e) {
+		    	System.out.println(e.getMessage());
+		    	System.out.println(e.getCode());
+		    }
+			return vcode;
+		}
 
 	// 로그인, 로그아웃	
 		
