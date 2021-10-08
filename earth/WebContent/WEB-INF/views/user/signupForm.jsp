@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/themify-icons.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/css/flaticon.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/owl-carousel/owl.carousel.min.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/animate-css/animate.css">
     <link rel="stylesheet" href="/earth/resources/bootstrap/vendors/popup/magnific-popup.css">
     <!-- main css -->
@@ -30,23 +29,30 @@
  	<script type="text/javascript" src="/earth/resources/bootstrap/js/valCheck.js"></script>
 	
 	<script type="text/javascript">
+		
+		// 인증여부 체크 변수
+		var verifyCheck = false;
+		
 		//유효성검사
-		 function check(frm){
-				if(!checkExistData(frm.id.value, "아이디를")) {
-					return false;
-				} else if(!checkName(frm.name.value)) {
-					return false;
-				} else if(!checkExistData(frm.nickname.value, "닉네임을")) {
-					return false;
-				} else if(!checkPw(frm.pw.value)) {
-					return false;
-				} else if(!checkPhone(frm.phone.value)) {
-					return false;
-				} else if(!checkEmail(frm.email.value)) {
-					return false;
-				}
-			   return true;
-		 }
+		function check(frm){
+			if(!checkExistData(frm.id.value, "아이디를")) {
+				return false;
+			} else if(!checkName(frm.name.value)) {
+				return false;
+			} else if(!checkExistData(frm.nickname.value, "닉네임을")) {
+				return false;
+			} else if(!checkPw(frm.pw.value)) {
+				return false;
+			} else if(!checkPhone(frm.phone.value)) {
+				return false;
+			} else if(!checkEmail(frm.email.value)) {
+				return false;
+			} else if(verifyCheck == false) {
+				return false;
+				//return returnfalse("핸드폰을 인증해주세요.")
+			}
+			return true;
+		}
 		 
 		$(document).ready(function(){
 			$("#id").change(function(){ 	// id 입력란에 변화가 있을때 동작
@@ -112,6 +118,57 @@
 					}				
 				}); //ajax
 			}); //change		
+		
+		
+			// 전화번호 인증
+			$("#sendVerifyBtn").click(function(){
+				if(checkPhoneRE($("#phone").val())) {
+					$.ajax({
+						url : "/earth/user/verifyPhone.et",
+						type : "post",
+						data : {phone : $("#phone").val()},
+						success : function(data) {
+							verifyCode = data
+							$("#phone").attr("readonly", true);
+						},
+						error : function(e) {
+							alert("인증번호 전송 실패")
+						}
+					})									
+				} else {
+					alert("전화번호를 정확하게 입력해주세요.")
+				}
+			})
+			
+			// 인증번호
+			$("#verifyBtn").click(function(){
+				if($("#verifyCode").val() == verifyCode) {
+					$("#verifyRE").text("인증 성공")
+					$("#verifyRE").css("color", "blue")
+					$("#verifyCode").attr("readonly", true);
+					$("#phone").attr("readonly", true);
+					verifyCheck = true;
+				} else {
+					alert("인증번호가 틀렸습니다.")
+				}
+			})
+			
+			// 다시 인증하기
+			$("#reVerifyBtn").click(function(){
+				$("#verifyCode").removeAttr("readonly");
+				$("#phone").removeAttr("readonly");
+				verifyCheck = false;
+			})
+			
+			function checkPhoneRE(text) {
+				const reg =/^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/
+				if(reg.test(text) == false) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
 		}); //ready
 	</script>
 
@@ -200,7 +257,17 @@
 				<tr>
 					<td>전화번호 </td>
 					<td>
-						<input type="number" width="400px;" name="phone" id="phone" placeholder="-를 제외한 숫자만 입력해주세요."  style="width:250px; height:40px;"/> 
+						<input type="number" width="400px;" name="phone" id="phone" placeholder="-를 제외한 숫자만 입력해주세요."  style="width:250px; height:40px;"/><br/>
+						<button type="button" class="btn btn-primary verifyBtn" id="sendVerifyBtn">인증번호 전송</button><br/>
+					</td>
+				</tr>
+				<tr>
+					<td>본인인증</td>
+					<td>
+						 <input type="text" class="form-control" name="verifyCode" id="verifyCode" placeholder="인증번호">
+						 <button type="button" class="btn btn-primary verifyBtn" id="verifyBtn">인증하기</button>
+						 <button type="button" class="btn btn-primary verifyBtn" id="reVerifyBtn">다시 입력</button><br/>
+						 <small id="verifyRE" style="color:gray;"></small>
 					</td>
 				</tr>
 				<tr>
@@ -226,9 +293,5 @@
 	<!-- .container -->
 <%@ include file = "../include/footer.jsp" %>
 <!-- #page -->
-<script src='/earth/resources/bootstrap/js/jquery.js'></script>
-<script src='/earth/resources/bootstrap/js/plugins.js'></script>
-<script src='/earth/resources/bootstrap/js/scripts.js'></script>
-<script src='/earth/resources/bootstrap/js/masonry.pkgd.min.js'></script>
 </body>
 </html>
