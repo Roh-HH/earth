@@ -91,7 +91,7 @@ public class UserController {
 			return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);   
 		}
 		   
-		// 전화번호 인증
+		// 전화번호 인증 - 노현호
 		@RequestMapping("verifyPhone.et")
 		public ResponseEntity<String> verifyPhone(String phone) {
 			HttpHeaders respHeaders = new HttpHeaders();
