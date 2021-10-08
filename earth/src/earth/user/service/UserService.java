@@ -22,6 +22,8 @@ public interface UserService {
 		public int idCheck(UserDTO dto) throws SQLException;
 		// 닉네임 중복 확인
 		public int nickCheck(UserDTO dto) throws SQLException;
+		// 인증번호 발송
+		public String verifyPhone(String phone);
 
 	// 로그인, 로그아웃
 		
