@@ -93,10 +93,10 @@ public class UserController {
 		   
 		// 전화번호 인증 - 노현호
 		@RequestMapping("verifyPhone.et")
-		public ResponseEntity<String> verifyPhone(String phone) {
+		public ResponseEntity<String> verifyPhone(String phone, String code) {
 			HttpHeaders respHeaders = new HttpHeaders();
 			respHeaders.add("Content-type", "test/html;charset=utf-8");
-			return new ResponseEntity<String>(userService.verifyPhone(phone), respHeaders, HttpStatus.OK); 
+			return new ResponseEntity<String>(userService.verifyPhone(phone, code), respHeaders, HttpStatus.OK); 
 		}
 	   
 	// 로그인, 로그아웃  
