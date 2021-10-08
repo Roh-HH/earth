@@ -56,40 +56,48 @@ public class UserController {
 		}
 		
 		// 회원가입 : ajox 아이디 중복 확인
-		   @RequestMapping("ajaxIdAvail.et")
-		   public ResponseEntity<String> ajaxIdAvail(UserDTO dto) throws SQLException { //@ResponseBody 사용 X , ResponseEntity<String> 으로 리턴받기 (한글깨짐 방지)
-			   System.out.println("controller id : " + dto.getId());
-			   int result = userService.idCheck(dto);									// ID 확인. 중복 = 1 , 중복X = 0
+		@RequestMapping("ajaxIdAvail.et")
+		public ResponseEntity<String> ajaxIdAvail(UserDTO dto) throws SQLException { //@ResponseBody 사용 X , ResponseEntity<String> 으로 리턴받기 (한글깨짐 방지)
+			System.out.println("controller id : " + dto.getId());
+			int result = userService.idCheck(dto);									// ID 확인. 중복 = 1 , 중복X = 0
+			
+			String data = "";
+			if(result == 1) {
+				data = "이미 사용중인 아이디입니다.";
+			}else if(result != 1 && !dto.getId().equals("")){
+				data = "사용가능한 아이디입니다.";
+			}  
+			HttpHeaders respHeaders = new HttpHeaders();								// 헤더 객체 만들어서,
+			respHeaders.add("Content-Type", "text/html;charset=utf-8"); 				// 헤더 정보 추가 (charset=utf-8로 한글깨짐 방지하여 결과물 응답해주기)
+			
+			return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
+		}	
 
-			   String data = "";
-			   if(result == 1) {
-				   data = "이미 사용중인 아이디입니다.";
-			   }else if(result != 1 && !dto.getId().equals("")){
-				   data = "사용가능한 아이디입니다.";
-			   }  
-			   HttpHeaders respHeaders = new HttpHeaders();								// 헤더 객체 만들어서,
-			   respHeaders.add("Content-Type", "text/html;charset=utf-8"); 				// 헤더 정보 추가 (charset=utf-8로 한글깨짐 방지하여 결과물 응답해주기)
-
-			   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);
-		   }	
-
-			// 회원가입 : ajox 닉네임 중복 확인 (+.마이페이지 : 내 프로필 보기 : 닉네임 수정 활용)
-		   @RequestMapping("ajaxNicknameAvail.et")
-		   public ResponseEntity<String> ajaxNicknameAvail(UserDTO dto) throws SQLException {
-			   System.out.println("controller Nickname : " + dto.getNickname());	   
-			   int result = userService.nickCheck(dto);									// 닉네임 확인. 중복 = 1 , 중복X = 0
-
-			   String data = "";
-			   if(result == 1) {
-				   data = "이미 사용중인 닉네임입니다.";
-			   }else if(result != 1 && !dto.getNickname().equals("")){
-				   data = "사용가능한 닉네임입니다."; 
-			   }  
-			   HttpHeaders respHeaders = new HttpHeaders();
-			   respHeaders.add("Content-Type", "text/html;charset=utf-8");	
-
-			   return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);   
-		   }
+		// 회원가입 : ajox 닉네임 중복 확인 (+.마이페이지 : 내 프로필 보기 : 닉네임 수정 활용)
+		@RequestMapping("ajaxNicknameAvail.et")
+		public ResponseEntity<String> ajaxNicknameAvail(UserDTO dto) throws SQLException {
+			System.out.println("controller Nickname : " + dto.getNickname());	   
+			int result = userService.nickCheck(dto);									// 닉네임 확인. 중복 = 1 , 중복X = 0
+			
+			String data = "";
+			if(result == 1) {
+				data = "이미 사용중인 닉네임입니다.";
+			}else if(result != 1 && !dto.getNickname().equals("")){
+				data = "사용가능한 닉네임입니다."; 
+			}  
+			HttpHeaders respHeaders = new HttpHeaders();
+			respHeaders.add("Content-Type", "text/html;charset=utf-8");	
+			
+			return new ResponseEntity<String>(data, respHeaders, HttpStatus.OK);   
+		}
+		   
+		// 전화번호 인증
+		@RequestMapping("verifyPhone.et")
+		public ResponseEntity<String> verifyPhone(String phone) {
+			HttpHeaders respHeaders = new HttpHeaders();
+			respHeaders.add("Content-type", "test/html;charset=utf-8");
+			return new ResponseEntity<String>(userService.verifyPhone(phone), respHeaders, HttpStatus.OK); 
+		}
 	   
 	// 로그인, 로그아웃  
 
