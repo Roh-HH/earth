@@ -29,15 +29,15 @@
  	<script type="text/javascript" src="/earth/resources/bootstrap/js/valCheck.js"></script>
 	
 	<script type="text/javascript">
-		
-		// 인증여부 체크 변수
+	
 		var verifyCheck = false;
+		var veriflyCode;
 		
 		//유효성검사
-		function check(frm){
+		function check(form){
 			if(!checkExistData(frm.id.value, "아이디를")) {
 				return false;
-			} else if(!checkName(frm.name.value)) {
+			}  else if(!checkName(frm.name.value)) {
 				return false;
 			} else if(!checkExistData(frm.nickname.value, "닉네임을")) {
 				return false;
@@ -53,7 +53,7 @@
 			}
 			return true;
 		}
-		 
+	
 		$(document).ready(function(){
 			$("#id").change(function(){ 	// id 입력란에 변화가 있을때 동작
 				var idVal = $("#id").val(); // id 입력란에 사용자가 작성한 값을 가져오기 
@@ -120,13 +120,14 @@
 			}); //change		
 		
 		
-			// 전화번호 인증
+			// 전화번호 인증(인증번호 전송 후 3분(180000ms) 뒤 인증번호 비활성화)
 			$("#sendVerifyBtn").click(function(){
 				if(checkPhoneRE($("#phone").val())) {
 					$.ajax({
 						url : "/earth/user/verifyPhone.et",
 						type : "post",
-						data : {phone : $("#phone").val()},
+						async : false,
+						data : {phone : $("#phone").val(), code : 0},
 						success : function(data) {
 							verifyCode = data
 							$("#phone").attr("readonly", true);
@@ -134,7 +135,18 @@
 						error : function(e) {
 							alert("인증번호 전송 실패")
 						}
-					})									
+					})
+					var timer = setTimeout(function(){
+						$.ajax({
+							url : "/earth/user/verifyPhone.et",
+							type : "post",
+							async : false,
+							data : {phone : $("#phone").val(), code : 1},
+							success : function(data) {
+								verifyCode = data
+							}
+						})
+				    }, 180000)
 				} else {
 					alert("전화번호를 정확하게 입력해주세요.")
 				}
@@ -142,14 +154,19 @@
 			
 			// 인증번호
 			$("#verifyBtn").click(function(){
-				if($("#verifyCode").val() == verifyCode) {
-					$("#verifyRE").text("인증 성공")
-					$("#verifyRE").css("color", "blue")
-					$("#verifyCode").attr("readonly", true);
-					$("#phone").attr("readonly", true);
-					verifyCheck = true;
+				if(checkVerifyCodeRE($("#verifyCode").val())) {
+					if($("#verifyCode").val() == verifyCode) {
+						$("#verifyRE").text("인증 성공")
+						$("#verifyRE").css("color", "blue")
+						$("#verifyCode").attr("readonly", true);
+						$("#phone").attr("readonly", true);
+						verifyCheck = true;
+						console.log(verifyCheck);
+					} else {
+						alert("인증번호가 틀렸습니다.")
+					}
 				} else {
-					alert("인증번호가 틀렸습니다.")
+					alert("인증번호를 정확하게 입력해주세요.")
 				}
 			})
 			
@@ -162,6 +179,15 @@
 			
 			function checkPhoneRE(text) {
 				const reg =/^01([0|1|6|7|8|9])([0-9]{3,4})([0-9]{4})$/
+				if(reg.test(text) == false) {
+					return false;
+				} else {
+					return true;
+				}
+			}
+			
+			function checkVerifyCodeRE(text) {
+				const reg =/^([0-9]{6})$/
 				if(reg.test(text) == false) {
 					return false;
 				} else {
